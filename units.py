@@ -24,6 +24,11 @@ class Units(Frame):
         self.C.pack(**__pack)
         self.D.pack(**__pack)
         self.E.pack(**__pack)
+        self.A.bind("<Button-3>", lambda event: self.deselect_(self.A))
+        self.B.bind("<Button-3>", lambda event: self.deselect_(self.B))
+        self.C.bind("<Button-3>", lambda event: self.deselect_(self.C))
+        self.D.bind("<Button-3>", lambda event: self.deselect_(self.D))
+        self.E.bind("<Button-3>", lambda event: self.deselect_(self.E))
 
     def high_light_button(self):
         __select = self.var.get()
@@ -33,6 +38,21 @@ class Units(Frame):
                 v["bg"] = "gray"
             else:
                 v["bg"] = "gray10"
+
+    def __bind_deselect(self):
+        for i in [self.A, self.B, self.C, self.D, self.E]:
+            i.bind("<Button-3>", lambda event: self.deselect_(i))
+
+    def deselect_(self, widget):
+        if widget["state"] == "normal" or widget["state"] == "active":
+            widget.deselect()
+            self.return_white()
+            # self.groove()
+
+    def return_white(self):
+        if not self.var.get():
+            for k, v in self.units.items():
+                v["bg"] = "white"
 
 
 if __name__ == '__main__':
