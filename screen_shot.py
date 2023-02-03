@@ -75,6 +75,6 @@ class ScreenShot(Toplevel):
 if __name__ == '__main__':
     root = Tk()
     s = ScreenShot(root)
-    s.ss_name = "gggboss.png"
+    s.ss_name = "test.png"
     Button(root, text="ss", command=lambda: s.state("normal")).pack()
     root.mainloop()
