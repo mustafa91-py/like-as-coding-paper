@@ -76,7 +76,7 @@ class Units(Frame):
 
     def __bind_deselect(self):
         for widget in self.units.values():
-            widget.bind("<Button-3>", lambda event: self.deselect_(i))
+            widget.bind("<Button-3>", lambda event: self.deselect_(widget))
 
     def deselect_(self, widget):
         if widget["state"] == "normal" or widget["state"] == "active":
