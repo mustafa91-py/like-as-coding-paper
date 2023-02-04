@@ -160,7 +160,6 @@ class StackUnits(Frame):
     def groove(self):
         self.answer_top_level.groove()
         self.elapsed_units()
-        self.after(1 * 1000, self.groove)
 
     def create_stack(self):
         for i in range(1, self.amount + 1):
