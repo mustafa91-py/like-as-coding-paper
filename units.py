@@ -61,10 +61,6 @@ class Units(Frame):
     def id(self, value):
         self.__id.configure(text=value)
 
-    # @id.getter
-    # def id(self):
-    #     return self.__id["text"]
-
     def high_light_button(self):
         __select = self.var.get()
         for k, v in self.units.items():
@@ -82,7 +78,6 @@ class Units(Frame):
         if widget["state"] == "normal" or widget["state"] == "active":
             widget.deselect()
             self.return_white()
-            # self.groove()
 
     def return_white(self):
         if not self.var.get():
@@ -95,19 +90,38 @@ class StackUnitsForAnswer(Toplevel):
         super(StackUnitsForAnswer, self).__init__(*args, **kwargs)
         self.protocol("WM_DELETE_WINDOW", lambda: self.state("withdraw"))
         self.state("withdraw")
-        self.__scroll_frame = ScrollFrame(self)
-        self.__scroll_frame.pack(fill="both", expand=1, anchor="nw")
+        self.units = {}
         self.amount = amount
         self.answer_fp = None
+
+        self.__scroll_frame = ScrollFrame(self)
+        self.__scroll_frame.pack(fill="both", expand=1, anchor="nw")
+
         self.title("answer key".title())
-        self.units = {}
         self.create_stack()
+
+        self.bottom_frame = LabelFrame(self, text="answer")
+        self.bottom_frame.pack(side="bottom", fill="x")
+
+        self.save_button = Button(self.bottom_frame, text="save")
+        self.save_button.pack(side="bottom", fill="x")
 
     def create_stack(self):
         for i in range(1, self.amount + 1):
             self.units[i] = Units(self.__scroll_frame.child_frame)
             self.units[i].id = str(i).zfill(3)
             self.units[i].pack()
+
+    def groove(self):
+        self.elapsed_units()
+
+    def elapsed_units(self):
+        v: Units
+        tick = {k: v for k, v in self.units.items() if v.var.get()}
+        tick = len(tick)
+        percent_ = round((tick / self.amount) * 100, 2)
+        _text = f"marked : {tick} unmarked : {self.amount - tick} ( % {percent_}) "
+        self.bottom_frame.configure(text=_text)
 
 
 class StackUnits(Frame):
@@ -135,6 +149,19 @@ class StackUnits(Frame):
                                               command=self.open_answers_top_level)
         self.answer_keys_open_button.pack()
 
+    def elapsed_units(self):
+        v: Units
+        tick = {k: v for k, v in self.units.items() if v.var.get()}
+        tick = len(tick)
+        percent_ = round((tick / self.amount) * 100, 2)
+        _text = f"marked : {tick} unmarked : {self.amount - tick} ( % {percent_:^9} ) "
+        self.bottom_frame.configure(text=_text)
+
+    def groove(self):
+        self.answer_top_level.groove()
+        self.elapsed_units()
+        self.after(1 * 1000, self.groove)
+
     def create_stack(self):
         for i in range(1, self.amount + 1):
             self.units[i] = Units(self.__scroll_frame.child_frame)
@@ -151,4 +178,5 @@ if __name__ == '__main__':
     s_units = StackUnits(root, amount=30)
     s_units.create_stack()
     s_units.pack(fill="y", expand=1)
+    s_units.groove()
     root.mainloop()
