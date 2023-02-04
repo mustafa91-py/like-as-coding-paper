@@ -93,12 +93,18 @@ class Units(Frame):
 class StackUnits(Frame):
     def __init__(self, parent, amount: int = 20, name: str = "test", *args, **kwargs):
         super(StackUnits, self).__init__(parent, *args, **kwargs)
-        self.test_name_label = Label(self, text=f"{name}")
+        self.top_frame = LabelFrame(self)
+        self.top_frame.pack(side="top",fill="x")
+
+        self.test_name_label = Label(self.top_frame, text=f"{name}")
         self.test_name_label.pack(side="top", fill="x")
+
         self.__scroll_frame = ScrollFrame(self)
         self.__scroll_frame.pack(fill="both", expand=1, anchor="nw")
+
         self.bottom_frame = LabelFrame(self, text="bottom frame")
         self.bottom_frame.pack(side="bottom",fill="x")
+
         self.__amount = amount
         self.__name = name
 
