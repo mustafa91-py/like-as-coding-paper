@@ -6,7 +6,7 @@ class Units(Frame):
     def __init__(self, parent, *args, **kwargs):
         super(Units, self).__init__(parent, *args, **kwargs)
         self.var = StringVar()
-        self.id = Label(self, text="None", name="id", font=font.Font(family="Times ", size=16))
+        self.__id = Label(self, text="None", name="id", font=font.Font(family="Times ", size=16))
         self.__cnf = {"activebackground": "green",
                       "highlightbackground": "red",
                       "font": font.Font(family="Times ", size=12),
@@ -18,7 +18,7 @@ class Units(Frame):
         self.E = Radiobutton(self, text="E", variable=self.var, value="E", command=self.high_light_button, **self.__cnf)
         self.units = {"A": self.A, "B": self.B, "C": self.C, "D": self.D, "E": self.E}
         __pack = {"side": "left", "fill": "x", "expand": 1}
-        self.id.pack(**__pack)
+        self.__id.pack(**__pack)
         self.A.pack(**__pack)
         self.B.pack(**__pack)
         self.C.pack(**__pack)
@@ -29,6 +29,18 @@ class Units(Frame):
         self.C.bind("<Button-3>", lambda event: self.deselect_(self.C))
         self.D.bind("<Button-3>", lambda event: self.deselect_(self.D))
         self.E.bind("<Button-3>", lambda event: self.deselect_(self.E))
+
+    @property
+    def id(self):
+        return self.__id["text"]
+
+    @id.setter
+    def id(self, value):
+        self.__id.configure(text=value)
+
+    # @id.getter
+    # def id(self):
+    #     return self.__id["text"]
 
     def high_light_button(self):
         __select = self.var.get()
@@ -58,5 +70,6 @@ class Units(Frame):
 if __name__ == '__main__':
     root = Tk()
     units = Units(root)
+
     units.pack()
     root.mainloop()
