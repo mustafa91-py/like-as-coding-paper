@@ -7,28 +7,33 @@ class Units(Frame):
         super(Units, self).__init__(parent, *args, **kwargs)
         self.var = StringVar()
         self.__id = Label(self, text="None", name="id", font=font.Font(family="Times ", size=16))
-        self.__cnf = {"activebackground": "green",
-                      "highlightbackground": "red",
-                      "font": font.Font(family="Times ", size=12),
-                      "padx": 10}
-        self.A = Radiobutton(self, text="A", variable=self.var, value="A", command=self.high_light_button, **self.__cnf)
-        self.B = Radiobutton(self, text="B", variable=self.var, value="B", command=self.high_light_button, **self.__cnf)
-        self.C = Radiobutton(self, text="C", variable=self.var, value="C", command=self.high_light_button, **self.__cnf)
-        self.D = Radiobutton(self, text="D", variable=self.var, value="D", command=self.high_light_button, **self.__cnf)
-        self.E = Radiobutton(self, text="E", variable=self.var, value="E", command=self.high_light_button, **self.__cnf)
-        self.units = {"A": self.A, "B": self.B, "C": self.C, "D": self.D, "E": self.E}
+        self.__cnf = dict(activebackground="green",
+                          highlightbackground="red",
+                          font=font.Font(family="Times", size=12),
+                          padx=10,
+                          command=self.high_light_button,
+                          variable=self.var)
+
+        self.a = Radiobutton(self, text="A", value="A", **self.__cnf)
+        self.b = Radiobutton(self, text="B", value="B", **self.__cnf)
+        self.c = Radiobutton(self, text="C", value="C", **self.__cnf)
+        self.d = Radiobutton(self, text="D", value="D", **self.__cnf)
+        self.e = Radiobutton(self, text="E", value="E", **self.__cnf)
+
+        self.a.bind("<Button-3>", lambda event: self.deselect_(self.a))
+        self.b.bind("<Button-3>", lambda event: self.deselect_(self.b))
+        self.c.bind("<Button-3>", lambda event: self.deselect_(self.c))
+        self.d.bind("<Button-3>", lambda event: self.deselect_(self.d))
+        self.e.bind("<Button-3>", lambda event: self.deselect_(self.e))
+
+        self.units = {"A": self.a, "B": self.b, "C": self.c, "D": self.d, "E": self.e}
         __pack = {"side": "left", "fill": "x", "expand": 1}
         self.__id.pack(**__pack)
-        self.A.pack(**__pack)
-        self.B.pack(**__pack)
-        self.C.pack(**__pack)
-        self.D.pack(**__pack)
-        self.E.pack(**__pack)
-        self.A.bind("<Button-3>", lambda event: self.deselect_(self.A))
-        self.B.bind("<Button-3>", lambda event: self.deselect_(self.B))
-        self.C.bind("<Button-3>", lambda event: self.deselect_(self.C))
-        self.D.bind("<Button-3>", lambda event: self.deselect_(self.D))
-        self.E.bind("<Button-3>", lambda event: self.deselect_(self.E))
+        self.a.pack(**__pack)
+        self.b.pack(**__pack)
+        self.c.pack(**__pack)
+        self.d.pack(**__pack)
+        self.e.pack(**__pack)
 
     @property
     def id(self):
@@ -52,7 +57,7 @@ class Units(Frame):
                 v["bg"] = "gray10"
 
     def __bind_deselect(self):
-        for i in [self.A, self.B, self.C, self.D, self.E]:
+        for i in [self.a, self.b, self.c, self.d, self.e]:
             i.bind("<Button-3>", lambda event: self.deselect_(i))
 
     def deselect_(self, widget):
@@ -70,6 +75,6 @@ class Units(Frame):
 if __name__ == '__main__':
     root = Tk()
     units = Units(root)
-
+    units.id = str(1).zfill(3)
     units.pack()
     root.mainloop()
