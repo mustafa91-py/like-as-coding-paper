@@ -90,25 +90,18 @@ class Units(Frame):
                 v["bg"] = "white"
 
 
-class StackUnits(Frame):
-    def __init__(self, parent, amount: int = 20, name: str = "test", *args, **kwargs):
-        super(StackUnits, self).__init__(parent, *args, **kwargs)
-        self.top_frame = LabelFrame(self)
-        self.top_frame.pack(side="top",fill="x")
-
-        self.test_name_label = Label(self.top_frame, text=f"{name}")
-        self.test_name_label.pack(side="top", fill="x")
-
+class StackUnitsForAnswer(Toplevel):
+    def __init__(self, amount: int, *args, **kwargs):
+        super(StackUnitsForAnswer, self).__init__(*args, **kwargs)
+        self.protocol("WM_DELETE_WINDOW", lambda: self.state("withdraw"))
         self.__scroll_frame = ScrollFrame(self)
         self.__scroll_frame.pack(fill="both", expand=1, anchor="nw")
 
-        self.bottom_frame = LabelFrame(self, text="bottom frame")
-        self.bottom_frame.pack(side="bottom",fill="x")
-
         self.__amount = amount
-        self.__name = name
-
+        self.answer_fp = None
+        self.title("answer key".title())
         self.units = {}
+        self.create_stack()
 
     @property
     def amount(self):
@@ -121,14 +114,6 @@ class StackUnits(Frame):
         else:
             raise ValueError(f"only type = int but you gave {type(value)}")
 
-    @property
-    def name(self):
-        return self.__name
-
-    @name.setter
-    def name(self, value):
-        self.__name = f"{value}"
-
     def create_stack(self):
         for i in range(1, self.amount + 1):
             self.units[i] = Units(self.__scroll_frame.child_frame)
@@ -136,9 +121,47 @@ class StackUnits(Frame):
             self.units[i].pack()
 
 
+class StackUnits(Frame):
+    def __init__(self, parent, amount: int = 20, name: str = "test", *args, **kwargs):
+        super(StackUnits, self).__init__(parent, *args, **kwargs)
+        self.amount = amount
+        self.name = name
+        self.units = {}
+
+        self.top_frame = LabelFrame(self)
+        self.top_frame.pack(side="top", fill="x")
+
+        self.test_name_label = Label(self.top_frame, text=f"{name}")
+        self.test_name_label.pack(side="top", fill="x")
+
+        self.__scroll_frame = ScrollFrame(self)
+        self.__scroll_frame.pack(fill="both", expand=1, anchor="nw")
+
+        self.bottom_frame = LabelFrame(self, text="bottom frame")
+        self.bottom_frame.pack(side="bottom", fill="x")
+
+        self.answer_top_level = StackUnitsForAnswer(amount)
+        self.answer_top_level.amount = self.amount
+        self.answer_keys_open_button = Button(self.bottom_frame, text="answer key",
+                                              command=self.open_answers_top_level)
+        self.answer_keys_open_button.pack()
+
+
+    def create_stack(self):
+        for i in range(1, self.amount + 1):
+            self.units[i] = Units(self.__scroll_frame.child_frame)
+            self.units[i].id = str(i).zfill(3)
+            self.units[i].pack()
+
+    def open_answers_top_level(self):
+        self.answer_top_level.state("normal")
+        self.answer_top_level.title(f"answer key = {self.name}")
+
+
 if __name__ == '__main__':
     root = Tk()
-    units = StackUnits(root)
-    units.amount = 7
-    units.pack()
+    s_units = StackUnits(root, amount=30)
+    s_units.amount = 10
+    s_units.create_stack()
+    s_units.pack(fill="y", expand=1)
     root.mainloop()
