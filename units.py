@@ -2,6 +2,24 @@ from tkinter import *
 from tkinter import font
 
 
+class ScrollFrame(Frame):
+    def __init__(self, parent, *args, **kwargs):
+        super(ScrollFrame, self).__init__(parent, *args, **kwargs)
+        # self.my_frame = Frame(self)
+        self.canvasPaper = Canvas(self)
+        self.child_frame = Frame(self.canvasPaper)
+        self.__scroll_y = Scrollbar(self, orient="vertical", command=self.canvasPaper.yview)
+        self.__scroll_y.pack(side="right", fill="y")
+        self.__scroll_x = Scrollbar(self, orient="horizontal", command=self.canvasPaper.xview)
+        self.__scroll_x.pack(side="bottom", fill="x")
+        self.canvasPaper.configure(yscrollcommand=self.__scroll_y.set, xscrollcommand=self.__scroll_x.set)
+        self.child_frame.bind("<Configure>",
+                              lambda event: self.canvasPaper.configure(scrollregion=self.canvasPaper.bbox("all")))
+
+        self.canvasPaper.create_window(0, 0, window=self.child_frame, anchor="nw")
+        self.canvasPaper.pack(fill="y", expand=1)
+
+
 class Units(Frame):
     def __init__(self, parent, *args, **kwargs):
         super(Units, self).__init__(parent, *args, **kwargs)
@@ -72,9 +90,35 @@ class Units(Frame):
                 v["bg"] = "white"
 
 
+class StackUnits(Frame):
+    def __init__(self, parent, amount: int = 20, name: str = "test", *args, **kwargs):
+        super(StackUnits, self).__init__(parent, *args, **kwargs)
+        self.__amount = amount
+        self.__name = name
+
+    @property
+    def amount(self):
+        return self.__amount
+
+    @amount.setter
+    def amount(self, value):
+        if isinstance(value, int):
+            self.__amount = value
+        else:
+            raise ValueError(f"only type = int but you gave {type(value)}")
+
+    @property
+    def name(self):
+        return self.__name
+
+    @name.setter
+    def name(self, value):
+        self.__name = f"{value}"
+
+
 if __name__ == '__main__':
     root = Tk()
-    units = Units(root)
-    units.id = str(1).zfill(3)
+    units = StackUnits(root)
+    units.amount = 7
     units.pack()
     root.mainloop()
