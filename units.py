@@ -93,8 +93,13 @@ class Units(Frame):
 class StackUnits(Frame):
     def __init__(self, parent, amount: int = 20, name: str = "test", *args, **kwargs):
         super(StackUnits, self).__init__(parent, *args, **kwargs)
+        self.__scroll_frame = ScrollFrame(self)
+        self.__scroll_frame.pack(fill="both", expand=1, anchor="nw")
+
         self.__amount = amount
         self.__name = name
+
+        self.units = {}
 
     @property
     def amount(self):
@@ -114,6 +119,12 @@ class StackUnits(Frame):
     @name.setter
     def name(self, value):
         self.__name = f"{value}"
+
+    def create_stack(self):
+        for i in range(1, self.amount + 1):
+            self.units[i] = Units(self.__scroll_frame.child_frame)
+            self.units[i].id = str(i).zfill(3)
+            self.units[i].pack()
 
 
 if __name__ == '__main__':
