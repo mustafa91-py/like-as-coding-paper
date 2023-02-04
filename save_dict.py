@@ -31,3 +31,10 @@ class SaveDict:
         keys_ = {str(k).replace(" ", "_").lower(): v for k, v in self.space.items()}
         self.__dict__["keys"] = self.space.keys()
         self.__dict__.update(keys_)
+
+
+if __name__ == '__main__':
+    path_ = os.path.join(os.getcwd(), "garbage", "test.json")
+    save_dict = SaveDict(path_=path_)
+    data = {k: v ** 2 for k, v in enumerate(range(0, 10))}
+    print(save_dict.space)
