@@ -75,8 +75,8 @@ class Units(Frame):
                 v["bg"] = "gray10"
 
     def __bind_deselect(self):
-        for i in [self.a, self.b, self.c, self.d, self.e]:
-            i.bind("<Button-3>", lambda event: self.deselect_(i))
+        for widget in self.units.values():
+            widget.bind("<Button-3>", lambda event: self.deselect_(i))
 
     def deselect_(self, widget):
         if widget["state"] == "normal" or widget["state"] == "active":
@@ -161,7 +161,6 @@ class StackUnits(Frame):
 if __name__ == '__main__':
     root = Tk()
     s_units = StackUnits(root, amount=30)
-    s_units.amount = 10
     s_units.create_stack()
     s_units.pack(fill="y", expand=1)
     root.mainloop()
