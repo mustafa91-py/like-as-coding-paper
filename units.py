@@ -94,25 +94,14 @@ class StackUnitsForAnswer(Toplevel):
     def __init__(self, amount: int, *args, **kwargs):
         super(StackUnitsForAnswer, self).__init__(*args, **kwargs)
         self.protocol("WM_DELETE_WINDOW", lambda: self.state("withdraw"))
+        self.state("withdraw")
         self.__scroll_frame = ScrollFrame(self)
         self.__scroll_frame.pack(fill="both", expand=1, anchor="nw")
-
-        self.__amount = amount
+        self.amount = amount
         self.answer_fp = None
         self.title("answer key".title())
         self.units = {}
         self.create_stack()
-
-    @property
-    def amount(self):
-        return self.__amount
-
-    @amount.setter
-    def amount(self, value):
-        if isinstance(value, int):
-            self.__amount = value
-        else:
-            raise ValueError(f"only type = int but you gave {type(value)}")
 
     def create_stack(self):
         for i in range(1, self.amount + 1):
@@ -145,7 +134,6 @@ class StackUnits(Frame):
         self.answer_keys_open_button = Button(self.bottom_frame, text="answer key",
                                               command=self.open_answers_top_level)
         self.answer_keys_open_button.pack()
-
 
     def create_stack(self):
         for i in range(1, self.amount + 1):
