@@ -1,8 +1,8 @@
 import os.path
 
-from units import StackUnits
+from units.units import StackUnits
 from tkinter import *
-from save_dict import SaveDict
+from misc.save_dict import SaveDict
 
 
 class CodingPaper(Frame):
@@ -41,7 +41,7 @@ if __name__ == '__main__':
     root = Tk()
     # part input------------------------------------------------------
     title = "math_test_1"
-    fp = os.path.join(os.getcwd(), "garbage", f"{title}.json")
+    fp = os.path.join(os.getcwd(), "../garbage", f"{title}.json")
     cp_confg = dict(amount=28, name="physic".upper(), fp=fp, title=title)
     # part input------------------------------------------------------
 
