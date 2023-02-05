@@ -9,12 +9,14 @@ class Container:
     paper_key: dict = None
     answer_key: dict = None
     cp_config: dict = None
-    amount: int = None
-    name: str = None
-    title: str = None
-    after_id: object = None
+    amount: int = field(default=20)  # number of questions
+    unit_time: int | float = field(default=1)  # time per unit(question)
+    lesson: str = field(default="math")  # lesson
+    subject: str = field(default="integral")  # subject
+    title: str = field(default="test1")  # title
+    after_id: object = None  # object after method if exists
 
-    def result(self):
+    def result(self) -> dict:
         if self.paper_key is not None and self.answer_key is not None:
             data_ = zip(self.paper_key.items(), self.answer_key.items())
             out_put = {}
