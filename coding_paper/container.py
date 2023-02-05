@@ -8,13 +8,11 @@ class Container:
     file_path: os.path.abspath = None
     paper_key: dict = None
     answer_key: dict = None
-    cp_config: dict = None
     amount: int = field(default=20)  # number of questions
     unit_time: int | float = field(default=1)  # time per unit(question)
     lesson: str = field(default="math")  # lesson
     subject: str = field(default="integral")  # subject
     title: str = field(default="test1")  # title
-    after_id: object = None  # object after method if exists
 
     def result(self) -> dict:
         if self.paper_key is not None and self.answer_key is not None:
@@ -38,3 +36,4 @@ if __name__ == '__main__':
     c.answer_key = {k: random.choice("ABCDE") for k, v in enumerate(range(5))}
     c.paper_key = {k: random.choice(ttt) for k, v in enumerate(range(5))}
     print(c.result())
+    print(asdict(c))
