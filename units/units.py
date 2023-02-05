@@ -98,13 +98,14 @@ class StackUnitsForAnswer(Toplevel):
         self.__scroll_frame.pack(fill="both", expand=1, anchor="nw")
 
         self.title("answer key".title())
-        self.create_stack()
 
         self.bottom_frame = LabelFrame(self, text="answer")
         self.bottom_frame.pack(side="bottom", fill="x")
 
         self.save_button = Button(self.bottom_frame, text="save")
         self.save_button.pack(side="bottom", fill="x")
+
+        self.create_stack()
 
     def create_stack(self):
         for i in range(1, self.amount + 1):

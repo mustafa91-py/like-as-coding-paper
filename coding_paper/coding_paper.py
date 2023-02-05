@@ -9,14 +9,21 @@ from container import Container, asdict
 class CodingPaper(Frame):
     def __init__(self, parent, cp_config: dict = None, *args, **kwargs):
         super(CodingPaper, self).__init__(parent, *args, **kwargs)
-        self.container = Container(**cp_config)
-
         self.after_id = None
-        self.save_dict = SaveDict(path_=self.container.file_path)
+        self.file_read = cp_config.get("file_read")
+        # dosya okuma daki hatalar olmaması için dosya çekme ve insert etme için metodlar veya sınıflar oluşturulacak
+        if not self.file_read:
+            cp_config.pop("file_read")
+            self.container = Container(**cp_config)
 
+        self.save_dict = SaveDict(path_=cp_config.get("file_path"))
+
+        if self.file_read:
+            self.container = Container(**self.save_dict.load())
         self.stack_units = StackUnits(self, self.container.amount, self.container.lesson)
         self.stack_units.pack(fill="both", expand=1)
         self.stack_units.create_stack()
+        self.load()
         self.groove()
 
     def groove(self):
@@ -33,6 +40,11 @@ class CodingPaper(Frame):
         data_ = {k: v.var.get() for k, v in self.stack_units.answer_top_level.units.items()}
         return data_
 
+    def load(self):
+        if self.file_read:
+            for iid, uni in self.stack_units.units.items():
+                uni.var.set(self.container.paper_key.get(str(iid)))
+
 
 if __name__ == '__main__':
     garbage_ = os.path.join(os.getcwd(), "../garbage")
@@ -45,7 +57,7 @@ if __name__ == '__main__':
 
     # part input------------------------------------------------------
     fp = os.path.join(os.getcwd(), "../garbage", f"{title}.json")
-    cp_confg = dict(lesson="physic".upper(), file_path=fp, title=title)
+    cp_confg = dict(lesson="physic".upper(), file_path=fp, title=title, file_read=True)
     # part input------------------------------------------------------
     coding_paper = CodingPaper(root, cp_config=cp_confg)
 
@@ -53,8 +65,9 @@ if __name__ == '__main__':
 
 
     def save_exit():
-        coding_paper.save_dict.space = asdict(coding_paper.container)
-        coding_paper.save_dict.save()
+        if not coding_paper.file_read:
+            coding_paper.save_dict.space = asdict(coding_paper.container)
+            coding_paper.save_dict.save()
         root.destroy()
 
 
