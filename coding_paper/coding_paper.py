@@ -2,6 +2,7 @@ import os.path
 
 from units.units import StackUnits
 from tkinter import *
+from tkinter import font
 from misc.save_dict import SaveDict
 from container import Container, asdict
 
@@ -46,6 +47,28 @@ class CodingPaper(Frame):
                 uni.var.set(self.container.paper_key.get(str(iid)))
             for iid, uni in self.stack_units.answer_top_level.units.items():
                 uni.var.set(self.container.answer_key.get(str(iid)))
+            self.stain()
+
+    def stain(self):
+        from units.units import Units
+        if all(self.container.answer_key.values()):
+            print(self.container.result())
+            font_cnf = dict(underline=1)
+            for paper, answer in zip(self.stack_units.units.items(), self.stack_units.answer_top_level.units.items()):
+                # i_p, i_a = paper[0], answer[0]
+                w_p: Units = paper[1]
+                w_a: Units = answer[1]
+                widget = w_p.units.get(w_p.var.get())
+                correct_widget = w_p.units.get(w_a.var.get())
+                if w_p.var.get() == w_a.var.get():
+                    widget.configure(bg="green")
+                    correct_widget.configure(font=font.Font(**font_cnf))
+                elif w_p.var.get() == "":
+                    widget.configure(bg="gray")
+                    correct_widget.configure(font=font.Font(**font_cnf))
+                else:
+                    widget.configure(bg="red")
+                    correct_widget.configure(font=font.Font(**font_cnf))
 
 
 if __name__ == '__main__':
