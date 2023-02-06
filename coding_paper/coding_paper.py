@@ -52,7 +52,6 @@ class CodingPaper(Frame):
     def stain(self):
         from units.units import Units
         if all(self.container.answer_key.values()):
-            print(self.container.result())
             font_cnf = dict(underline=1)
             for paper, answer in zip(self.stack_units.units.items(), self.stack_units.answer_top_level.units.items()):
                 # i_p, i_a = paper[0], answer[0]
