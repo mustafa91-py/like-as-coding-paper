@@ -52,7 +52,6 @@ class CodingPaper(Frame):
     def stain(self):
         from units.units import Units
         if all(self.container.answer_key.values()):
-            font_cnf = dict(underline=1)
             for paper, answer in zip(self.stack_units.units.items(), self.stack_units.answer_top_level.units.items()):
                 # i_p, i_a = paper[0], answer[0]
                 w_p: Units = paper[1]
@@ -61,12 +60,15 @@ class CodingPaper(Frame):
                 correct_widget = w_p.units.get(w_a.var.get())
                 if w_p.var.get() == w_a.var.get():
                     widget.configure(bg="green")
-                    correct_widget.configure(font=font.Font(**font_cnf))
+                    w_p.iid.configure(bg="green")
                 elif w_p.var.get() == "":
-                    correct_widget.configure(font=font.Font(**font_cnf),bg="gray")
+                    correct_widget.configure(bg="lightgreen")
+                    w_p.iid.configure(bg="gray")
+
                 else:
                     widget.configure(bg="red")
-                    correct_widget.configure(font=font.Font(**font_cnf))
+                    correct_widget.configure(bg="lightgreen")
+                    w_p.iid.configure(bg="red")
 
 
 if __name__ == '__main__':

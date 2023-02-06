@@ -24,7 +24,7 @@ class Units(Frame):
     def __init__(self, parent, *args, **kwargs):
         super(Units, self).__init__(parent, *args, **kwargs)
         self.var = StringVar()
-        self.__id = Label(self, text="None", name="id", font=font.Font(family="Times ", size=16))
+        self.iid = self.__id = Label(self, text="None", name="id", font=font.Font(family="Times ", size=16))
         self.__cnf = dict(activebackground="green",
                           highlightbackground="red",
                           font=font.Font(family="Times", size=12),
