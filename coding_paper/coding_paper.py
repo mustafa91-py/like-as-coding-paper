@@ -63,8 +63,7 @@ class CodingPaper(Frame):
                     widget.configure(bg="green")
                     correct_widget.configure(font=font.Font(**font_cnf))
                 elif w_p.var.get() == "":
-                    widget.configure(bg="gray")
-                    correct_widget.configure(font=font.Font(**font_cnf))
+                    correct_widget.configure(font=font.Font(**font_cnf),bg="gray")
                 else:
                     widget.configure(bg="red")
                     correct_widget.configure(font=font.Font(**font_cnf))
