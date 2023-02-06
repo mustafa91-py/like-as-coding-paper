@@ -44,6 +44,8 @@ class CodingPaper(Frame):
         if self.file_read:
             for iid, uni in self.stack_units.units.items():
                 uni.var.set(self.container.paper_key.get(str(iid)))
+            for iid, uni in self.stack_units.answer_top_level.units.items():
+                uni.var.set(self.container.answer_key.get(str(iid)))
 
 
 if __name__ == '__main__':
@@ -57,7 +59,7 @@ if __name__ == '__main__':
 
     # part input------------------------------------------------------
     fp = os.path.join(os.getcwd(), "../garbage", f"{title}.json")
-    cp_confg = dict(lesson="physic".upper(), file_path=fp, title=title, file_read=True)
+    cp_confg = dict(lesson="physic".upper(), file_path=fp, amount=10, title=title, file_read=True)
     # part input------------------------------------------------------
     coding_paper = CodingPaper(root, cp_config=cp_confg)
 
