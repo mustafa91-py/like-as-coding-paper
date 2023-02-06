@@ -2,6 +2,7 @@ import os.path
 
 from units.units import StackUnits
 from tkinter import *
+from tkinter.messagebox import showwarning
 from tkinter import font
 from misc.save_dict import SaveDict
 from container import Container, asdict
@@ -11,6 +12,9 @@ class CodingPaper(Frame):
     def __init__(self, parent, cp_config: dict = None, *args, **kwargs):
         super(CodingPaper, self).__init__(parent, *args, **kwargs)
         self.after_id = None
+        if cp_config.get("amount", 0) >= 250:
+            cp_config["amount"] = 250
+            showwarning("max value fixed oto",f"amount = 250 ,maximum value of 250 can be given")
         self.file_read = cp_config.get("file_read")
         # dosya okuma daki hatalar olmaması için dosya çekme ve insert etme için metodlar veya sınıflar oluşturulacak
         if not self.file_read:
