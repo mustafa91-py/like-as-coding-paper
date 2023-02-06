@@ -69,6 +69,9 @@ class CodingPaper(Frame):
                     widget.configure(bg="red")
                     correct_widget.configure(bg="lightgreen")
                     w_p.iid.configure(bg="red")
+                for radiobutton_p, radiobutton_a in zip(w_p.units.values(), w_a.units.values()):
+                    radiobutton_p.configure(state="disabled")
+                    radiobutton_a.configure(state="disabled")
 
 
 if __name__ == '__main__':
