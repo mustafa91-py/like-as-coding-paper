@@ -31,6 +31,7 @@ class Units(Frame):
                           padx=10,
                           command=self.high_light_button,
                           variable=self.var)
+        self.__pack = {"side": "left", "fill": "x", "expand": 1}
 
         self.a = Radiobutton(self, text="A", value="A", **self.__cnf)
         self.b = Radiobutton(self, text="B", value="B", **self.__cnf)
@@ -38,20 +39,13 @@ class Units(Frame):
         self.d = Radiobutton(self, text="D", value="D", **self.__cnf)
         self.e = Radiobutton(self, text="E", value="E", **self.__cnf)
 
-        self.a.bind("<Button-3>", lambda event: self.deselect_(self.a))
-        self.b.bind("<Button-3>", lambda event: self.deselect_(self.b))
-        self.c.bind("<Button-3>", lambda event: self.deselect_(self.c))
-        self.d.bind("<Button-3>", lambda event: self.deselect_(self.d))
-        self.e.bind("<Button-3>", lambda event: self.deselect_(self.e))
-
         self.units = {"A": self.a, "B": self.b, "C": self.c, "D": self.d, "E": self.e}
-        __pack = {"side": "left", "fill": "x", "expand": 1}
-        self.__id.pack(**__pack)
-        self.a.pack(**__pack)
-        self.b.pack(**__pack)
-        self.c.pack(**__pack)
-        self.d.pack(**__pack)
-        self.e.pack(**__pack)
+
+        self.__id.pack(**self.__pack)
+
+        for __rb in self.units.values():
+            __rb.bind("<Button-3>", lambda event: self.deselect_(__rb))
+            __rb.pack(**self.__pack)
 
     @property
     def id(self):
