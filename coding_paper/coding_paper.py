@@ -5,7 +5,7 @@ from tkinter import *
 from tkinter.messagebox import showwarning
 from tkinter import font
 from misc.save_dict import SaveDict
-from container import Container, asdict
+from .container import Container, asdict
 
 
 class CodingPaper(Frame):
