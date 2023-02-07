@@ -14,9 +14,8 @@ class CodingPaper(Frame):
         self.after_id = None
         if cp_config.get("amount", 0) >= 250:
             cp_config["amount"] = 250
-            showwarning("max value fixed oto",f"amount = 250 ,maximum value of 250 can be given")
+            showwarning("max value fixed oto", f"amount = 250 ,maximum value of 250 can be given")
         self.file_read = cp_config.get("file_read")
-        # dosya okuma daki hatalar olmaması için dosya çekme ve insert etme için metodlar veya sınıflar oluşturulacak
         if not self.file_read:
             cp_config.pop("file_read")
             self.container = Container(**cp_config)

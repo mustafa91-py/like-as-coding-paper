@@ -1,5 +1,8 @@
+import os.path
 from tkinter import *
 from tkinter import font
+from features.screen_shot import ScreenShot
+from temp_process import Process
 
 
 class ScrollFrame(Frame):
@@ -38,7 +41,7 @@ class Units(Frame):
         self.var = StringVar()  # common variable of widgets
         self.iid = self.__id = Label(self, text="None", name="id", font=font.Font(family="Times ", size=16))
         # number(id) of widgets
-
+        self.save_id = None
         self.__cnf = dict(activebackground="green",
                           highlightbackground="red",
                           font=font.Font(family="Times", size=12),
@@ -66,6 +69,8 @@ class Units(Frame):
             __rb.bind("<Button-3>", lambda event: self.deselect_(__rb))
             __rb.pack(**self.__pack)
         # widgets bind func and packed
+        self.iid.bind("<Button-1>", lambda e: print(e.widget))
+        self.iid.bind("<Button-3>", self.ss_shot)
 
     @property
     def id(self):
@@ -106,6 +111,12 @@ class Units(Frame):
         if not self.var.get():
             for k, v in self.units.items():
                 v["bg"] = "white"
+
+    def ss_shot(self, event):
+        # if self.save_id:
+        widget = event.widget["text"]
+        ss = ScreenShot()
+        ss.ss_name = os.path.join(os.getcwd(), "../garbage", f"id_{widget}.png")
 
 
 class StackUnitsForAnswer(Toplevel):
