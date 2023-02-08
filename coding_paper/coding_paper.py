@@ -54,7 +54,6 @@ class CodingPaper(Frame):
                 elif w_p.var.get() == "":
                     correct_widget.configure(bg="lightgreen")
                     w_p.iid.configure(bg="gray")
-
                 else:
                     widget.configure(bg="red")
                     correct_widget.configure(bg="lightgreen")
@@ -76,7 +75,6 @@ class CodingPaperOpen(Frame):
         self.stack_units.pack(fill="both",expand=1)
         self.stack_units.create_stack()
         self.load()
-        self.groove()
 
     def load(self):
         for iid, uni in self.stack_units.units.items():
@@ -84,9 +82,6 @@ class CodingPaperOpen(Frame):
         for iid, uni in self.stack_units.answer_top_level.units.items():
             uni.var.set(self.container.answer_key.get(str(iid)))
         self.stain()
-
-    def groove(self):
-        pass
 
     def stain(self):
         from units.units import Units
@@ -103,7 +98,6 @@ class CodingPaperOpen(Frame):
                 elif w_p.var.get() == "":
                     correct_widget.configure(bg="lightgreen")
                     w_p.iid.configure(bg="gray")
-
                 else:
                     widget.configure(bg="red")
                     correct_widget.configure(bg="lightgreen")
