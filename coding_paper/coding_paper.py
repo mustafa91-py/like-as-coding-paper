@@ -24,7 +24,7 @@ class CodingPaper(Frame):
         #     self.container = Container(**cp_config)
         self.container = Container(**cp_config)
         self.save_dict = SaveDict(path_=cp_config.get("file_path"))
-
+        print(f"{type(self)} {self.container}")
         # if self.file_read:
         #     self.container = Container(**self.save_dict.load())
         self.stack_units = StackUnits(self, self.container.amount, self.container.lesson)
@@ -79,14 +79,17 @@ class CodingPaper(Frame):
                     radiobutton_a.configure(state="disabled")
 
 
-class CodingPaperOpen(CodingPaper):
-    def __init__(self, parent, cp_config: dict = None, *args, **kwargs):
-        super(CodingPaperOpen, self).__init__(parent, cp_config, *args, **kwargs)
-        print(self.save_dict.space)
-        self.file_read = cp_config.get("file_read")
-        # print(self.save_dict.space)
-        self.container = Container(**self.save_dict.load())
-        # print(self.container)
+class CodingPaperOpen(Frame):
+    def __init__(self, parent, fpath=None, *args, **kwargs):
+        super(CodingPaperOpen, self).__init__(parent, *args, **kwargs)
+        # Frame.__init__(self, parent, *args, **kwargs)
+        self.fp = fpath
+        self.save_dict = SaveDict(path_=self.fp)
+        self.container = Container(**self.save_dict.space)
+        __ = {k: v for k, v in self.save_dict.space.items() if k in ["amount", "title"]}
+        self.stack_units = StackUnits(self, **__)
+        self.stack_units.pack()
+        self.stack_units.create_stack()
         self.load()
         self.groove()
 
@@ -95,14 +98,34 @@ class CodingPaperOpen(CodingPaper):
             uni.var.set(self.container.paper_key.get(str(iid)))
         for iid, uni in self.stack_units.answer_top_level.units.items():
             uni.var.set(self.container.answer_key.get(str(iid)))
-        # self.stain()
-
-    def stain(self):
-        super().stain()
+        self.stain()
 
     def groove(self):
-        super().groove()
-        # print(type(self))
+        pass
+
+    def stain(self):
+        from units.units import Units
+        if all(self.container.answer_key.values()):
+            for paper, answer in zip(self.stack_units.units.items(), self.stack_units.answer_top_level.units.items()):
+                # i_p, i_a = paper[0], answer[0]
+                w_p: Units = paper[1]
+                w_a: Units = answer[1]
+                widget = w_p.units.get(w_p.var.get())
+                correct_widget = w_p.units.get(w_a.var.get())
+                if w_p.var.get() == w_a.var.get():
+                    widget.configure(bg="green")
+                    w_p.iid.configure(bg="green")
+                elif w_p.var.get() == "":
+                    correct_widget.configure(bg="lightgreen")
+                    w_p.iid.configure(bg="gray")
+
+                else:
+                    widget.configure(bg="red")
+                    correct_widget.configure(bg="lightgreen")
+                    w_p.iid.configure(bg="red")
+                for radiobutton_p, radiobutton_a in zip(w_p.units.values(), w_a.units.values()):
+                    radiobutton_p.configure(state="disabled")
+                    radiobutton_a.configure(state="disabled")
 
 
 if __name__ == '__main__':
@@ -116,7 +139,7 @@ if __name__ == '__main__':
 
     # part input------------------------------------------------------
     fp = os.path.join(os.getcwd(), "../garbage", f"{title}.json")
-    cp_confg = dict(lesson="physic".upper(), file_path=fp, amount=5, title=title)
+    cp_confg = dict(lesson="physic".upper(), file_path=fp, amount=9, title=title)
     # part input------------------------------------------------------
     coding_paper = CodingPaper(root, cp_config=cp_confg)
 

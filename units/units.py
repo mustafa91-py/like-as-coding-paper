@@ -189,16 +189,16 @@ class StackUnits(Frame):
 
     """
 
-    def __init__(self, parent, amount: int = None, lesson: str = "test", *args, **kwargs):
+    def __init__(self, parent, amount: int = None, title: str = "test", *args, **kwargs):
         super(StackUnits, self).__init__(parent, *args, **kwargs)
         self.amount = amount
-        self.lesson = lesson
+        self.lesson = title
         self.units = {}
 
         self.top_frame = LabelFrame(self)
         self.top_frame.pack(side="top", fill="x")
 
-        self.test_name_label = Label(self.top_frame, text=f"{lesson}")
+        self.test_name_label = Label(self.top_frame, text=f"{title}")
         self.test_name_label.pack(side="top", fill="x")
 
         self.__scroll_frame = ScrollFrame(self)
