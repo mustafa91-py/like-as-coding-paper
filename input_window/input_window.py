@@ -29,9 +29,11 @@ class InputFrame(Frame):
 class Window(Tk):
     def __init__(self):
         super(Window, self).__init__()
-        self.protocol("WM_DELETE_WINDOW", self.get)
+        self.protocol("WM_DELETE_WINDOW", exit)
         self.top_frame = InputFrame(self)
         self.top_frame.pack()
+        self.save = Button(self, text="save", command=self.get)
+        self.save.pack()
 
     def get(self):
         out = dict(lesson=self.top_frame.lesson_cbox.get(),
