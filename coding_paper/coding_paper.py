@@ -73,7 +73,7 @@ class CodingPaperOpen(Frame):
         self.container = Container(**self.save_dict.space)
         __ = {k: v for k, v in self.save_dict.space.items() if k in ["amount", "title"]}
         self.stack_units = StackUnits(self, **__)
-        self.stack_units.pack()
+        self.stack_units.pack(fill="both",expand=1)
         self.stack_units.create_stack()
         self.load()
         self.groove()
