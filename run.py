@@ -1,6 +1,7 @@
 from coding_paper.coding_paper import CodingPaper,asdict
 from input_window.input_window import Window, Stage
 from tkinter import *
+import folder_operations as fop
 import os
 
 if __name__ == '__main__':
@@ -10,9 +11,10 @@ if __name__ == '__main__':
     config: dict = Stage.config
     config["amount"] = 5
     config["file_read"] = False
-    fp = os.path.join(os.getcwd(), "garbage", f"{config.get('title')}.lacp")
+    file_name = f"{config.get('lesson')}_{config.get('subject')}_{config.get('title')}"
+    fp = os.path.join(fop.FOLDER_PATH,file_name)
     config["file_path"] = fp
-
+    print(config)
 
     def save_exit():
         if not cp.file_read:
