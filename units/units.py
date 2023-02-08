@@ -2,7 +2,6 @@ import os.path
 from tkinter import *
 from tkinter import font
 from features.screen_shot import ScreenShot
-from temp_process import Process
 
 
 class ScrollFrame(Frame):
@@ -64,9 +63,8 @@ class Units(Frame):
         # dictionary of widgets
 
         self.__id.pack(**self.__pack)
-
         for __rb in self.units.values():
-            __rb.bind("<Button-3>", lambda event: self.deselect_(__rb))
+            __rb.bind("<Button-3>", lambda event: self.deselect_(event.widget))
             __rb.pack(**self.__pack)
         # widgets bind func and packed
         self.iid.bind("<Button-1>", lambda e: print(e.widget))

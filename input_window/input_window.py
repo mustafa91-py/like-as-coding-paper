@@ -3,7 +3,7 @@ from tkinter import ttk
 
 
 class Stage:
-    date: dict = None
+    config: dict = None
 
 
 class InputFrame(Frame):
@@ -39,7 +39,7 @@ class Window(Tk):
         out = dict(lesson=self.top_frame.lesson_cbox.get(),
                    subject=self.top_frame.subject_cbox.get(),
                    title=self.top_frame.title_entry_var.get())
-        Stage.date = out
+        Stage.config = out
         self.destroy()
 
 
@@ -49,8 +49,8 @@ if __name__ == '__main__':
 
     root = Window()
     root.mainloop()
-    print(Stage.date)
-    config: dict = Stage.date
+    print(Stage.config)
+    config: dict = Stage.config
     config["amount"] = 20
     config["file_read"] = False
     fp = os.path.join(os.getcwd(), "../garbage", f"{config.get('title')}.json")

@@ -3,7 +3,6 @@ import os.path
 from units.units import StackUnits
 from tkinter import *
 from tkinter.messagebox import showwarning
-from tkinter import font
 from misc.save_dict import SaveDict
 
 if __name__ == '__main__':
@@ -88,11 +87,11 @@ if __name__ == '__main__':
 
     root = Tk()
 
-    title = "lokman"
+    title = "tessssss"
 
     # part input------------------------------------------------------
     fp = os.path.join(os.getcwd(), "../garbage", f"{title}.json")
-    cp_confg = dict(lesson="physic".upper(), file_path=fp, amount=10, title=title, file_read=True)
+    cp_confg = dict(lesson="physic".upper(), file_path=fp, amount=10, title=title, file_read=False)
     # part input------------------------------------------------------
     coding_paper = CodingPaper(root, cp_config=cp_confg)
 
