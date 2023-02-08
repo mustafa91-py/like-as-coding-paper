@@ -189,7 +189,7 @@ class StackUnits(Frame):
 
     """
 
-    def __init__(self, parent, amount: int = 20, lesson: str = "test", *args, **kwargs):
+    def __init__(self, parent, amount: int = None, lesson: str = "test", *args, **kwargs):
         super(StackUnits, self).__init__(parent, *args, **kwargs)
         self.amount = amount
         self.lesson = lesson

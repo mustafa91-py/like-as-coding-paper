@@ -10,16 +10,14 @@ if __name__ == '__main__':
     print(Stage.config)
     config: dict = Stage.config
     config["amount"] = 5
-    config["file_read"] = False
-    file_name = f"{config.get('lesson')}_{config.get('subject')}_{config.get('title')}"
+    file_name = f"{config.get('lesson')}_{config.get('subject')}_{config.get('title')}.json"
     fp = os.path.join(fop.FOLDER_PATH,file_name)
     config["file_path"] = fp
     print(config)
 
     def save_exit():
-        if not cp.file_read:
-            cp.save_dict.space = asdict(cp.container)
-            cp.save_dict.save()
+        cp.save_dict.space = asdict(cp.container)
+        cp.save_dict.save()
         root_2.destroy()
 
 

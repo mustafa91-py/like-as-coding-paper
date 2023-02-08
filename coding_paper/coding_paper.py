@@ -18,19 +18,18 @@ class CodingPaper(Frame):
         if cp_config.get("amount", 0) >= 250:
             cp_config["amount"] = 250
             showwarning("max value fixed oto", f"amount = 250 ,maximum value of 250 can be given")
-        self.file_read = cp_config.get("file_read")
-        if not self.file_read:
-            cp_config.pop("file_read")
-            self.container = Container(**cp_config)
-
+        # self.file_read = cp_config.get("file_read")
+        # if not self.file_read:
+        #     cp_config.pop("file_read")
+        #     self.container = Container(**cp_config)
+        self.container = Container(**cp_config)
         self.save_dict = SaveDict(path_=cp_config.get("file_path"))
 
-        if self.file_read:
-            self.container = Container(**self.save_dict.load())
+        # if self.file_read:
+        #     self.container = Container(**self.save_dict.load())
         self.stack_units = StackUnits(self, self.container.amount, self.container.lesson)
         self.stack_units.pack(fill="both", expand=1)
         self.stack_units.create_stack()
-        self.load()
         self.groove()
 
     def groove(self):
@@ -47,13 +46,13 @@ class CodingPaper(Frame):
         data_ = {k: v.var.get() for k, v in self.stack_units.answer_top_level.units.items()}
         return data_
 
-    def load(self):
-        if self.file_read:
-            for iid, uni in self.stack_units.units.items():
-                uni.var.set(self.container.paper_key.get(str(iid)))
-            for iid, uni in self.stack_units.answer_top_level.units.items():
-                uni.var.set(self.container.answer_key.get(str(iid)))
-            self.stain()
+    # def load(self):
+    #     if self.file_read:
+    #         for iid, uni in self.stack_units.units.items():
+    #             uni.var.set(self.container.paper_key.get(str(iid)))
+    #         for iid, uni in self.stack_units.answer_top_level.units.items():
+    #             uni.var.set(self.container.answer_key.get(str(iid)))
+    #         self.stain()
 
     def stain(self):
         from units.units import Units
@@ -80,6 +79,32 @@ class CodingPaper(Frame):
                     radiobutton_a.configure(state="disabled")
 
 
+class CodingPaperOpen(CodingPaper):
+    def __init__(self, parent, cp_config: dict = None, *args, **kwargs):
+        super(CodingPaperOpen, self).__init__(parent, cp_config, *args, **kwargs)
+        print(self.save_dict.space)
+        self.file_read = cp_config.get("file_read")
+        # print(self.save_dict.space)
+        self.container = Container(**self.save_dict.load())
+        # print(self.container)
+        self.load()
+        self.groove()
+
+    def load(self):
+        for iid, uni in self.stack_units.units.items():
+            uni.var.set(self.container.paper_key.get(str(iid)))
+        for iid, uni in self.stack_units.answer_top_level.units.items():
+            uni.var.set(self.container.answer_key.get(str(iid)))
+        # self.stain()
+
+    def stain(self):
+        super().stain()
+
+    def groove(self):
+        super().groove()
+        # print(type(self))
+
+
 if __name__ == '__main__':
     garbage_ = os.path.join(os.getcwd(), "../garbage")
     if not os.path.exists(garbage_):
@@ -87,11 +112,11 @@ if __name__ == '__main__':
 
     root = Tk()
 
-    title = "tessssss"
+    title = "test"
 
     # part input------------------------------------------------------
     fp = os.path.join(os.getcwd(), "../garbage", f"{title}.json")
-    cp_confg = dict(lesson="physic".upper(), file_path=fp, amount=10, title=title, file_read=False)
+    cp_confg = dict(lesson="physic".upper(), file_path=fp, amount=5, title=title)
     # part input------------------------------------------------------
     coding_paper = CodingPaper(root, cp_config=cp_confg)
 
@@ -99,9 +124,8 @@ if __name__ == '__main__':
 
 
     def save_exit():
-        if not coding_paper.file_read:
-            coding_paper.save_dict.space = asdict(coding_paper.container)
-            coding_paper.save_dict.save()
+        coding_paper.save_dict.space = asdict(coding_paper.container)
+        coding_paper.save_dict.save()
         root.destroy()
 
 
