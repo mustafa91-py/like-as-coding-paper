@@ -18,15 +18,8 @@ class CodingPaper(Frame):
         if cp_config.get("amount", 0) >= 250:
             cp_config["amount"] = 250
             showwarning("max value fixed oto", f"amount = 250 ,maximum value of 250 can be given")
-        # self.file_read = cp_config.get("file_read")
-        # if not self.file_read:
-        #     cp_config.pop("file_read")
-        #     self.container = Container(**cp_config)
         self.container = Container(**cp_config)
         self.save_dict = SaveDict(path_=cp_config.get("file_path"))
-        print(f"{type(self)} {self.container}")
-        # if self.file_read:
-        #     self.container = Container(**self.save_dict.load())
         self.stack_units = StackUnits(self, self.container.amount, self.container.lesson)
         self.stack_units.pack(fill="both", expand=1)
         self.stack_units.create_stack()
@@ -45,14 +38,6 @@ class CodingPaper(Frame):
     def get_data_to_answer_stack_units(self):
         data_ = {k: v.var.get() for k, v in self.stack_units.answer_top_level.units.items()}
         return data_
-
-    # def load(self):
-    #     if self.file_read:
-    #         for iid, uni in self.stack_units.units.items():
-    #             uni.var.set(self.container.paper_key.get(str(iid)))
-    #         for iid, uni in self.stack_units.answer_top_level.units.items():
-    #             uni.var.set(self.container.answer_key.get(str(iid)))
-    #         self.stain()
 
     def stain(self):
         from units.units import Units
