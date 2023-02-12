@@ -2,6 +2,7 @@ import os.path
 from tkinter import *
 from tkinter import font
 from features.screen_shot import ScreenShot
+import folder_operations as fop
 
 
 class ScrollFrame(Frame):
@@ -110,8 +111,10 @@ class Units(Frame):
             for k, v in self.units.items():
                 v["bg"] = "white"
 
+
     def ss_shot(self, event):
         # if self.save_id:
+        print(type(self).__name__, self.save_id, )
         widget = event.widget["text"]
         ss = ScreenShot()
         ss.ss_name = os.path.join(os.getcwd(), "../garbage", f"id_{widget}.png")
@@ -194,7 +197,7 @@ class StackUnits(Frame):
         self.amount = amount
         self.lesson = title
         self.units = {}
-
+        self.save_id = None
         self.top_frame = LabelFrame(self)
         self.top_frame.pack(side="top", fill="x")
 
@@ -242,6 +245,7 @@ class StackUnits(Frame):
         for i in range(1, self.amount + 1):
             self.units[i] = Units(self.__scroll_frame.child_frame)
             self.units[i].id = str(i).zfill(3)
+            self.units[i].save_id = self.save_id
             self.units[i].pack()
 
     def open_answers_top_level(self) -> None:
