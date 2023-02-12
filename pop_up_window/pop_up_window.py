@@ -1,4 +1,5 @@
 from tkinter import *
+from .imageforwidget import ImageForTkinter
 
 
 class TopFrame(Frame):
