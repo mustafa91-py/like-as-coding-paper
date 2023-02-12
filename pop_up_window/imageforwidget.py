@@ -28,7 +28,10 @@ class ImageForTkinter:
         widget.image = img
 
     def paste_image(self, fp=None, size=None, side="ne"):
-        self.second_image = Image.open(fp)
+        if isinstance(fp, PIL.Image.Image):
+            self.second_image = fp
+        else:
+            self.second_image = Image.open(fp)
 
         if size is not None:
             self.second_image = self.second_image.copy().resize(size)

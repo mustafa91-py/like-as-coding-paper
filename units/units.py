@@ -37,6 +37,7 @@ class Units(Frame):
         super(Units, self).__init__(parent, *args, **kwargs)
         self.var = StringVar()  # common variable of widgets
         self.iid = self.__id = Label(self, text="None", name="id", font=font.Font(family="Times ", size=16))
+        self.__id.bind("<Enter>", self.is_exists_image_file)
         # number(id) of widgets
         self.save_id = None
         self.__cnf = dict(activebackground="green",
@@ -109,6 +110,8 @@ class Units(Frame):
                 v["bg"] = "white"
 
     def revamp_folder(self):
+        if not self.save_id:
+            return
         split = os.path.split(self.save_id)
         f = split[0]
         name = os.path.splitext(split[1])
@@ -117,8 +120,19 @@ class Units(Frame):
             os.mkdir(will_create)
         return will_create
 
+    def is_exists_image_file(self, event):
+        if not self.save_id:
+            return
+        widget = event.widget
+        file = os.path.join(self.revamp_folder(), f"id_{widget['text']}.png")
+        if os.path.exists(file):
+            widget.config(cursor="hand2")
+        else:
+            widget.config(cursor="")
+
     def ss_shot(self, event):
-        # if self.save_id:
+        if not self.save_id:
+            return
         print(type(self).__name__, self.save_id, )
         widget = event.widget["text"]
         ss = ScreenShot()

@@ -1,8 +1,11 @@
 from tkinter import *
 
 import PIL.Image
-
+import os
 from imageforwidget import ImageForTkinter
+
+letters_path = os.path.join(os.getcwd(), "../letters")
+letters = {k: ImageForTkinter(fp=os.path.join(letters_path, k)) for k in os.listdir(letters_path)}
 
 
 class TopFrame(Frame):
@@ -19,16 +22,11 @@ class TopFrame(Frame):
         else:
             image = ImageForTkinter(fp)
         image.resize(360, 360)
-        image.set_widget_image(self.image_label)
         self.images_temp[fp] = image.image
-        print(self.images_temp)
-        print(type(image.image))
-        print(isinstance(image.image,PIL.Image.Image))
-        image2 = ImageForTkinter.load(self.images_temp.get(fp))
-        # image2.image = self.images_temp.get(fp)
-        image2.resize(500,500)
-        image2.set_widget_image(self.image_label)
-        print(image2.image)
+        lett:ImageForTkinter = letters.get("greenA.png")
+        lett.resize(48,48)
+        image.paste_image(lett.image)
+        image.set_widget_image(self.image_label)
 
 
 class PopUpWindow(Toplevel):
