@@ -68,7 +68,7 @@ class Units(Frame):
             __rb.bind("<Button-3>", lambda event: self.deselect_(event.widget))
             __rb.pack(**self.__pack)
         # widgets bind func and packed
-        self.iid.bind("<Button-1>", lambda e: print(e.widget))
+        self.iid.bind("<Button-1>", lambda e: print())
         self.iid.bind("<Button-3>", self.ss_shot)
 
     @property
@@ -111,13 +111,21 @@ class Units(Frame):
             for k, v in self.units.items():
                 v["bg"] = "white"
 
+    def revamp_folder(self):
+        split = os.path.split(self.save_id)
+        f = split[0]
+        name = os.path.splitext(split[1])
+        will_create = os.path.join(fop.SS_SHOT, name[0])
+        if not os.path.exists(will_create):
+            os.mkdir(will_create)
+        return will_create
 
     def ss_shot(self, event):
         # if self.save_id:
         print(type(self).__name__, self.save_id, )
         widget = event.widget["text"]
         ss = ScreenShot()
-        ss.ss_name = os.path.join(os.getcwd(), "../garbage", f"id_{widget}.png")
+        ss.ss_name = os.path.join(self.revamp_folder(), f"id_{widget}.png")
 
 
 class StackUnitsForAnswer(Toplevel):

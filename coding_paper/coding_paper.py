@@ -1,5 +1,6 @@
 import os.path
 
+import folder_operations
 from units.units import StackUnits
 from tkinter import *
 from tkinter.messagebox import showwarning
@@ -78,6 +79,7 @@ class CodingPaperOpen(Frame):
         self.stack_units.save_id = self.container.file_path
         self.stack_units.create_stack()
         self.load()
+
     def load(self):
         for iid, uni in self.stack_units.units.items():
             uni.var.set(self.container.paper_key.get(str(iid)))
@@ -119,7 +121,7 @@ if __name__ == '__main__':
     title = "test"
 
     # part input------------------------------------------------------
-    fp = os.path.join(os.getcwd(), "../garbage", f"{title}.json")
+    fp = os.path.join(folder_operations.FOLDER_PATH, f"{title}.json")
     cp_confg = dict(lesson="physic".upper(), file_path=fp, amount=5, title=title)
     # part input------------------------------------------------------
     coding_paper = CodingPaper(root, cp_config=cp_confg)
