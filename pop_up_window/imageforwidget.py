@@ -1,16 +1,26 @@
 import os.path
 from tkinter import *
+
+import PIL.Image
 from PIL import ImageTk, Image
 
 
 class ImageForTkinter:
     def __init__(self, fp=None):
-        self.image: Image.open = Image.open(fp=fp)
-        self.wild_image = self.image.copy()
+        if isinstance(fp, PIL.Image.Image):
+            self.image = fp
+        else:
+            self.image: Image.open = Image.open(fp=fp)
+
+        # self.wild_image = self.image.copy()
         self.second_image = None
 
     def resize(self, w, h):
         self.image = self.image.resize((w, h))
+
+    @classmethod
+    def load(cls, image):
+        return cls(fp=image)
 
     def set_widget_image(self, widget: Widget):
         img = ImageTk.PhotoImage(self.image)
