@@ -29,9 +29,6 @@ class Units(Frame):
                    self.__id  self.a self.b  self.c  self.d  self.e
                       ||        ||      ||      ||      ||     ||
         for e.x =    001        A       B       C       D      E   = class <Units>(1) overview
-                     002        A       B       C       D      E   = class <Units>(2) overview
-                     .          .       .       .       .      .        .
-                     .          .       .       .       .      .        .
 
         :param parent:
         :param args:
