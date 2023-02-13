@@ -5,7 +5,7 @@ import os
 
 @dataclass
 class Container:
-    file_path: os.path.abspath = None
+    file_path: os.path.abspath
     paper_key: dict = None
     answer_key: dict = None
     amount: int = field(default=20)  # number of questions

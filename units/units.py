@@ -24,7 +24,7 @@ class ScrollFrame(Frame):
 
 
 class Units(Frame):
-    def __init__(self, parent, file, *args, **kwargs):
+    def __init__(self, parent, file_path, *args, **kwargs):
         """
                    self.__id  self.a self.b  self.c  self.d  self.e
                       ||        ||      ||      ||      ||     ||
@@ -35,12 +35,11 @@ class Units(Frame):
         :param kwargs:
         """
         super(Units, self).__init__(parent, *args, **kwargs)
+        self.file_path = file_path
         self.var = StringVar()  # common variable of widgets
-        self.file = file
         self.iid = self.__id = Label(self, text="None", name="id", font=font.Font(family="Times ", size=16))
         self.__id.bind("<Enter>", self.is_exists_image_file)
         # number(id) of widgets
-        self.save_id = None
         self.__cnf = dict(activebackground="green",
                           highlightbackground="red",
                           font=font.Font(family="Times", size=12),
@@ -67,7 +66,7 @@ class Units(Frame):
             __rb.bind("<Button-3>", lambda event: self.deselect_(event.widget))
             __rb.pack(**self.__pack)
         # widgets bind func and packed
-        self.iid.bind("<Button-1>", lambda e: print())
+        self.iid.bind("<Button-1>", lambda e: print(self.revamp_folder(), e.widget))
         self.iid.bind("<Button-3>", self.ss_shot)
 
     @property
@@ -111,9 +110,9 @@ class Units(Frame):
                 v["bg"] = "white"
 
     def revamp_folder(self):
-        if not self.save_id:
+        if not self.file_path:
             return
-        split = os.path.split(self.save_id)
+        split = os.path.split(self.file_path)
         f = split[0]
         name = os.path.splitext(split[1])
         will_create = os.path.join(fop.SS_SHOT, name[0])
@@ -122,7 +121,7 @@ class Units(Frame):
         return will_create
 
     def is_exists_image_file(self, event):
-        if not self.save_id:
+        if not self.file_path:
             return
         widget = event.widget
         file = os.path.join(self.revamp_folder(), f"id_{widget['text']}.png")
@@ -132,9 +131,10 @@ class Units(Frame):
             widget.config(cursor="")
 
     def ss_shot(self, event):
-        if not self.save_id:
+        print(self.file_path)
+        if not self.file_path:
             return
-        print(type(self).__name__, self.save_id, )
+        print(type(self).__name__, self.file_path, )
         widget = event.widget["text"]
         ss = ScreenShot()
         ss.ss_name = os.path.join(self.revamp_folder(), f"id_{widget}.png")
@@ -219,7 +219,6 @@ class StackUnits(Frame):
         self.file_path = file_path
         self.lesson = title
         self.units = {}
-        self.save_id = None
         self.top_frame = LabelFrame(self)
         self.top_frame.pack(side="top", fill="x")
 
@@ -267,7 +266,6 @@ class StackUnits(Frame):
         for i in range(1, self.amount + 1):
             self.units[i] = Units(self.__scroll_frame.child_frame, self.file_path)
             self.units[i].id = str(i).zfill(3)
-            self.units[i].save_id = self.save_id
             self.units[i].pack()
 
     def open_answers_top_level(self) -> None:

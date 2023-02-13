@@ -33,7 +33,6 @@ class CodingPaper(Frame):
 
         self.groove()
         self.stack_units.save_id = self.container.file_path
-        print(self.stack_units.save_id)
 
     def groove(self):
         self.container.paper_key = self.get_data_to_stack_units()
@@ -74,17 +73,19 @@ class CodingPaper(Frame):
 
 
 class CodingPaperOpen(Frame):
-    def __init__(self, parent, file_path=None, *args, **kwargs):
+    def __init__(self, parent, file_path, *args, **kwargs):
         super(CodingPaperOpen, self).__init__(parent, *args, **kwargs)
         # Frame.__init__(self, parent, *args, **kwargs)
         self.file_path = file_path
         self.save_dict = SaveDict(path_=self.file_path)
         self.container = Container(**self.save_dict.space)
+
         __ = {k: v for k, v in self.save_dict.space.items() if k in ["amount", "title"]}
         self.stack_units = StackUnits(self, file_path=self.file_path, **__)
         self.stack_units.pack(fill="both", expand=1)
         self.stack_units.save_id = self.container.file_path
         self.stack_units.create_stack()
+
         self.load()
 
     def load(self):
@@ -129,7 +130,7 @@ if __name__ == '__main__':
 
     # part input------------------------------------------------------
     fp = os.path.join(folder_operations.FOLDER_PATH, f"{title}.json")
-    cp_confg = dict(lesson="physic".upper(), file_path=fp, amount=5, title=title)
+    cp_confg = dict(lesson="physic".upper(), file_path=fp, amount=6, title=title)
     # part input------------------------------------------------------
     coding_paper = CodingPaper(root, cp_config=cp_confg)
 
