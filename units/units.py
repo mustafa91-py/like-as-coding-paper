@@ -24,7 +24,7 @@ class ScrollFrame(Frame):
 
 
 class Units(Frame):
-    def __init__(self, parent, *args, **kwargs):
+    def __init__(self, parent, file, *args, **kwargs):
         """
                    self.__id  self.a self.b  self.c  self.d  self.e
                       ||        ||      ||      ||      ||     ||
@@ -36,6 +36,7 @@ class Units(Frame):
         """
         super(Units, self).__init__(parent, *args, **kwargs)
         self.var = StringVar()  # common variable of widgets
+        self.file = file
         self.iid = self.__id = Label(self, text="None", name="id", font=font.Font(family="Times ", size=16))
         self.__id.bind("<Enter>", self.is_exists_image_file)
         # number(id) of widgets
@@ -150,10 +151,11 @@ class StackUnitsForAnswer(Toplevel):
 
     """
 
-    def __init__(self, amount: int, *args, **kwargs):
+    def __init__(self, amount: int, file_path, *args, **kwargs):
         super(StackUnitsForAnswer, self).__init__(*args, **kwargs)
         self.protocol("WM_DELETE_WINDOW", lambda: self.state("withdraw"))
         self.state("withdraw")
+        self.file_path = file_path
         self.units = {}  # storing the created class
         self.amount = amount  # number of units class or number of questions
 
@@ -176,7 +178,7 @@ class StackUnitsForAnswer(Toplevel):
         :return: None
         """
         for i in range(1, self.amount + 1):
-            self.units[i] = Units(self.__scroll_frame.child_frame)
+            self.units[i] = Units(self.__scroll_frame.child_frame, self.file_path)
             self.units[i].id = str(i).zfill(3)
             self.units[i].pack()
 
@@ -211,9 +213,10 @@ class StackUnits(Frame):
 
     """
 
-    def __init__(self, parent, amount: int = None, title: str = "test", *args, **kwargs):
+    def __init__(self, parent, amount: int = None, file_path=None, title: str = "test", *args, **kwargs):
         super(StackUnits, self).__init__(parent, *args, **kwargs)
         self.amount = amount
+        self.file_path = file_path
         self.lesson = title
         self.units = {}
         self.save_id = None
@@ -229,7 +232,7 @@ class StackUnits(Frame):
         self.bottom_frame = LabelFrame(self, text="bottom frame")
         self.bottom_frame.pack(side="bottom", fill="x")
 
-        self.answer_top_level = StackUnitsForAnswer(amount)
+        self.answer_top_level = StackUnitsForAnswer(amount, self.file_path)
         self.answer_top_level.amount = self.amount
         self.answer_keys_open_button = Button(self.bottom_frame, text="answer key",
                                               command=self.open_answers_top_level)
@@ -262,7 +265,7 @@ class StackUnits(Frame):
         :return: None
         """
         for i in range(1, self.amount + 1):
-            self.units[i] = Units(self.__scroll_frame.child_frame)
+            self.units[i] = Units(self.__scroll_frame.child_frame, self.file_path)
             self.units[i].id = str(i).zfill(3)
             self.units[i].save_id = self.save_id
             self.units[i].pack()

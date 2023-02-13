@@ -16,14 +16,21 @@ class CodingPaper(Frame):
     def __init__(self, parent, cp_config: dict = None, *args, **kwargs):
         super(CodingPaper, self).__init__(parent, *args, **kwargs)
         self.after_id = None
+
         if cp_config.get("amount", 0) >= 250:
             cp_config["amount"] = 250
             showwarning("max value fixed oto", f"amount = 250 ,maximum value of 250 can be given")
+
         self.container = Container(**cp_config)
         self.save_dict = SaveDict(path_=cp_config.get("file_path"))
-        self.stack_units = StackUnits(self, self.container.amount, self.container.lesson)
+        self.file_path = self.container.file_path
+
+        self.stack_units = StackUnits(self, self.container.amount,
+                                      file_path=self.file_path,
+                                      title=self.container.lesson)
         self.stack_units.pack(fill="both", expand=1)
         self.stack_units.create_stack()
+
         self.groove()
         self.stack_units.save_id = self.container.file_path
         print(self.stack_units.save_id)
@@ -67,14 +74,14 @@ class CodingPaper(Frame):
 
 
 class CodingPaperOpen(Frame):
-    def __init__(self, parent, fpath=None, *args, **kwargs):
+    def __init__(self, parent, file_path=None, *args, **kwargs):
         super(CodingPaperOpen, self).__init__(parent, *args, **kwargs)
         # Frame.__init__(self, parent, *args, **kwargs)
-        self.fp = fpath
-        self.save_dict = SaveDict(path_=self.fp)
+        self.file_path = file_path
+        self.save_dict = SaveDict(path_=self.file_path)
         self.container = Container(**self.save_dict.space)
         __ = {k: v for k, v in self.save_dict.space.items() if k in ["amount", "title"]}
-        self.stack_units = StackUnits(self, **__)
+        self.stack_units = StackUnits(self, file_path=self.file_path, **__)
         self.stack_units.pack(fill="both", expand=1)
         self.stack_units.save_id = self.container.file_path
         self.stack_units.create_stack()
