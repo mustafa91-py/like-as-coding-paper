@@ -30,7 +30,7 @@ class Container:
 
 
 if __name__ == '__main__':
-    c = Container()
+    c = Container(file_path=None)
     c.amount = 20
     ttt = "ABCDE "
     c.answer_key = {k: random.choice("ABCDE") for k, v in enumerate(range(5))}
