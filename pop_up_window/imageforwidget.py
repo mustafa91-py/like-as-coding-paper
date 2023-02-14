@@ -14,6 +14,7 @@ class ImageForTkinter:
 
         # self.wild_image = self.image.copy()
         self.second_image = None
+        self.widget_ = None
 
     def resize(self, w, h):
         self.image = self.image.resize((w, h))
@@ -22,10 +23,19 @@ class ImageForTkinter:
     def load(cls, image):
         return cls(fp=image)
 
-    def set_widget_image(self, widget: Widget):
+    def set_widget_image(self, widget: Widget = None):
         img = ImageTk.PhotoImage(self.image)
+        self.widget_ = widget
+        if widget is not None:
+            widget = widget
+        else:
+            if isinstance(widget, Widget):
+                widget = self.widget_
+            else:
+                return None
         widget.configure(image=img)
         widget.image = img
+        print(self.widget_)
 
     def paste_image(self, fp=None, size=None, side="ne"):
         if isinstance(fp, PIL.Image.Image):
@@ -41,6 +51,8 @@ class ImageForTkinter:
             self.image.paste(self.second_image, (posx, 0))
         elif side == "se":
             self.image.paste(self.second_image, (posx, posy))
+        self.set_widget_image()
+        return type(self).load(self.image)
 
 
 if __name__ == "__main__":

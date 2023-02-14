@@ -63,11 +63,12 @@ class ImageFrame(Frame):
             image = ImageForTkinter(fp)
         image.resize(self.sx, self.sy)
         self.images_temp[os.path.abspath(fp)] = image.image
-        # return image
-        lett: ImageForTkinter = letters.get("greenA.png")
-        lett.resize(48, 48)
-        image.paste_image(self.letters.get("grayA"))
         image.set_widget_image(self.image_label)
+
+        return image
+        # lett: ImageForTkinter = letters.get("greenA.png")
+        # lett.resize(48, 48)
+        # image.paste_image(self.letters.get("grayA"))
 
 
 class PopUpWindow(Toplevel):
@@ -91,18 +92,23 @@ if __name__ == '__main__':
         global k
         # print(list_[k % len(list_)] in img.images_temp)
         # print(list_[k % len(list_)])
-        img.load_image(list_[k % len(list_)])
+        # img.load_image()
+        a = img.load_image(list_[k % len(list_)]).paste_image(img.letters.get("grayB")).paste_image(img.letters.get("greenC"), side="se")
+        a.set_widget_image(img.image_label)
         # print(img.images_temp)
         k += 1
+        root.after(10,load)
 
 
     root = Tk()
     img = ImageFrame(root)
     img.pack()
-    img.load_image(dir_)
     img.preloading_letter()
+    a = img.load_image(dir_).paste_image(img.letters.get("grayB")).paste_image(img.letters.get("greenC"), side="se")
+    a.set_widget_image(img.image_label)
     print(img.letters)
-    img.width_x = 800
-    next_ = Button(root, text="next", command=load)
-    next_.pack()
+    # img.width_x = 800
+    load()
+    # next_ = Button(root, text="next", command=load)
+    # next_.pack()
     root.mainloop()
