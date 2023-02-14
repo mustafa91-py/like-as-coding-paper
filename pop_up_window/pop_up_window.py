@@ -2,30 +2,71 @@ from tkinter import *
 
 import PIL.Image
 import os
+
+import folder_operations
 from imageforwidget import ImageForTkinter
 
 letters_path = os.path.join(os.getcwd(), "../letters")
 letters = {k: ImageForTkinter(fp=os.path.join(letters_path, k)) for k in os.listdir(letters_path)}
 
 
-class TopFrame(Frame):
+class ImageFrame(Frame):
     def __init__(self, parent, *args, **kwargs):
-        super(TopFrame, self).__init__(parent, *args, **kwargs)
+        super(ImageFrame, self).__init__(parent, *args, **kwargs)
         self.images_temp = {}
+        self.letters = {}
         self.image_label = Label(self, text="image...")
         self.image_label.pack()
+        self.sx, self.sy = 360, 360
+        self.preloading_letter()
+
+    def preloading_letter(self, fp=None):
+        if fp is None:
+            letters_dir = os.path.join(os.getcwd(), "../letters")
+        else:
+            letters_dir = fp
+        if os.path.exists(letters_dir):
+            abs_path = [os.path.abspath(os.path.join(letters_dir, p)) for p in os.listdir(letters_dir)]
+            for path in abs_path:
+                __img = ImageForTkinter(path)
+                __img.resize(32, 32)
+                __text = os.path.split(path)
+                __text = os.path.splitext(__text[1])[0]
+                self.letters[__text] = __img.image
+
+    @property
+    def width_x(self):
+        return self.sx
+
+    @width_x.setter
+    def width_x(self, x):
+        self.sx = x
+
+    @property
+    def height_y(self):
+        return self.sy
+
+    @height_y.setter
+    def height_y(self, y):
+        self.sy = y
+
+    def top_right(self, ):
+        pass
+
+    def bottom_right(self, ):
+        pass
 
     def load_image(self, fp):
         if fp in self.images_temp.keys():
-            image = ImageForTkinter()
-            image.image = self.images_temp.get(fp)
+            image = ImageForTkinter.load(self.images_temp.get(fp))
         else:
             image = ImageForTkinter(fp)
-        image.resize(360, 360)
-        self.images_temp[fp] = image.image
-        lett:ImageForTkinter = letters.get("greenA.png")
-        lett.resize(48,48)
-        image.paste_image(lett.image)
+        image.resize(self.sx, self.sy)
+        self.images_temp[os.path.abspath(fp)] = image.image
+        # return image
+        lett: ImageForTkinter = letters.get("greenA.png")
+        lett.resize(48, 48)
+        image.paste_image(self.letters.get("grayA"))
         image.set_widget_image(self.image_label)
 
 
@@ -39,9 +80,29 @@ class PopUpWindow(Toplevel):
 if __name__ == '__main__':
     import os
 
-    dir_ = os.path.join(os.getcwd(), "../Python.png")
+    dir_ = os.path.join(folder_operations.SS_SHOT, "test", )
+    list_ = [os.path.join(dir_, p) for p in os.listdir(dir_)]
+    print(list_)
+    dir_ = os.path.join(dir_, list_[0])
+    k = 1
+
+
+    def load():
+        global k
+        # print(list_[k % len(list_)] in img.images_temp)
+        # print(list_[k % len(list_)])
+        img.load_image(list_[k % len(list_)])
+        # print(img.images_temp)
+        k += 1
+
+
     root = Tk()
-    img = TopFrame(root)
+    img = ImageFrame(root)
     img.pack()
     img.load_image(dir_)
+    img.preloading_letter()
+    print(img.letters)
+    img.width_x = 800
+    next_ = Button(root, text="next", command=load)
+    next_.pack()
     root.mainloop()
