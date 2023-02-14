@@ -4,7 +4,10 @@ import PIL.Image
 import os
 
 import folder_operations
-from imageforwidget import ImageForTkinter
+if __name__ == '__main__':
+    from imageforwidget import ImageForTkinter
+else:
+    from .imageforwidget import ImageForTkinter
 
 letters_path = os.path.join(os.getcwd(), "../letters")
 letters = {k: ImageForTkinter(fp=os.path.join(letters_path, k)) for k in os.listdir(letters_path)}
@@ -72,10 +75,12 @@ class ImageFrame(Frame):
 
 
 class PopUpWindow(Toplevel):
-    def __init__(self):
-        super(PopUpWindow, self).__init__()
-        self.protocol("WM_DELETE_WINDOW", self.state("withdraw"))
+    def __init__(self, *args, **kwargs):
+        super(PopUpWindow, self).__init__(*args, **kwargs)
+        self.protocol("WM_DELETE_WINDOW", lambda: self.state("withdraw"))
         self.state("withdraw")
+        self.imageFrame = ImageFrame(self)
+        self.imageFrame.pack()
 
 
 if __name__ == '__main__':
@@ -93,22 +98,23 @@ if __name__ == '__main__':
         # print(list_[k % len(list_)] in img.images_temp)
         # print(list_[k % len(list_)])
         # img.load_image()
-        a = img.load_image(list_[k % len(list_)]).paste_image(img.letters.get("grayB")).paste_image(img.letters.get("greenC"), side="se")
-        a.set_widget_image(img.image_label)
+        a = img.load_image(list_[k % len(list_)]).paste_image(img.letters.get("grayB"))
+        b = a.paste_image(img.letters.get("greenC"), side="se")
+        b.set_widget_image(img.image_label)
         # print(img.images_temp)
         k += 1
-        root.after(10,load)
+        # root.after(10,load)
 
 
     root = Tk()
-    img = ImageFrame(root)
-    img.pack()
+    pop = PopUpWindow(root)
+    pop.state("normal")
+
+    img = pop.imageFrame
     img.preloading_letter()
-    a = img.load_image(dir_).paste_image(img.letters.get("grayB")).paste_image(img.letters.get("greenC"), side="se")
-    a.set_widget_image(img.image_label)
     print(img.letters)
     # img.width_x = 800
-    load()
-    # next_ = Button(root, text="next", command=load)
-    # next_.pack()
+    # load()
+    next_ = Button(root, text="next", command=load)
+    next_.pack()
     root.mainloop()

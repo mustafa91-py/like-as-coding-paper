@@ -3,6 +3,7 @@ from tkinter import *
 from tkinter import font
 from features.screen_shot import ScreenShot
 import folder_operations as fop
+from pop_up_window.pop_up_window import PopUpWindow
 
 
 class ScrollFrame(Frame):
@@ -68,6 +69,7 @@ class Units(Frame):
         # widgets bind func and packed
         self.iid.bind("<Button-1>", lambda e: print(self.revamp_folder(), e.widget))
         self.iid.bind("<Button-3>", self.ss_shot)
+        self.iid.bind("<Double-Button-1>", lambda e: print("double"))
 
     @property
     def id(self):

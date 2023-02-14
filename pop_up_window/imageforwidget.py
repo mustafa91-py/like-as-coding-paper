@@ -4,7 +4,7 @@ from tkinter import *
 import PIL.Image
 from PIL import ImageTk, Image
 
-
+print(__package__)
 class ImageForTkinter:
     def __init__(self, fp=None):
         if isinstance(fp, PIL.Image.Image):
