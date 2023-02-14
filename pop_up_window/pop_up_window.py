@@ -1,6 +1,5 @@
 from tkinter import *
 
-import PIL.Image
 import os
 
 import folder_operations

@@ -25,7 +25,7 @@ class ScrollFrame(Frame):
 
 
 class Units(Frame):
-    def __init__(self, parent, file_path, *args, **kwargs):
+    def __init__(self, parent, file_path, pop_up_window=None, *args, **kwargs):
         """
                    self.__id  self.a self.b  self.c  self.d  self.e
                       ||        ||      ||      ||      ||     ||
@@ -37,6 +37,7 @@ class Units(Frame):
         """
         super(Units, self).__init__(parent, *args, **kwargs)
         self.file_path = file_path
+        self.popUpWindow: PopUpWindow = pop_up_window
         self.var = StringVar()  # common variable of widgets
         self.iid = self.__id = Label(self, text="None", name="id", font=font.Font(family="Times ", size=16))
         self.__id.bind("<Enter>", self.is_exists_image_file)
@@ -67,9 +68,9 @@ class Units(Frame):
             __rb.bind("<Button-3>", lambda event: self.deselect_(event.widget))
             __rb.pack(**self.__pack)
         # widgets bind func and packed
-        self.iid.bind("<Button-1>", lambda e: print(self.revamp_folder(), e.widget))
-        self.iid.bind("<Button-3>", self.ss_shot)
-        self.iid.bind("<Double-Button-1>", lambda e: print("double"))
+        # self.iid.bind("<Button-1>", lambda e: print(self.revamp_folder(), e.widget))
+        self.__id.bind("<Button-3>", self.ss_shot)
+        self.__id.bind("<Double-Button-1>", self.pop_up_top_level)
 
     @property
     def id(self):
@@ -133,13 +134,26 @@ class Units(Frame):
             widget.config(cursor="")
 
     def ss_shot(self, event):
-        print(self.file_path)
+        # print(self.file_path)
         if not self.file_path:
             return
-        print(type(self).__name__, self.file_path, )
+        # print(type(self).__name__, self.file_path, )
         widget = event.widget["text"]
         ss = ScreenShot()
         ss.ss_name = os.path.join(self.revamp_folder(), f"id_{widget}.png")
+        if self.popUpWindow.imageFrame.images_temp.get(ss.ss_name, None):
+            self.popUpWindow.imageFrame.images_temp.pop(ss.ss_name)
+
+    def pop_up_top_level(self, event):
+        widget = event.widget
+        iid = widget["text"]
+        # print(f"{self.file_path=},{self.revamp_folder()=}")
+        # print(f"{widget=},{iid=}")
+        __path = os.path.join(self.revamp_folder(), f"id_{iid}.png")
+        if os.path.exists(__path):
+            new = self.popUpWindow.imageFrame.load_image(__path)
+            new.set_widget_image(self.popUpWindow.imageFrame.image_label)
+            self.popUpWindow.state("normal")
 
 
 class StackUnitsForAnswer(Toplevel):
@@ -215,9 +229,11 @@ class StackUnits(Frame):
 
     """
 
-    def __init__(self, parent, amount: int = None, file_path=None, title: str = "test", *args, **kwargs):
+    def __init__(self, parent, amount: int = None, file_path=None, title: str = "test", pop_up_window=None, *args,
+                 **kwargs):
         super(StackUnits, self).__init__(parent, *args, **kwargs)
         self.amount = amount
+        self.popUpWindow = pop_up_window
         self.file_path = file_path
         self.lesson = title
         self.units = {}
@@ -266,7 +282,7 @@ class StackUnits(Frame):
         :return: None
         """
         for i in range(1, self.amount + 1):
-            self.units[i] = Units(self.__scroll_frame.child_frame, self.file_path)
+            self.units[i] = Units(self.__scroll_frame.child_frame, self.file_path, pop_up_window=self.popUpWindow)
             self.units[i].id = str(i).zfill(3)
             self.units[i].pack()
 

@@ -5,7 +5,7 @@ from units.units import StackUnits
 from tkinter import *
 from tkinter.messagebox import showwarning
 from misc.save_dict import SaveDict
-
+from pop_up_window.pop_up_window import PopUpWindow
 if __name__ == '__main__':
     from container import Container, asdict
 else:
@@ -20,14 +20,15 @@ class CodingPaper(Frame):
         if cp_config.get("amount", 0) >= 250:
             cp_config["amount"] = 250
             showwarning("max value fixed oto", f"amount = 250 ,maximum value of 250 can be given")
-
+        self.popUpWindow = PopUpWindow()
         self.container = Container(**cp_config)
         self.save_dict = SaveDict(path_=cp_config.get("file_path"))
         self.file_path = self.container.file_path
 
         self.stack_units = StackUnits(self, self.container.amount,
                                       file_path=self.file_path,
-                                      title=self.container.lesson)
+                                      title=self.container.lesson,
+                                      pop_up_window=self.popUpWindow)
         self.stack_units.pack(fill="both", expand=1)
         self.stack_units.create_stack()
 
