@@ -94,7 +94,7 @@ class PointFrame(Frame):
 
     @container.setter
     def container(self, value):
-        self.container = value
+        self.__container = value
 
     def star_icon(self, event):
         if event is not None:

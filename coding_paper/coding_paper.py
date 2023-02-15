@@ -85,13 +85,18 @@ class CodingPaperOpen(Frame):
 
         __ = {k: v for k, v in self.save_dict.space.items() if k in ["amount", "title"]}
         self.stack_units = StackUnits(self, file_path=self.file_path,
-                                      pop_up_window=self.popUpWindow,container=self.container,
+                                      pop_up_window=self.popUpWindow, container=self.container,
                                       **__)
         self.stack_units.pack(fill="both", expand=1)
         self.stack_units.save_id = self.container.file_path
         self.stack_units.create_stack()
 
         self.load()
+        self.groove()
+
+    def groove(self, **kwargs):
+        self.popUpWindow.groove(container=self.container)
+        self.after(250, self.groove)
 
     def load(self):
         for iid, uni in self.stack_units.units.items():
