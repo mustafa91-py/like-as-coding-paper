@@ -98,11 +98,11 @@ class PointFrame(Frame):
             if int(id_) <= self.point_var2.get():
                 __img.set_widget_image(kkk)
             else:
-                img_gray.set_widget_image(kkk)                # kkk.image = img_gray
+                img_gray.set_widget_image(kkk)  # kkk.image = img_gray
 
     def clear_point(self, event):
         self.point_var2.set(0)
-        img_gray:ImageForTkinter = letters.get("star2.png")
+        img_gray: ImageForTkinter = letters.get("star2.png")
         for id_, kkk in self.point_label_2_w.items():
             img_gray.set_widget_image(kkk)
 
