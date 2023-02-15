@@ -125,6 +125,7 @@ class PopUpWindow(Toplevel):
         super(PopUpWindow, self).__init__(*args, **kwargs)
         self.protocol("WM_DELETE_WINDOW", lambda: self.state("withdraw"))
         self.state("withdraw")
+        self.current_id = None
         self.imageFrame = ImageFrame(self)
         self.imageFrame.pack()
         self.point = PointFrame(self)
