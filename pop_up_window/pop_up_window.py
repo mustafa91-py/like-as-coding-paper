@@ -13,9 +13,10 @@ letters_path = os.path.join(os.getcwd(), "../letters")
 letters = {k: ImageForTkinter(fp=os.path.join(letters_path, k)) for k in os.listdir(letters_path)}
 
 
-class ImageFrame(Frame):
+class ImageFrame(LabelFrame):
     def __init__(self, parent, *args, **kwargs):
         super(ImageFrame, self).__init__(parent, *args, **kwargs)
+        self["text"] = type(self).__name__
         self.images_temp = {}
         self.letters = {}
         self.image_label = Label(self, text="image...")
@@ -74,9 +75,10 @@ class ImageFrame(Frame):
         # image.paste_image(self.letters.get("grayA"))
 
 
-class PointFrame(Frame):
+class PointFrame(LabelFrame):
     def __init__(self, parent, *args, **kwargs):
         super(PointFrame, self).__init__(parent, *args, **kwargs)
+        self["text"] = type(self).__name__
         self.__container: dict = {}
         self.point_label_2_w = dict()
         self.point_var2 = IntVar()
