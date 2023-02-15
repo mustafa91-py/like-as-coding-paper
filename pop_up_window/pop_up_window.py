@@ -1,8 +1,9 @@
 from tkinter import *
-
+from tkinter import font
 import os
 
 import folder_operations
+
 if __name__ == '__main__':
     from imageforwidget import ImageForTkinter
 else:
@@ -73,6 +74,39 @@ class ImageFrame(Frame):
         # image.paste_image(self.letters.get("grayA"))
 
 
+class PointFrame(Frame):
+    def __init__(self, parent, *args, **kwargs):
+        super(PointFrame, self).__init__(parent, *args, **kwargs)
+        self.point_label_2_w = dict()
+        self.point_var2 = IntVar()
+        for i in range(1, 11):
+            self.point_label_2_w[i] = Label(self, text=i, font=font.Font(size=32), cursor="hand2")
+            self.point_label_2_w[i].pack(side="left")
+            self.point_label_2_w[i].bind("<Button-1>", self.star_icon)
+            self.point_label_2_w[i].bind("<Button-3>", self.clear_point)
+        # self.description = ScrolledText(self.f3, width=50, height=5)
+        # self.description.grid(row=1, column=0)
+
+    def star_icon(self, event):
+        if event is not None:
+            self.point_var2.set(int(event.widget["text"]))
+        else:
+            pass
+        __img: ImageForTkinter = letters.get("star.png")
+        img_gray: ImageForTkinter = letters.get("star2.png")
+        for id_, kkk in self.point_label_2_w.items():
+            if int(id_) <= self.point_var2.get():
+                __img.set_widget_image(kkk)
+            else:
+                img_gray.set_widget_image(kkk)                # kkk.image = img_gray
+
+    def clear_point(self, event):
+        self.point_var2.set(0)
+        img_gray:ImageForTkinter = letters.get("star2.png")
+        for id_, kkk in self.point_label_2_w.items():
+            img_gray.set_widget_image(kkk)
+
+
 class PopUpWindow(Toplevel):
     def __init__(self, *args, **kwargs):
         super(PopUpWindow, self).__init__(*args, **kwargs)
@@ -80,6 +114,8 @@ class PopUpWindow(Toplevel):
         self.state("withdraw")
         self.imageFrame = ImageFrame(self)
         self.imageFrame.pack()
+        self.point = PointFrame(self)
+        self.point.pack()
 
 
 if __name__ == '__main__':
@@ -108,7 +144,6 @@ if __name__ == '__main__':
     root = Tk()
     pop = PopUpWindow(root)
     pop.state("normal")
-
     img = pop.imageFrame
     img.preloading_letter()
     print(img.letters)
