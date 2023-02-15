@@ -182,7 +182,7 @@ class Units(Frame):
             if __answer == __paper:
                 color = f"green{__paper}"
             elif __paper == "":
-                color = f"gray{__answer}"
+                color = f"None"
             else:
                 color = f"red{__paper}"
             letters_images = self.popUpWindow.imageFrame.letters
