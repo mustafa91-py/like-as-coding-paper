@@ -78,11 +78,12 @@ class CodingPaperOpen(Frame):
         super(CodingPaperOpen, self).__init__(parent, *args, **kwargs)
         # Frame.__init__(self, parent, *args, **kwargs)
         self.file_path = file_path
+        self.popUpWindow = PopUpWindow()
         self.save_dict = SaveDict(path_=self.file_path)
         self.container = Container(**self.save_dict.space)
 
         __ = {k: v for k, v in self.save_dict.space.items() if k in ["amount", "title"]}
-        self.stack_units = StackUnits(self, file_path=self.file_path, **__)
+        self.stack_units = StackUnits(self, file_path=self.file_path,pop_up_window=self.popUpWindow, **__)
         self.stack_units.pack(fill="both", expand=1)
         self.stack_units.save_id = self.container.file_path
         self.stack_units.create_stack()

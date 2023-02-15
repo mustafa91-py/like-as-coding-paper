@@ -4,6 +4,17 @@ from tkinter import font
 from features.screen_shot import ScreenShot
 import folder_operations as fop
 from pop_up_window.pop_up_window import PopUpWindow
+import datetime
+
+
+def log(func):
+    def wrapper(*args, **kwargs):
+        f = func(*args, **kwargs)
+        print(func.__name__, datetime.datetime.now())
+
+        return f
+
+    return wrapper
 
 
 class ScrollFrame(Frame):
@@ -25,6 +36,7 @@ class ScrollFrame(Frame):
 
 
 class Units(Frame):
+    @log
     def __init__(self, parent, file_path, pop_up_window=None, *args, **kwargs):
         """
                    self.__id  self.a self.b  self.c  self.d  self.e
@@ -80,6 +92,7 @@ class Units(Frame):
     def id(self, value):
         self.__id.configure(text=value)
 
+    @log
     def high_light_button(self) -> None:
         """
         if widget is selected , colors to be given (flash)
@@ -93,6 +106,7 @@ class Units(Frame):
             else:
                 v["bg"] = "gray10"
 
+    @log
     def deselect_(self, widget) -> None:
         """
         if widget is not selected
@@ -103,6 +117,7 @@ class Units(Frame):
             widget.deselect()
             self.return_white()
 
+    @log
     def return_white(self) -> None:
         """
         if the selection is removed
@@ -112,6 +127,7 @@ class Units(Frame):
             for k, v in self.units.items():
                 v["bg"] = "white"
 
+    @log
     def revamp_folder(self):
         if not self.file_path:
             return
@@ -123,6 +139,7 @@ class Units(Frame):
             os.mkdir(will_create)
         return will_create
 
+    @log
     def is_exists_image_file(self, event):
         if not self.file_path:
             return
@@ -133,6 +150,7 @@ class Units(Frame):
         else:
             widget.config(cursor="")
 
+    @log
     def ss_shot(self, event):
         # print(self.file_path)
         if not self.file_path:
@@ -144,7 +162,10 @@ class Units(Frame):
         if self.popUpWindow.imageFrame.images_temp.get(ss.ss_name, None):
             self.popUpWindow.imageFrame.images_temp.pop(ss.ss_name)
 
+    @log
     def pop_up_top_level(self, event):
+        if self.revamp_folder() is None:
+            return
         widget = event.widget
         iid = widget["text"]
         # print(f"{self.file_path=},{self.revamp_folder()=}")
@@ -188,6 +209,7 @@ class StackUnitsForAnswer(Toplevel):
 
         self.create_stack()
 
+    @log
     def create_stack(self) -> None:
         """
         created Units stack
@@ -229,6 +251,7 @@ class StackUnits(Frame):
 
     """
 
+    @log
     def __init__(self, parent, amount: int = None, file_path=None, title: str = "test", pop_up_window=None, *args,
                  **kwargs):
         super(StackUnits, self).__init__(parent, *args, **kwargs)
@@ -255,6 +278,7 @@ class StackUnits(Frame):
                                               command=self.open_answers_top_level)
         self.answer_keys_open_button.pack()
 
+    # @log
     def elapsed_units(self) -> None:
         """
         calculating percentage
@@ -276,6 +300,7 @@ class StackUnits(Frame):
         self.answer_top_level.groove()
         self.elapsed_units()
 
+    @log
     def create_stack(self) -> None:
         """
         created Units stack
@@ -286,6 +311,7 @@ class StackUnits(Frame):
             self.units[i].id = str(i).zfill(3)
             self.units[i].pack()
 
+    @log
     def open_answers_top_level(self) -> None:
         """
         pop up answer toplevel
