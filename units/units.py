@@ -191,7 +191,7 @@ class Units(Frame):
             new.set_widget_image(self.popUpWindow.imageFrame.image_label)
             self.popUpWindow.state("normal")
             self.popUpWindow.wm_attributes("-topmost", 1)
-
+            self.popUpWindow.current_id = str(int(self.id))
 
 class StackUnitsForAnswer(Toplevel):
     """
