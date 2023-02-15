@@ -31,7 +31,7 @@ class CodingPaper(Frame):
         self.stack_units.create_stack()
 
         self.groove()
-        self.stack_units.save_id = self.container.file_path
+
 
     def groove(self):
         self.container.paper_key = self.get_data_to_stack_units()
