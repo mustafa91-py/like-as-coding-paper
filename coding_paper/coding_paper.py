@@ -20,6 +20,7 @@ class CodingPaper(Frame):
             showwarning("max value fixed oto", f"amount = 250 ,maximum value of 250 can be given")
         self.popUpWindow = PopUpWindow()
         self.container = Container(**cp_config)
+        self.create_ids()
         self.save_dict = SaveDict(path_=cp_config.get("file_path"))
         self.file_path = self.container.file_path
 
@@ -31,13 +32,19 @@ class CodingPaper(Frame):
         self.stack_units.create_stack()
 
         self.groove()
-
+        print(self.container.amount)
 
     def groove(self):
         self.container.paper_key = self.get_data_to_stack_units()
         self.container.answer_key = self.get_data_to_answer_stack_units()
         self.stack_units.groove()
         self.after_id = self.after(250, self.groove)
+
+    def create_ids(self):
+        if not isinstance(self.container.ids, dict):
+            self.container.ids = dict()
+        for i in range(1, self.container.amount + 1):
+            self.container.ids[i] = {k: None for k in ["image", "solved", "point", "desc"]}
 
     def get_data_to_stack_units(self):
         data_ = {k: v.var.get() for k, v in self.stack_units.units.items()}
