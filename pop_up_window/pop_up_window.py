@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import font
 import os
-
+from container import Container
 import folder_operations
 
 if __name__ == '__main__':
@@ -79,7 +79,7 @@ class PointFrame(LabelFrame):
     def __init__(self, parent, *args, **kwargs):
         super(PointFrame, self).__init__(parent, *args, **kwargs)
         self["text"] = type(self).__name__
-        self.__container: dict = {}
+        self.__container: Container = {}
         self.point_label_2_w = dict()
         self.point_var2 = IntVar()
         for i in range(1, 11):
