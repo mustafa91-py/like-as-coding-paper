@@ -8,6 +8,7 @@ class Container:
     file_path: os.path.abspath
     paper_key: dict = None
     answer_key: dict = None
+    ids: dict = None
     amount: int = field(default=20)  # number of questions
     unit_time: int | float = field(default=1)  # time per unit(question)
     lesson: str = field(default="math")  # lesson
