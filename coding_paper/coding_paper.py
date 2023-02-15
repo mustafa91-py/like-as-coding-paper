@@ -7,10 +7,7 @@ from tkinter.messagebox import showwarning
 from misc.save_dict import SaveDict
 from pop_up_window.pop_up_window import PopUpWindow
 
-if __name__ == '__main__':
-    from container import Container, asdict
-else:
-    from .container import Container, asdict
+from container import Container, asdict
 
 
 class CodingPaper(Frame):
