@@ -10,7 +10,7 @@ import datetime
 def log(func):
     def wrapper(*args, **kwargs):
         f = func(*args, **kwargs)
-        print(func.__name__, datetime.datetime.now())
+        # print(func, datetime.datetime.now())
 
         return f
 
@@ -37,7 +37,7 @@ class ScrollFrame(Frame):
 
 class Units(Frame):
     @log
-    def __init__(self, parent, file_path, pop_up_window=None, *args, **kwargs):
+    def __init__(self, parent, file_path, pop_up_window=None, container: dict = None, *args, **kwargs):
         """
                    self.__id  self.a self.b  self.c  self.d  self.e
                       ||        ||      ||      ||      ||     ||
@@ -49,6 +49,7 @@ class Units(Frame):
         """
         super(Units, self).__init__(parent, *args, **kwargs)
         self.file_path = file_path
+        self.container = container
         self.popUpWindow: PopUpWindow = pop_up_window
         self.var = StringVar()  # common variable of widgets
         self.iid = self.__id = Label(self, text="None", name="id", font=font.Font(family="Times ", size=16))
@@ -168,13 +169,28 @@ class Units(Frame):
             return
         widget = event.widget
         iid = widget["text"]
+
         # print(f"{self.file_path=},{self.revamp_folder()=}")
         # print(f"{widget=},{iid=}")
         __path = os.path.join(self.revamp_folder(), f"id_{iid}.png")
         if os.path.exists(__path):
             new = self.popUpWindow.imageFrame.load_image(__path)
+            __answer = self.container.answer_key
+            __paper = self.container.paper_key
+            __answer = __answer.get(str(int(self.id)))
+            __paper = __paper.get(str(int(self.id)))
+            if __answer == __paper:
+                color = f"green{__paper}"
+            elif __paper == "":
+                color = f"gray{__answer}"
+            else:
+                color = f"red{__paper}"
+            letters_images = self.popUpWindow.imageFrame.letters
+            new.paste_image(letters_images.get(f"green{__answer}"))
+            new.paste_image(letters_images.get(color), side="se")
             new.set_widget_image(self.popUpWindow.imageFrame.image_label)
             self.popUpWindow.state("normal")
+            self.popUpWindow.wm_attributes("-topmost", 1)
 
 
 class StackUnitsForAnswer(Toplevel):
@@ -252,10 +268,12 @@ class StackUnits(Frame):
     """
 
     @log
-    def __init__(self, parent, amount: int = None, file_path=None, title: str = "test", pop_up_window=None, *args,
+    def __init__(self, parent, amount: int = None, file_path=None, title: str = "test", pop_up_window=None,
+                 container: dict = None, *args,
                  **kwargs):
         super(StackUnits, self).__init__(parent, *args, **kwargs)
         self.amount = amount
+        self.container = container
         self.popUpWindow = pop_up_window
         self.file_path = file_path
         self.lesson = title
@@ -307,7 +325,8 @@ class StackUnits(Frame):
         :return: None
         """
         for i in range(1, self.amount + 1):
-            self.units[i] = Units(self.__scroll_frame.child_frame, self.file_path, pop_up_window=self.popUpWindow)
+            self.units[i] = Units(self.__scroll_frame.child_frame, self.file_path,
+                                  pop_up_window=self.popUpWindow, container=self.container)
             self.units[i].id = str(i).zfill(3)
             self.units[i].pack()
 
