@@ -77,6 +77,7 @@ class ImageFrame(Frame):
 class PointFrame(Frame):
     def __init__(self, parent, *args, **kwargs):
         super(PointFrame, self).__init__(parent, *args, **kwargs)
+        self.__container: dict = {}
         self.point_label_2_w = dict()
         self.point_var2 = IntVar()
         for i in range(1, 11):
@@ -86,6 +87,14 @@ class PointFrame(Frame):
             self.point_label_2_w[i].bind("<Button-3>", self.clear_point)
         # self.description = ScrolledText(self.f3, width=50, height=5)
         # self.description.grid(row=1, column=0)
+
+    @property
+    def container(self):
+        return self.__container
+
+    @container.setter
+    def container(self, value):
+        self.container = value
 
     def star_icon(self, event):
         if event is not None:
@@ -101,10 +110,14 @@ class PointFrame(Frame):
                 img_gray.set_widget_image(kkk)  # kkk.image = img_gray
 
     def clear_point(self, event):
+        print(self.container)
         self.point_var2.set(0)
         img_gray: ImageForTkinter = letters.get("star2.png")
         for id_, kkk in self.point_label_2_w.items():
             img_gray.set_widget_image(kkk)
+
+    def groove(self, **kwargs):
+        self.container = kwargs.get("container")
 
 
 class PopUpWindow(Toplevel):
@@ -116,6 +129,9 @@ class PopUpWindow(Toplevel):
         self.imageFrame.pack()
         self.point = PointFrame(self)
         self.point.pack()
+
+    def groove(self, **kwargs):
+        self.point.groove(**kwargs)
 
 
 if __name__ == '__main__':
