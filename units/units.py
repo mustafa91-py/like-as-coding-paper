@@ -4,6 +4,7 @@ from tkinter import font
 from features.screen_shot import ScreenShot
 import folder_operations as fop
 from pop_up_window.pop_up_window import PopUpWindow
+from container import Container
 import datetime
 
 
@@ -49,7 +50,7 @@ class Units(Frame):
         """
         super(Units, self).__init__(parent, *args, **kwargs)
         self.file_path = file_path
-        self.container = container
+        self.container: Container = container
         self.popUpWindow: PopUpWindow = pop_up_window
         self.var = StringVar()  # common variable of widgets
         self.iid = self.__id = Label(self, text="None", name="id", font=font.Font(family="Times ", size=16))
