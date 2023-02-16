@@ -136,7 +136,7 @@ class PopUpWindow(Toplevel):
 
     def groove(self, **kwargs):
         self.point.groove(**kwargs)
-
+        self.current_id = self.imageFrame.current_id
 
 if __name__ == '__main__':
     import os
