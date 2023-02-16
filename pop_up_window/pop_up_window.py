@@ -18,6 +18,7 @@ class ImageFrame(LabelFrame):
         super(ImageFrame, self).__init__(parent, *args, **kwargs)
         self["text"] = type(self).__name__
         self.images_temp = {}
+        self.current_id = None
         self.letters = {}
         self.image_label = Label(self, text="image...")
         self.image_label.pack()
