@@ -121,10 +121,17 @@ class PointFrame(LabelFrame):
             img_gray.set_widget_image(kkk)
 
     def groove(self, **kwargs):
+        """
+        id değişsede point aynı kalıyor düzeltilecek
+        id değişince alınan veriler hemen işlenmeli
+        :param kwargs:
+        :return:
+        """
         self.container = kwargs.get("container")
         if cid := self.current_id:
-            if point := self.container.ids[cid].get("point", None):
-                self.point_var2.set(int(point))
+            print(self.container.ids[cid])
+            # if point := self.container.ids[cid].get("point", None):
+            #     self.point_var2.set(int(point))
             self.container.ids[cid]["point"] = self.point_var2.get()
 
 
