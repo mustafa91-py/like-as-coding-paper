@@ -180,6 +180,7 @@ class Units(Frame):
             __paper = self.container.paper_key
             __answer = __answer.get(str(int(self.id)))
             __paper = __paper.get(str(int(self.id)))
+            self.popUpWindow.imageFrame.current_id = str(int(self.id))
             if __answer == __paper:
                 color = f"green{__paper}"
             elif __paper == "":
