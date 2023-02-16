@@ -1,6 +1,7 @@
 import random
 from dataclasses import dataclass, field, asdict
 import os
+import folder_operations as fpo
 
 
 @dataclass
@@ -28,6 +29,19 @@ class Container:
                 else:
                     out_put[k[0]] = None
             return out_put
+
+    def create_ids(self):
+        if not isinstance(self.ids, dict):
+            self.ids = dict()
+        for i in range(1, self.amount + 1):
+            self.ids[i] = {k: None for k in ["image", "solved", "point", "desc"]}
+
+    def get_data(self):
+        images = os.listdir(os.path.join(fpo.SS_SHOT, self.title))
+        if images:
+            for img in images:
+                print(os.path.expandvars(img))
+                # self.ids[]
 
 
 if __name__ == '__main__':
