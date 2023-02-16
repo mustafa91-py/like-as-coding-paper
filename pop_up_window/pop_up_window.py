@@ -83,6 +83,7 @@ class PointFrame(LabelFrame):
         self.__container: Container = {}
         self.point_label_2_w = dict()
         self.point_var2 = IntVar()
+        self.current_id = None
         for i in range(1, 11):
             self.point_label_2_w[i] = Label(self, text=i, font=font.Font(size=32), cursor="hand2")
             self.point_label_2_w[i].pack(side="left")
@@ -136,7 +137,8 @@ class PopUpWindow(Toplevel):
 
     def groove(self, **kwargs):
         self.point.groove(**kwargs)
-        self.current_id = self.imageFrame.current_id
+        self.current_id = self.point.current_id = self.imageFrame.current_id
+
 
 if __name__ == '__main__':
     import os
