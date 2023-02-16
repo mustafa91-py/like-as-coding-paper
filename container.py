@@ -9,12 +9,12 @@ class Container:
     file_path: os.path.abspath
     paper_key: dict = None
     answer_key: dict = None
-    ids: dict = None
     amount: int = field(default=20)  # number of questions
     unit_time: int | float = field(default=1)  # time per unit(question)
     lesson: str = field(default="math")  # lesson
     subject: str = field(default="integral")  # subject
     title: str = field(default="test1")  # title
+    ids: dict = None
 
     def result(self) -> dict:
         if self.paper_key is not None and self.answer_key is not None:
@@ -33,15 +33,20 @@ class Container:
     def create_ids(self):
         if not isinstance(self.ids, dict):
             self.ids = dict()
-        for i in range(1, self.amount + 1):
-            self.ids[i] = {k: None for k in ["image", "solved", "point", "desc"]}
+            for i in range(1, self.amount + 1):
+                self.ids[i] = {k: None for k in ["image", "solved", "point", "desc"]}
 
     def get_data(self):
+        self.create_ids()
         images = os.listdir(os.path.join(fpo.SS_SHOT, self.title))
+        images = [os.path.abspath(os.path.join(fpo.SS_SHOT, self.title, p)) for p in images]
         if images:
             for img in images:
-                print(os.path.expandvars(img))
-                # self.ids[]
+                iid = os.path.split(img)[-1]
+                iid = os.path.splitext(iid)[0]
+                iid = str(iid.split("_")[-1])
+                iid = str(int(iid))
+                self.ids[iid]["images"] = img
 
 
 if __name__ == '__main__':
