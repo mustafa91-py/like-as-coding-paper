@@ -122,6 +122,10 @@ class PointFrame(LabelFrame):
 
     def groove(self, **kwargs):
         self.container = kwargs.get("container")
+        if cid := self.current_id:
+            if point := self.container.ids[cid].get("point", None):
+                self.point_var2.set(int(point))
+            self.container.ids[cid]["point"] = self.point_var2.get()
 
 
 class PopUpWindow(Toplevel):
