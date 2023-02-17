@@ -114,6 +114,8 @@ class PointFrame(LabelFrame):
                 __img.set_widget_image(kkk)
             else:
                 img_gray.set_widget_image(kkk)  # kkk.image = img_gray
+        if cid := self.current_id:
+            self.container.ids[cid]["point"] = self.point_var2.get()
 
     def clear_point(self, event):
         print(self.container)
@@ -130,12 +132,6 @@ class PointFrame(LabelFrame):
         :return:
         """
         self.container = kwargs.get("container")
-        if cid := self.current_id:
-            print(self.container.ids[cid])
-            if point := self.container.ids[cid].get("point", None) and not self.control:
-                self.point_var2.set(int(point))
-                self.control = True
-            self.container.ids[cid]["point"] = self.point_var2.get()
 
 
 class PopUpWindow(Toplevel):
