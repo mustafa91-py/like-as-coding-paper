@@ -84,6 +84,8 @@ class PointFrame(LabelFrame):
         self.point_label_2_w = dict()
         self.point_var2 = IntVar()
         self.current_id = None
+        self.control = False
+
         for i in range(1, 11):
             self.point_label_2_w[i] = Label(self, text=i, font=font.Font(size=32), cursor="hand2")
             self.point_label_2_w[i].pack(side="left")
@@ -130,8 +132,9 @@ class PointFrame(LabelFrame):
         self.container = kwargs.get("container")
         if cid := self.current_id:
             print(self.container.ids[cid])
-            # if point := self.container.ids[cid].get("point", None):
-            #     self.point_var2.set(int(point))
+            if point := self.container.ids[cid].get("point", None) and not self.control:
+                self.point_var2.set(int(point))
+                self.control = True
             self.container.ids[cid]["point"] = self.point_var2.get()
 
 
