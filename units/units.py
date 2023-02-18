@@ -194,6 +194,7 @@ class Units(Frame):
             self.popUpWindow.state("normal")
             self.popUpWindow.wm_attributes("-topmost", 1)
             self.popUpWindow.current_id = str(int(self.id))
+            self.popUpWindow.point.control = False
 
 class StackUnitsForAnswer(Toplevel):
     """

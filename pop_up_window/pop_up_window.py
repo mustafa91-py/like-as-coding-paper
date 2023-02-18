@@ -71,9 +71,6 @@ class ImageFrame(LabelFrame):
         image.set_widget_image(self.image_label)
 
         return image
-        # lett: ImageForTkinter = letters.get("greenA.png")
-        # lett.resize(48, 48)
-        # image.paste_image(self.letters.get("grayA"))
 
 
 class PointFrame(LabelFrame):
@@ -85,7 +82,6 @@ class PointFrame(LabelFrame):
         self.point_var2 = IntVar()
         self.current_id = None
         self.control = False
-        self.tem_cid = None
 
         for i in range(1, 11):
             self.point_label_2_w[i] = Label(self, text=i, font=font.Font(size=32), cursor="hand2")
@@ -119,11 +115,15 @@ class PointFrame(LabelFrame):
             self.container.ids[cid]["point"] = self.point_var2.get()
 
     def one_time_load_per_frame(self):
-        if point := self.container.ids[self.current_id].get("point", None):
-            self.point_var2.set(point)
+        if self.control:
+            return
+        if cid := self.container.ids.get(self.current_id):
+            if point := cid.get("point", None):
+                self.point_var2.set(point)
+                self.star_icon(None)
+                self.control = True
 
     def clear_point(self, event):
-        print(self.container)
         self.point_var2.set(0)
         img_gray: ImageForTkinter = letters.get("star2.png")
         for id_, kkk in self.point_label_2_w.items():
@@ -137,6 +137,7 @@ class PointFrame(LabelFrame):
         :return:
         """
         self.container = kwargs.get("container")
+        self.one_time_load_per_frame()
 
 
 class PopUpWindow(Toplevel):
