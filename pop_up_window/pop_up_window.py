@@ -151,8 +151,8 @@ class PopUpWindow(Toplevel):
         self.point.pack()
 
     def groove(self, **kwargs):
-        self.point.groove(**kwargs)
         self.current_id = self.point.current_id = self.imageFrame.current_id
+        self.point.groove(**kwargs)
 
 
 if __name__ == '__main__':
