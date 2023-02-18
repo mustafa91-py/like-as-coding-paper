@@ -3,6 +3,7 @@ from tkinter import font
 import os
 from container import Container
 import folder_operations
+from wtext import HighLightText
 
 if __name__ == '__main__':
     from imageforwidget import ImageForTkinter
@@ -135,6 +136,21 @@ class PointFrame(LabelFrame):
         self.container = kwargs.get("container")
 
 
+class DescriptionFrame(LabelFrame):
+    def __init__(self, parent, *args, **kwargs):
+        super(DescriptionFrame, self).__init__(parent, *args, **kwargs)
+        self["text"] = type(self).__name__
+        self.container = None
+        self.text = HighLightText(self, width=40, height=5)
+        self.text.pack()
+
+    def groove(self, **kwargs):
+        self.container = kwargs.get("container")
+
+    def one_time(self):
+        pass
+
+
 class PopUpWindow(Toplevel):
     def __init__(self, *args, **kwargs):
         super(PopUpWindow, self).__init__(*args, **kwargs)
@@ -145,6 +161,8 @@ class PopUpWindow(Toplevel):
         self.imageFrame.pack()
         self.point = PointFrame(self)
         self.point.pack()
+        self.description = DescriptionFrame(self)
+        self.description.pack()
         self.control = False
 
     def groove(self, **kwargs):
