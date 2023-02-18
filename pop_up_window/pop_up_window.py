@@ -85,6 +85,7 @@ class PointFrame(LabelFrame):
         self.point_var2 = IntVar()
         self.current_id = None
         self.control = False
+        self.tem_cid = None
 
         for i in range(1, 11):
             self.point_label_2_w[i] = Label(self, text=i, font=font.Font(size=32), cursor="hand2")
@@ -116,6 +117,10 @@ class PointFrame(LabelFrame):
                 img_gray.set_widget_image(kkk)  # kkk.image = img_gray
         if cid := self.current_id:
             self.container.ids[cid]["point"] = self.point_var2.get()
+
+    def one_time_load_per_frame(self):
+        if point := self.container.ids[self.current_id].get("point", None):
+            self.point_var2.set(point)
 
     def clear_point(self, event):
         print(self.container)
