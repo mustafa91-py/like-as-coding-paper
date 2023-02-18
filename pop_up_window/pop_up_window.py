@@ -127,12 +127,6 @@ class PointFrame(LabelFrame):
             img_gray.set_widget_image(kkk)
 
     def groove(self, **kwargs):
-        """
-        id değişsede point aynı kalıyor düzeltilecek
-        id değişince alınan veriler hemen işlenmeli
-        :param kwargs:
-        :return:
-        """
         self.container = kwargs.get("container")
 
 
@@ -141,6 +135,7 @@ class DescriptionFrame(LabelFrame):
         super(DescriptionFrame, self).__init__(parent, *args, **kwargs)
         self["text"] = type(self).__name__
         self.container = None
+        self.current_id = None
         self.text = HighLightText(self, width=40, height=5)
         self.text.pack()
 
@@ -148,7 +143,10 @@ class DescriptionFrame(LabelFrame):
         self.container = kwargs.get("container")
 
     def one_time(self):
-        pass
+        if cid := self.container.ids.get(self.current_id):
+            if desc := cid.get("desc", None):
+                self.text.delete(0.0, "end")
+                self.text.insert(0.0, desc)
 
 
 class PopUpWindow(Toplevel):
@@ -167,8 +165,11 @@ class PopUpWindow(Toplevel):
 
     def groove(self, **kwargs):
         self.current_id = self.point.current_id = self.imageFrame.current_id
+        self.description.current_id = self.current_id
         self.point.groove(**kwargs)
-        self.one_time_load_control(self.point.one_time)
+        self.description.groove(**kwargs)
+        self.one_time_load_control(self.point.one_time,
+                                   self.description.one_time)
 
     def one_time_load_control(self, *args):
         if self.control:
