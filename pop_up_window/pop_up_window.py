@@ -81,7 +81,6 @@ class PointFrame(LabelFrame):
         self.point_label_2_w = dict()
         self.point_var2 = IntVar()
         self.current_id = None
-        self.control = False
 
         for i in range(1, 11):
             self.point_label_2_w[i] = Label(self, text=i, font=font.Font(size=32), cursor="hand2")
@@ -114,14 +113,11 @@ class PointFrame(LabelFrame):
         if cid := self.current_id:
             self.container.ids[cid]["point"] = self.point_var2.get()
 
-    def one_time_load_per_frame(self):
-        if self.control:
-            return
+    def one_time(self):
         if cid := self.container.ids.get(self.current_id):
             if point := cid.get("point", None):
                 self.point_var2.set(point)
                 self.star_icon(None)
-                self.control = True
 
     def clear_point(self, event):
         self.point_var2.set(0)
@@ -137,7 +133,6 @@ class PointFrame(LabelFrame):
         :return:
         """
         self.container = kwargs.get("container")
-        self.one_time_load_per_frame()
 
 
 class PopUpWindow(Toplevel):
@@ -150,10 +145,19 @@ class PopUpWindow(Toplevel):
         self.imageFrame.pack()
         self.point = PointFrame(self)
         self.point.pack()
+        self.control = False
 
     def groove(self, **kwargs):
         self.current_id = self.point.current_id = self.imageFrame.current_id
         self.point.groove(**kwargs)
+        self.one_time_load_control(self.point.one_time)
+
+    def one_time_load_control(self, *args):
+        if self.control:
+            return
+        for arg in args:
+            arg()
+        self.control = True
 
 
 if __name__ == '__main__':
