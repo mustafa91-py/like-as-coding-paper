@@ -25,8 +25,30 @@ class MidFrame(LabelFrame):
         self.unit_per_minute = Label(self, text="unit per min")
         self.amount.grid(row=0, column=0)
         self.unit_per_minute.grid(row=1, column=0)
-        self.amount_scale = Scale(self, resolution=1, orient=HORIZONTAL, length=200)
+        self.amount_var = DoubleVar()
+        self.amount_scale = Scale(self, variable=self.amount_var,
+                                  to=20, from_=1,
+                                  resolution=1,
+                                  orient=HORIZONTAL,
+                                  length=250, command=self.try_command)
         self.amount_scale.grid(row=0, column=1)
+        self.amount_scale.set(10)
+        self.unit_per_minute_var = DoubleVar()
+        self.unit_per_minute_scale = Scale(self, from_=.1, to=10, variable=self.unit_per_minute_var,
+                                           resolution=.1, orient=HORIZONTAL, length=200, )
+        self.unit_per_minute_scale.grid(row=1, column=1)
+        self.unit_per_minute_scale.set(1)
+
+    def try_command(self, value):
+        current_to = self.amount_scale["to"]
+        length_ = self.amount_scale["length"]
+        if current_to >= 500:
+            return
+        percent = round((int(value) / float(current_to) * 100), 2)
+        if percent >= 90:
+            self.amount_scale.configure(to=current_to + 5, length=length_ + 5)
+            self.amount_scale.set(value)
+        self.unit_per_minute_scale.configure(length=self.amount_scale["length"])
 
 
 class InputFrame(Frame):
