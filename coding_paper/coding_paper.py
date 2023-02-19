@@ -79,7 +79,7 @@ class CodingPaperOpen(Frame):
         self.popUpWindow = PopUpWindow()
         self.save_dict = SaveDict(path_=self.file_path)
         self.container = Container(**self.save_dict.space)
-
+        self.container.create_ids()
         __ = {k: v for k, v in self.save_dict.space.items() if k in ["amount", "title"]}
         self.stack_units = StackUnits(self, file_path=self.file_path,
                                       pop_up_window=self.popUpWindow, container=self.container,
