@@ -76,6 +76,8 @@ class InputFrame(Frame):
         self.topFrame.pack()
         self.midFrame = MidFrame(self)
         self.midFrame.pack()
+        self.create_paper = Button(self,text="create")
+        self.create_paper.pack()
 
 
 if __name__ == '__main__':
