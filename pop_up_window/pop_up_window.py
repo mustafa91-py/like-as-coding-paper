@@ -138,6 +138,7 @@ class DescriptionFrame(LabelFrame):
         self.current_id = None
         self.text = HighLightText(self, width=40, height=5)
         self.text.pack()
+        self.text.bind("<Enter>", self.update_text)
 
     def groove(self, **kwargs):
         self.container = kwargs.get("container")
@@ -147,6 +148,11 @@ class DescriptionFrame(LabelFrame):
             if desc := cid.get("desc", None):
                 self.text.delete(0.0, "end")
                 self.text.insert(0.0, desc)
+
+    def update_text(self, event):
+        widget: HighLightText = event.widget
+        if cid := self.container.ids.get(self.current_id):
+            cid["desc"] = widget.get(0.0, "end")
 
 
 class PopUpWindow(Toplevel):
