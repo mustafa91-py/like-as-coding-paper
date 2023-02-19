@@ -76,8 +76,16 @@ class InputFrame(Frame):
         self.topFrame.pack()
         self.midFrame = MidFrame(self)
         self.midFrame.pack()
-        self.create_paper = Button(self,text="create")
+        self.out_kw = {}
+        self.create_paper = Button(self, text="create",command=self.take_kwargs)
         self.create_paper.pack()
+
+    def take_kwargs(self):
+        kwargs = {}
+        kwargs.update(self.topFrame.out_put())
+        kwargs.update(self.midFrame.out_puts())
+        self.out_kw.update(kwargs)
+        self.pack_forget()
 
 
 if __name__ == '__main__':
