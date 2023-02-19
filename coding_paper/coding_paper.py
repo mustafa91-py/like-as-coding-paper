@@ -20,13 +20,14 @@ class CodingPaper(Frame):
             showwarning("max value fixed oto", f"amount = 250 ,maximum value of 250 can be given")
         self.popUpWindow = PopUpWindow()
         self.container = Container(**cp_config)
+        self.container.create_ids()
         self.save_dict = SaveDict(path_=cp_config.get("file_path"))
         self.file_path = self.container.file_path
 
         self.stack_units = StackUnits(self, self.container.amount,
                                       file_path=self.file_path,
                                       title=self.container.lesson,
-                                      pop_up_window=self.popUpWindow)
+                                      pop_up_window=self.popUpWindow,container=self.container)
         self.stack_units.pack(fill="both", expand=1)
         self.stack_units.create_stack()
 
