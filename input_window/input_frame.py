@@ -50,6 +50,11 @@ class MidFrame(LabelFrame):
             self.amount_scale.set(value)
         self.unit_per_minute_scale.configure(length=self.amount_scale["length"])
 
+    def out_puts(self):
+        out = dict(amount=self.amount_scale.get(),
+                   unit_time=self.unit_per_minute_scale.get())
+        return out
+
 
 class InputFrame(Frame):
     def __init__(self, parent, *args, **kwargs):
