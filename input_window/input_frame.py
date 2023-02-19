@@ -24,6 +24,12 @@ class TopFrame(LabelFrame):
         self.subject_entry.grid(row=1, column=1)
         self.title_entry.grid(row=2, column=1)
 
+    def out_put(self):
+        out = dict(lesson=self.lesson_entry_var.get(),
+                   subject=self.subject_entry_var.get(),
+                   title=self.title_entry_var.get())
+        return out
+
 
 class MidFrame(LabelFrame):
     def __init__(self, parent, *args, **kwargs):
