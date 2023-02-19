@@ -10,9 +10,16 @@ class TopFrame(LabelFrame):
         self.lesson.grid(row=0, column=0)
         self.subject.grid(row=1, column=0)
         self.title.grid(row=2, column=0)
-        self.lesson_entry = Entry(self)
-        self.subject_entry = Entry(self)
-        self.title_entry = Entry(self)
+
+        self.lesson_entry_var = StringVar()
+        self.lesson_entry = Entry(self, textvariable=self.lesson_entry_var)
+
+        self.subject_entry_var = StringVar()
+        self.subject_entry = Entry(self, textvariable=self.subject_entry_var)
+
+        self.title_entry_var = StringVar()
+        self.title_entry = Entry(self, textvariable=self.title_entry_var)
+
         self.lesson_entry.grid(row=0, column=1)
         self.subject_entry.grid(row=1, column=1)
         self.title_entry.grid(row=2, column=1)
