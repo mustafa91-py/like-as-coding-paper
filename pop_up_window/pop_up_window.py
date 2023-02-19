@@ -147,6 +147,7 @@ class DescriptionFrame(LabelFrame):
         if cid := self.container.ids.get(self.current_id):
             if desc := cid.get("desc", None):
                 self.text.delete(0.0, "end")
+                desc = str(desc).replace("\n\n\n", "")
                 self.text.insert(0.0, desc)
 
     def update_text(self, event):
