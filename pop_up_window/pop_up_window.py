@@ -28,7 +28,7 @@ class ImageFrame(LabelFrame):
 
     def preloading_letter(self, fp=None):
         if fp is None:
-            letters_dir = os.path.join(os.getcwd(), "../letters")
+            letters_dir = folder_operations.letters_path
         else:
             letters_dir = fp
         if os.path.exists(letters_dir):
