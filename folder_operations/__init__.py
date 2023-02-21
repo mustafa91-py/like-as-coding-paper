@@ -14,3 +14,9 @@ def create_folder_to_sshot(name: str):
     if not os.path.exists(dir_):
         os.makedirs(dir_)
     return dir_
+
+
+try:
+    letters_path = os.path.join(os.getcwd(), "../letters")
+except FileNotFoundError:
+    letters_path = os.path.join(os.getcwd(), "letters")
