@@ -58,24 +58,33 @@ class MidFrame(LabelFrame):
     def switch_time(self, event):
         label_: Label = event.widget
         if self.value_on_off % 2 == 0:
-            self.get_unit_time()
+            self.set_unit_time()
             label_.configure(text="unit per min")
 
         else:
-            self.get_total_time()
+            self.set_total_time()
             label_.configure(text="total time(min)")
         self.value_on_off += 1
 
-    def get_total_time(self):
+    def set_total_time(self):
         self.unit_per_minute_scale.configure(from_=1, to=500, resolution=1)
+        self.unit_per_minute_scale.configure(command=self.get_total_time)
 
-    def get_unit_time(self):
+    def get_total_time(self, value=None):
+        _ = float(self.unit_per_minute_var.get()/self.amount_var.get())
+        self.unit_per_minute.configure(text=f"total time(min)\n unit per min = {_:.2f})")
+        return _
+
+    def set_unit_time(self):
         self.unit_per_minute_scale.configure(from_=.1, to=10, resolution=.1)
         self.unit_per_minute_scale.set(1)
+        self.unit_per_minute_scale.configure(command="")
 
     def try_command(self, value):
         current_to = self.amount_scale["to"]
         length_ = self.amount_scale["length"]
+        if self.value_on_off % 2 == 0:
+            self.get_total_time()
         if current_to >= 250:
             return
         percent = round((int(value) / float(current_to) * 100), 2)
