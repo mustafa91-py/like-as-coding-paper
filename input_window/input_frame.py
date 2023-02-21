@@ -55,7 +55,7 @@ class MidFrame(LabelFrame):
     def try_command(self, value):
         current_to = self.amount_scale["to"]
         length_ = self.amount_scale["length"]
-        if current_to >= 500:
+        if current_to >= 250:
             return
         percent = round((int(value) / float(current_to) * 100), 2)
         if percent >= 90:
