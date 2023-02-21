@@ -38,6 +38,7 @@ class CodingPaper(Frame):
         self.container.paper_key = self.get_data_to_stack_units()
         self.container.answer_key = self.get_data_to_answer_stack_units()
         self.stack_units.groove()
+        self.popUpWindow.groove(container=self.container)
         self.after_id = self.after(250, self.groove)
 
     def get_data_to_stack_units(self):
