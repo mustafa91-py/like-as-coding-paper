@@ -52,35 +52,38 @@ class MidFrame(LabelFrame):
         self.unit_per_minute_var = DoubleVar()
         self.total_time_var = DoubleVar()
         self.unit_per_minute_scale = Scale(self, from_=.1, to=10, variable=self.unit_per_minute_var,
-                                           resolution=.1, orient=HORIZONTAL, length=200, )
+                                           resolution=.1, orient=HORIZONTAL, length=200,)
         self.unit_per_minute_scale.grid(row=1, column=1)
         self.unit_per_minute_scale.set(1)
 
     def switch_time(self, event):
         label_: Label = event.widget
+
         if self.value_on_off % 2 == 0:
             self.set_unit_time()
             label_.configure(text="unit per min")
-
         else:
             self.set_total_time()
             label_.configure(text="total time(min)")
+            self.configure(text=f"unit per min = {self.total_time_var.get():.2f})")
         self.value_on_off += 1
+        self["text"] = "..."
 
     def set_total_time(self):
         self.unit_per_minute_scale.configure(from_=1, to=500, resolution=1)
         self.unit_per_minute_scale.configure(command=self.get_total_time)
 
     def get_total_time(self, value=None):
-        _ = float(self.unit_per_minute_var.get()/self.amount_var.get())
+        _ = float(self.unit_per_minute_var.get() / self.amount_var.get())
         self.total_time_var.set(_)
-        self.unit_per_minute.configure(text=f"total time(min)\n unit per min = {_:.2f})")
+        self.configure(text=f"unit per min = {_:.2f})")
         return _
 
     def set_unit_time(self):
         self.unit_per_minute_scale.configure(from_=.1, to=10, resolution=.1)
-        self.unit_per_minute_scale.set(1)
-        self.unit_per_minute_scale.configure(command="")
+        # self.unit_per_minute_scale.set(1)
+        self.unit_per_minute_scale.configure(command=lambda v: self.configure(
+            text=f"unit per min = {self.unit_per_minute_var.get():.1f})"))
 
     def try_command(self, value):
         current_to = self.amount_scale["to"]
