@@ -59,7 +59,7 @@ class MidFrame(LabelFrame):
             return
         percent = round((int(value) / float(current_to) * 100), 2)
         if percent >= 90:
-            self.amount_scale.configure(to=current_to + 5, length=length_ + 5)
+            self.amount_scale.configure(to=current_to + 5, length=length_ + 10)
             self.amount_scale.set(value)
         self.unit_per_minute_scale.configure(length=self.amount_scale["length"])
 
