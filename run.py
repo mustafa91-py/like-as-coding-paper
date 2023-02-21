@@ -12,7 +12,8 @@ if __name__ == '__main__':
     def okay():
         input_f.take_kwargs()
         kwargs = input_f.out_kw
-        file_path = os.path.join(folder_operations.F_P, kwargs.get("title")+".json")
+        file_name = f"{kwargs.get('lesson')}_{kwargs.get('subject')}_{kwargs.get('title')}"
+        file_path = os.path.join(folder_operations.F_P, file_name + ".json")
         kwargs.update(dict(file_path=file_path))
 
         def save_exit():
