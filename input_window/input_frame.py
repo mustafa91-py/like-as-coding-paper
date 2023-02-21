@@ -36,6 +36,9 @@ class MidFrame(LabelFrame):
         super(MidFrame, self).__init__(parent, *args, **kwargs)
         self.amount = Label(self, text="amount")
         self.unit_per_minute = Label(self, text="unit per min")
+        self.unit_per_minute.bind("<Button-1>", self.switch_time)
+        self.value_on_off = 1
+
         self.amount.grid(row=0, column=0)
         self.unit_per_minute.grid(row=1, column=0)
         self.amount_var = DoubleVar()
@@ -50,6 +53,24 @@ class MidFrame(LabelFrame):
         self.unit_per_minute_scale = Scale(self, from_=.1, to=10, variable=self.unit_per_minute_var,
                                            resolution=.1, orient=HORIZONTAL, length=200, )
         self.unit_per_minute_scale.grid(row=1, column=1)
+        self.unit_per_minute_scale.set(1)
+
+    def switch_time(self, event):
+        label_: Label = event.widget
+        if self.value_on_off % 2 == 0:
+            self.get_unit_time()
+            label_.configure(text="unit per min")
+
+        else:
+            self.get_total_time()
+            label_.configure(text="total time(min)")
+        self.value_on_off += 1
+
+    def get_total_time(self):
+        self.unit_per_minute_scale.configure(from_=1, to=500, resolution=1)
+
+    def get_unit_time(self):
+        self.unit_per_minute_scale.configure(from_=.1, to=10, resolution=.1)
         self.unit_per_minute_scale.set(1)
 
     def try_command(self, value):
@@ -77,7 +98,7 @@ class InputFrame(Frame):
         self.midFrame = MidFrame(self)
         self.midFrame.pack()
         self.out_kw = {}
-        self.create_paper = Button(self, text="create",command=self.take_kwargs)
+        self.create_paper = Button(self, text="create", command=self.take_kwargs)
         self.create_paper.pack()
 
     def take_kwargs(self):
