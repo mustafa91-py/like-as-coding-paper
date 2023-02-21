@@ -50,6 +50,7 @@ class MidFrame(LabelFrame):
         self.amount_scale.grid(row=0, column=1)
         self.amount_scale.set(10)
         self.unit_per_minute_var = DoubleVar()
+        self.total_time_var = DoubleVar()
         self.unit_per_minute_scale = Scale(self, from_=.1, to=10, variable=self.unit_per_minute_var,
                                            resolution=.1, orient=HORIZONTAL, length=200, )
         self.unit_per_minute_scale.grid(row=1, column=1)
@@ -72,6 +73,7 @@ class MidFrame(LabelFrame):
 
     def get_total_time(self, value=None):
         _ = float(self.unit_per_minute_var.get()/self.amount_var.get())
+        self.total_time_var.set(_)
         self.unit_per_minute.configure(text=f"total time(min)\n unit per min = {_:.2f})")
         return _
 
@@ -96,6 +98,10 @@ class MidFrame(LabelFrame):
     def out_puts(self):
         out = dict(amount=self.amount_scale.get(),
                    unit_time=self.unit_per_minute_scale.get())
+        if self.value_on_off % 2 == 0:
+            out["unit_time"] = self.total_time_var.get()
+        else:
+            out["unit_time"] = self.unit_per_minute_var.get()
         return out
 
 
