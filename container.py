@@ -38,7 +38,10 @@ class Container:
 
     def get_data(self):
         self.create_ids()
-        images = os.listdir(os.path.join(fpo.SS_SHOT, self.oto_file_name()))
+        ss_file_dir = os.path.join(fpo.SS_SHOT, self.oto_file_name())
+        if not os.path.exists(ss_file_dir):
+            return
+        images = os.listdir(os.path.join(ss_file_dir))
         images = [os.path.abspath(os.path.join(fpo.SS_SHOT, self.oto_file_name(), p)) for p in images]
         if images:
             for img in images:
