@@ -7,11 +7,10 @@ from wtext import HighLightText
 
 if __name__ == '__main__':
     from imageforwidget import ImageForTkinter
-    letters_path = os.path.join(os.getcwd(), "../letters")
 
 else:
     from .imageforwidget import ImageForTkinter
-    letters_path = os.path.join(os.getcwd(), "letters")
+letters_path = folder_operations.letters_path
 letters = {k: ImageForTkinter(fp=os.path.join(letters_path, k)) for k in os.listdir(letters_path)}
 
 
