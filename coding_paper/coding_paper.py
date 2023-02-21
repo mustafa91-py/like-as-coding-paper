@@ -41,11 +41,11 @@ class CodingPaper(Frame):
         self.after_id = self.after(250, self.groove)
 
     def get_data_to_stack_units(self):
-        data_ = {k: v.var.get() for k, v in self.stack_units.units.items()}
+        data_ = {str(k): v.var.get() for k, v in self.stack_units.units.items()}
         return data_
 
     def get_data_to_answer_stack_units(self):
-        data_ = {k: v.var.get() for k, v in self.stack_units.answer_top_level.units.items()}
+        data_ = {str(k): v.var.get() for k, v in self.stack_units.answer_top_level.units.items()}
         return data_
 
     def stain(self):
