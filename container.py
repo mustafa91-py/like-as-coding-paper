@@ -38,8 +38,8 @@ class Container:
 
     def get_data(self):
         self.create_ids()
-        images = os.listdir(os.path.join(fpo.SS_SHOT, self.title))
-        images = [os.path.abspath(os.path.join(fpo.SS_SHOT, self.title, p)) for p in images]
+        images = os.listdir(os.path.join(fpo.SS_SHOT, self.oto_file_name()))
+        images = [os.path.abspath(os.path.join(fpo.SS_SHOT, self.oto_file_name(), p)) for p in images]
         if images:
             for img in images:
                 iid = os.path.split(img)[-1]
@@ -47,6 +47,10 @@ class Container:
                 iid = str(iid.split("_")[-1])
                 iid = str(int(iid))
                 self.ids[iid]["images"] = img
+
+    def oto_file_name(self):
+        fm = f"{self.lesson}_{self.subject}_{self.title}"
+        return fm
 
 
 if __name__ == '__main__':

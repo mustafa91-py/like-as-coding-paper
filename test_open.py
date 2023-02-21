@@ -5,7 +5,7 @@ from coding_paper.coding_paper import CodingPaperOpen
 from tkinter import *
 
 if __name__ == '__main__':
-    fff = os.path.join(folder_operations.F_P, "s.json")
+    fff = os.path.join(folder_operations.F_P, "w_w_w.json")
     root = Tk()
     print(fff)
     cp = CodingPaperOpen(root, file_path=fff)
