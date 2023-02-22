@@ -152,6 +152,7 @@ class DescriptionFrame(LabelFrame):
 
     def update_text(self, event):
         widget: HighLightText = event.widget
+        assert self.container is not None, f"{self.container=} is not must be empty"
         if cid := self.container.ids.get(self.current_id):
             cid["desc"] = widget.get(0.0, "end")
 
@@ -189,7 +190,7 @@ class PopUpWindow(Toplevel):
 if __name__ == '__main__':
     import os
 
-    dir_ = os.path.join(folder_operations.SS_SHOT, "test", )
+    dir_ = os.path.join(folder_operations.SS_SHOT, "w_w_w", )
     list_ = [os.path.join(dir_, p) for p in os.listdir(dir_)]
     print(list_)
     dir_ = os.path.join(dir_, list_[0])
