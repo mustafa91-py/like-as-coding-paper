@@ -196,7 +196,7 @@ class PopUpWindow(Toplevel):
         self.control = False
 
     def groove(self, **kwargs):
-        self.current_id = self.point.current_id = self.imageFrame.current_id
+        self.point.current_id = self.imageFrame.current_id = self.current_id
         self.description.current_id = self.current_id
         self.imageFrame.groove(**kwargs)
         self.point.groove(**kwargs)
