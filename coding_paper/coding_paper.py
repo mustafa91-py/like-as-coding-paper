@@ -18,8 +18,8 @@ class CodingPaper(Frame):
         if cp_config.get("amount", 0) >= 250:
             cp_config["amount"] = 250
             showwarning("max value fixed oto", f"amount = 250 ,maximum value of 250 can be given")
-        self.popUpWindow = PopUpWindow()
         self.container = Container(**cp_config)
+        self.popUpWindow = PopUpWindow(container=self.container)
         self.container.create_ids()
         self.save_dict = SaveDict(path_=cp_config.get("file_path"))
         self.file_path = self.container.file_path
@@ -38,7 +38,7 @@ class CodingPaper(Frame):
         self.container.paper_key = self.get_data_to_stack_units()
         self.container.answer_key = self.get_data_to_answer_stack_units()
         self.stack_units.groove()
-        self.popUpWindow.groove(container=self.container)
+        self.popUpWindow.groove()
         self.after_id = self.after(250, self.groove)
 
     def get_data_to_stack_units(self):
@@ -78,10 +78,10 @@ class CodingPaperOpen(Frame):
         super(CodingPaperOpen, self).__init__(parent, *args, **kwargs)
         # Frame.__init__(self, parent, *args, **kwargs)
         self.file_path = file_path
-        self.popUpWindow = PopUpWindow()
         self.save_dict = SaveDict(path_=self.file_path)
         assert self.save_dict.space.get("file_path") is not None, f"file reading error\n{file_path=}"
         self.container = Container(**self.save_dict.space)
+        self.popUpWindow = PopUpWindow(container=self.container)
         self.container.create_ids()
         __ = {k: v for k, v in self.save_dict.space.items() if k in ["amount", "title"]}
         self.stack_units = StackUnits(self, file_path=self.file_path,

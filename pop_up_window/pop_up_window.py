@@ -16,12 +16,12 @@ letters = {k: ImageForTkinter(fp=os.path.join(letters_path, k)) for k in os.list
 
 
 class ImageFrame(LabelFrame):
-    def __init__(self, parent, *args, **kwargs):
+    def __init__(self, parent, container: Container, *args, **kwargs):
         super(ImageFrame, self).__init__(parent, *args, **kwargs)
         self["text"] = type(self).__name__
         self.images_temp = {}
         self.current_id = None
-        self.container = None
+        self.container = container
         self.letters = {}
         self.image_label = Label(self, text="image...")
         self.image_label.pack()
@@ -29,7 +29,8 @@ class ImageFrame(LabelFrame):
         self.preloading_letter()
 
     def groove(self, **kwargs):
-        self.container = kwargs.get("container")
+        # self.container = kwargs.get("container")
+        pass
 
     def preloading_letter(self, fp=None):
         if fp is None:
@@ -99,10 +100,10 @@ class ImageFrame(LabelFrame):
 
 
 class PointFrame(LabelFrame):
-    def __init__(self, parent, *args, **kwargs):
+    def __init__(self, parent, container: Container, *args, **kwargs):
         super(PointFrame, self).__init__(parent, *args, **kwargs)
         self["text"] = type(self).__name__
-        self.__container: Container = {}
+        self.__container = container
         self.point_label_2_w = dict()
         self.point_var2 = IntVar()
         self.current_id = None
@@ -151,14 +152,15 @@ class PointFrame(LabelFrame):
             img_gray.set_widget_image(kkk)
 
     def groove(self, **kwargs):
-        self.container = kwargs.get("container")
+        # self.container = kwargs.get("container")
+        pass
 
 
 class DescriptionFrame(LabelFrame):
-    def __init__(self, parent, *args, **kwargs):
+    def __init__(self, parent, container: Container, *args, **kwargs):
         super(DescriptionFrame, self).__init__(parent, *args, **kwargs)
         self["text"] = type(self).__name__
-        self.container = None
+        self.container = container
         self.current_id = None
         self.text = HighLightText(self, width=40, height=5)
         self.text.pack()
@@ -166,7 +168,8 @@ class DescriptionFrame(LabelFrame):
         self.text.bind("<Leave>", self.update_text)
 
     def groove(self, **kwargs):
-        self.container = kwargs.get("container")
+        # self.container = kwargs.get("container")
+        pass
 
     def one_time(self):
         if cid := self.container.ids.get(self.current_id):
@@ -184,16 +187,17 @@ class DescriptionFrame(LabelFrame):
 
 
 class PopUpWindow(Toplevel):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, container: Container, *args, **kwargs):
         super(PopUpWindow, self).__init__(*args, **kwargs)
         self.protocol("WM_DELETE_WINDOW", lambda: self.state("withdraw"))
         self.state("withdraw")
+        self.container = container
         self.current_id = None
-        self.imageFrame = ImageFrame(self)
+        self.imageFrame = ImageFrame(self, self.container)
         self.imageFrame.pack()
-        self.point = PointFrame(self)
+        self.point = PointFrame(self, self.container)
         self.point.pack()
-        self.description = DescriptionFrame(self)
+        self.description = DescriptionFrame(self, self.container)
         self.description.pack()
         self.control = False
 
