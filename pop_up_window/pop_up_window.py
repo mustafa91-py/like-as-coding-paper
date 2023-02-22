@@ -1,3 +1,4 @@
+import datetime
 from tkinter import *
 from tkinter import font
 import os
@@ -139,6 +140,7 @@ class DescriptionFrame(LabelFrame):
         self.text = HighLightText(self, width=40, height=5)
         self.text.pack()
         self.text.bind("<Enter>", self.update_text)
+        self.text.bind("<Leave>", self.update_text)
 
     def groove(self, **kwargs):
         self.container = kwargs.get("container")
@@ -155,6 +157,7 @@ class DescriptionFrame(LabelFrame):
         assert self.container is not None, f"{self.container=} is not must be empty"
         if cid := self.container.ids.get(self.current_id):
             cid["desc"] = widget.get(0.0, "end")
+        self["text"] = f"{self.__class__.__name__} saved {datetime.datetime.now()}"
 
 
 class PopUpWindow(Toplevel):
