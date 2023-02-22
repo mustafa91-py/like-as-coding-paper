@@ -79,6 +79,8 @@ class ImageFrame(LabelFrame):
         return image
 
     def ready_image(self, __path):
+        if not self.current_id:
+            return
         new = self.load_image(__path)
         __answer = self.container.answer_key
         __paper = self.container.paper_key
