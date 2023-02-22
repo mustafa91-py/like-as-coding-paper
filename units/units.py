@@ -161,6 +161,7 @@ class Units(Frame):
         widget = event.widget["text"]
         ss = ScreenShot()
         ss.ss_name = os.path.join(self.revamp_folder(), f"id_{widget}.png")
+        self.popUpWindow.current_id = str(int(widget))
         if self.popUpWindow.imageFrame.images_temp.get(ss.ss_name, None):
             self.popUpWindow.imageFrame.images_temp.pop(ss.ss_name)
 
@@ -172,7 +173,7 @@ class Units(Frame):
         iid = widget["text"]
         __path = os.path.join(self.revamp_folder(), f"id_{iid}.png")
         if os.path.exists(__path):
-            self.popUpWindow.current_id = str(int(iid))
+            # self.popUpWindow.current_id = str(int(iid))
             self.ready_image(__path)
             self.popUpWindow.state("normal")
             self.popUpWindow.wm_attributes("-topmost", 1)
