@@ -27,7 +27,7 @@ class CodingPaper(Frame):
         self.stack_units = StackUnits(self, self.container.amount,
                                       file_path=self.file_path,
                                       title=self.container.lesson,
-                                      pop_up_window=self.popUpWindow,container=self.container)
+                                      pop_up_window=self.popUpWindow, container=self.container)
         self.stack_units.pack(fill="both", expand=1)
         self.stack_units.create_stack()
 
@@ -80,6 +80,7 @@ class CodingPaperOpen(Frame):
         self.file_path = file_path
         self.popUpWindow = PopUpWindow()
         self.save_dict = SaveDict(path_=self.file_path)
+        assert self.save_dict.space.get("file_path") is not None, f"file reading error\n{file_path=}"
         self.container = Container(**self.save_dict.space)
         self.container.create_ids()
         __ = {k: v for k, v in self.save_dict.space.items() if k in ["amount", "title"]}
