@@ -21,11 +21,15 @@ class ImageFrame(LabelFrame):
         self["text"] = type(self).__name__
         self.images_temp = {}
         self.current_id = None
+        self.container = None
         self.letters = {}
         self.image_label = Label(self, text="image...")
         self.image_label.pack()
         self.sx, self.sy = 360, 360
         self.preloading_letter()
+
+    def groove(self, **kwargs):
+        self.container = kwargs.get("container")
 
     def preloading_letter(self, fp=None):
         if fp is None:
@@ -177,6 +181,7 @@ class PopUpWindow(Toplevel):
     def groove(self, **kwargs):
         self.current_id = self.point.current_id = self.imageFrame.current_id
         self.description.current_id = self.current_id
+        self.imageFrame.groove(**kwargs)
         self.point.groove(**kwargs)
         self.description.groove(**kwargs)
         self.one_time_load_control(self.point.one_time,
