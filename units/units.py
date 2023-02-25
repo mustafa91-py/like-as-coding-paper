@@ -161,7 +161,6 @@ class Units(Frame):
         widget = event.widget["text"]
         ss = ScreenShot()
         ss.ss_name = os.path.join(self.revamp_folder(), f"id_{widget}.png")
-        self.popUpWindow.current_id = str(int(widget))
         if self.popUpWindow.imageFrame.images_temp.get(ss.ss_name, None):
             self.popUpWindow.imageFrame.images_temp.pop(ss.ss_name)
 
