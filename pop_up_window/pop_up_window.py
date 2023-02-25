@@ -126,6 +126,9 @@ class PointFrame(LabelFrame):
             if point := cid.get("point", None):
                 self.point_var2.set(point)
                 self.star_icon(None)
+            else:
+                self.point_var2.set(0)
+                self.star_icon(None)
 
     def clear_point(self, event):
         self.point_var2.set(0)
