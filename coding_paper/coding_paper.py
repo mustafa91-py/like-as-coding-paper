@@ -15,14 +15,19 @@ class TimeLine(LabelFrame):
         super(TimeLine, self).__init__(parent, *args, **kwargs)
         self.after_id = None
         self.container = container
-        self.timer = 0
+        self.timer = self.container.amount * (self.container.unit_time * 60)
         self.label = Label(self)
         self.label.pack()
+        self.groove()
 
     def groove(self):
-        self.label.configure(text=f"{(self.container.amount * self.container.unit_time) - self.timer}")
-        self.timer += 1
+        self.label.configure(text=self.convert_time_format())
+        self.timer -= 1
         self.after_id = self.after(1000, self.groove)
+
+    def convert_time_format(self):
+        minute, second = divmod(self.timer, 60)
+        return f"{str(minute).zfill(2)} min, {str(second).zfill(2)} sec"
 
 
 class CodingPaper(Frame):
@@ -49,7 +54,6 @@ class CodingPaper(Frame):
         self.stack_units.create_stack()
 
         self.groove()
-        print(self.container.amount)
 
     def groove(self):
         self.container.paper_key = self.get_data_to_stack_units()
