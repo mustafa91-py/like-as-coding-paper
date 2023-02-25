@@ -348,6 +348,11 @@ class StackUnits(Frame):
         self.answer_top_level.state("normal")
         self.answer_top_level.title(f"answer key = {self.lesson}")
 
+    def disabled_all(self):
+        unit: Units
+        for unit in self.units.values():
+            unit.disabled_all()
+
 
 if __name__ == '__main__':
     root = Tk()
