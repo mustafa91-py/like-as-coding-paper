@@ -18,7 +18,9 @@ class TimeLine(LabelFrame):
         self.timer = self.container.amount * (self.container.unit_time * 60)
         self.label = Label(self)
         self.label.pack(fill="x")
-        self.groove()
+        self.start_button = Button(self, text="start exam", command=self.start_timer)
+        self.start_button.pack(fill="x")
+        self.label.configure(text=self.convert_time_format())
 
     def groove(self):
         self.label.configure(text=self.convert_time_format())
@@ -34,6 +36,11 @@ class TimeLine(LabelFrame):
         else:
             hour, minute = divmod(minute, 60)
             return f"{str(hour).zfill(2)} hour ,{str(minute).zfill(2)} min, {str(second).zfill(2)} sec"
+
+    def start_timer(self):
+        self.start_button.configure(state="disabled")
+        self.start_button.pack_forget()
+        self.groove()
 
 
 class CodingPaper(Frame):
