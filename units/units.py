@@ -173,7 +173,7 @@ class Units(Frame):
         __path = os.path.join(self.revamp_folder(), f"id_{iid}.png")
         if os.path.exists(__path):
             self.popUpWindow.current_id = str(int(iid))
-            self.popUpWindow.imageFrame.ready_image(__path)
+            self.ready_image(__path)
             self.popUpWindow.state("normal")
             self.popUpWindow.wm_attributes("-topmost", 1)
             self.popUpWindow.control = False
