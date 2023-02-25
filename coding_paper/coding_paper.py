@@ -64,7 +64,7 @@ class CodingPaper(Frame):
         self.stack_units.pack(fill="both", expand=1)
         self.stack_units.create_stack()
 
-        self.timeline = TimeLine(self.bottomFrame, container=self.container, text="timer")
+        self.timeline = TimeLine(self.topFrame, container=self.container, text="timer")
         self.timeline.pack(fill="x")
 
         self.groove()
