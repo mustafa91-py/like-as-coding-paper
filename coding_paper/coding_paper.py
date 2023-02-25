@@ -17,7 +17,7 @@ class TimeLine(LabelFrame):
         self.container = container
         self.timer = self.container.amount * (self.container.unit_time * 60)
         self.label = Label(self)
-        self.label.pack()
+        self.label.pack(fill="x")
         self.groove()
 
     def groove(self):
@@ -27,7 +27,11 @@ class TimeLine(LabelFrame):
 
     def convert_time_format(self):
         minute, second = divmod(self.timer, 60)
-        return f"{str(minute).zfill(2)} min, {str(second).zfill(2)} sec"
+        if minute < 60:
+            return f"{str(minute).zfill(2)} min, {str(second).zfill(2)} sec"
+        else:
+            hour, minute = divmod(minute, 60)
+            return f"{str(hour).zfill(2)} hour ,{str(minute).zfill(2)} min, {str(second).zfill(2)} sec"
 
 
 class CodingPaper(Frame):
@@ -40,7 +44,7 @@ class CodingPaper(Frame):
             showwarning("max value fixed oto", f"amount = 250 ,maximum value of 250 can be given")
         self.container = Container(**cp_config)
         self.timeline = TimeLine(self, container=self.container, text="timer")
-        self.timeline.pack()
+        self.timeline.pack(fill="x")
         self.popUpWindow = PopUpWindow(container=self.container)
         self.container.create_ids()
         self.save_dict = SaveDict(path_=cp_config.get("file_path"))
