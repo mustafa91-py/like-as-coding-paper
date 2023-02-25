@@ -49,7 +49,8 @@ class Container:
                 iid = os.path.splitext(iid)[0]
                 iid = str(iid.split("_")[-1])
                 iid = str(int(iid))
-                self.ids[iid]["images"] = img
+                if isinstance(self.ids.get(iid,None),dict):
+                    self.ids[iid]["images"] = img
 
     def oto_file_name(self):
         fm = f"{self.lesson}_{self.subject}_{self.title}"
