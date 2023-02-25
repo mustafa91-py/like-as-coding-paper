@@ -43,6 +43,14 @@ class TimeLine(LabelFrame):
         self.groove()
 
 
+class ResultFrame(LabelFrame):
+    def __init__(self, parent, container: Container, *args, **kwargs):
+        super(ResultFrame, self).__init__(parent, *args, **kwargs)
+        self.container = container
+        self.finish_button = Button(self)
+        self.finish_button.pack(fill="x")
+
+
 class CodingPaper(Frame):
     def __init__(self, parent, cp_config: dict = None, *args, **kwargs):
         super(CodingPaper, self).__init__(parent, *args, **kwargs)
@@ -73,9 +81,10 @@ class CodingPaper(Frame):
         self.stack_units.pack(fill="both", expand=1)
         self.stack_units.create_stack()
 
-        self.timeline = TimeLine(self.topFrame, container=self.container, text="timer")
-        self.timeline.pack(fill="x")
-
+        self.timeLine = TimeLine(self.topFrame, container=self.container, text="timer")
+        self.timeLine.pack(fill="x")
+        self.resultFrame = ResultFrame(self.bottomFrame, container=self.container, text="resultFrame")
+        self.resultFrame.pack(fill="x")
         self.groove()
 
     def groove(self):
