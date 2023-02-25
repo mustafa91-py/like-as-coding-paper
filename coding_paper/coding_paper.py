@@ -39,7 +39,7 @@ class CodingPaper(Frame):
         super(CodingPaper, self).__init__(parent, *args, **kwargs)
         self.after_id = None
 
-        if cp_config.get("amount", 0) >= 250:
+        if cp_config.get("amount", 0) > 250:
             cp_config["amount"] = 250
             showwarning("max value fixed oto", f"amount = 250 ,maximum value of 250 can be given")
         self.container = Container(**cp_config)
