@@ -38,24 +38,34 @@ class CodingPaper(Frame):
     def __init__(self, parent, cp_config: dict = None, *args, **kwargs):
         super(CodingPaper, self).__init__(parent, *args, **kwargs)
         self.after_id = None
+        self.topFrame = Frame(self)
+        self.middleFrame = Frame(self)
+        self.bottomFrame = Frame(self)
+
+        self.topFrame.pack(fill="x")
+        self.middleFrame.pack(fill="x")
+        self.bottomFrame.pack(fill="x")
 
         if cp_config.get("amount", 0) > 250:
             cp_config["amount"] = 250
             showwarning("max value fixed oto", f"amount = 250 ,maximum value of 250 can be given")
+
         self.container = Container(**cp_config)
-        self.timeline = TimeLine(self, container=self.container, text="timer")
-        self.timeline.pack(fill="x")
-        self.popUpWindow = PopUpWindow(container=self.container)
         self.container.create_ids()
-        self.save_dict = SaveDict(path_=cp_config.get("file_path"))
         self.file_path = self.container.file_path
 
-        self.stack_units = StackUnits(self, self.container.amount,
+        self.popUpWindow = PopUpWindow(container=self.container)
+        self.save_dict = SaveDict(path_=cp_config.get("file_path"))
+
+        self.stack_units = StackUnits(self.middleFrame, self.container.amount,
                                       file_path=self.file_path,
                                       title=self.container.lesson,
                                       pop_up_window=self.popUpWindow, container=self.container)
         self.stack_units.pack(fill="both", expand=1)
         self.stack_units.create_stack()
+
+        self.timeline = TimeLine(self.bottomFrame, container=self.container, text="timer")
+        self.timeline.pack(fill="x")
 
         self.groove()
 
