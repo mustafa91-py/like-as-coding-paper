@@ -94,6 +94,11 @@ class Units(Frame):
     def id(self, value):
         self.__id.configure(text=value)
 
+    def disabled_all(self):
+        widget: Radiobutton
+        for widget in self.units.values():
+            widget.configure(state="disabled")
+
     @log
     def high_light_button(self) -> None:
         """
