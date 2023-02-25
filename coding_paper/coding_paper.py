@@ -10,6 +10,21 @@ from pop_up_window.pop_up_window import PopUpWindow
 from container import Container, asdict
 
 
+class TimeLine(LabelFrame):
+    def __init__(self, parent, container: Container, *args, **kwargs):
+        super(TimeLine, self).__init__(parent, *args, **kwargs)
+        self.after_id = None
+        self.container = container
+        self.timer = 0
+        self.label = Label(self)
+        self.label.pack()
+
+    def groove(self):
+        self.label.configure(text=f"{(self.container.amount * self.container.unit_time) - self.timer}")
+        self.timer += 1
+        self.after_id = self.after(1000, self.groove)
+
+
 class CodingPaper(Frame):
     def __init__(self, parent, cp_config: dict = None, *args, **kwargs):
         super(CodingPaper, self).__init__(parent, *args, **kwargs)
@@ -19,6 +34,8 @@ class CodingPaper(Frame):
             cp_config["amount"] = 250
             showwarning("max value fixed oto", f"amount = 250 ,maximum value of 250 can be given")
         self.container = Container(**cp_config)
+        self.timeline = TimeLine(self, container=self.container, text="timer")
+        self.timeline.pack()
         self.popUpWindow = PopUpWindow(container=self.container)
         self.container.create_ids()
         self.save_dict = SaveDict(path_=cp_config.get("file_path"))
