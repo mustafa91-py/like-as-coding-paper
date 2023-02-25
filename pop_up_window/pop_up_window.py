@@ -162,6 +162,9 @@ class DescriptionFrame(LabelFrame):
                 self.text.delete(0.0, "end")
                 desc = str(desc).replace("\n\n\n", "")
                 self.text.insert(0.0, desc)
+            else:
+                self.text.delete(0.0, "end")
+                self.text.insert(0.0, f"created {datetime.datetime.now().strftime('%d/%m/%Y %H:%M:%S')}")
 
     def update_text(self, event):
         widget: HighLightText = event.widget
