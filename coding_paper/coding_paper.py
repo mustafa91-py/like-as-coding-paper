@@ -26,6 +26,8 @@ class TimeLine(LabelFrame):
         self.after_id = self.after(1000, self.groove)
 
     def convert_time_format(self):
+        if self.timer < 0:
+            return
         minute, second = divmod(self.timer, 60)
         if minute < 60:
             return f"{str(minute).zfill(2)} min, {str(second).zfill(2)} sec"
