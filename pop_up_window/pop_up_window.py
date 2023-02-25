@@ -94,6 +94,7 @@ class PointFrame(LabelFrame):
             self.point_label_2_w[i].pack(side="left")
             self.point_label_2_w[i].bind("<Button-1>", self.star_icon)
             self.point_label_2_w[i].bind("<Button-3>", self.clear_point)
+        self.star_icon(None)
         # self.description = ScrolledText(self.f3, width=50, height=5)
         # self.description.grid(row=1, column=0)
 
