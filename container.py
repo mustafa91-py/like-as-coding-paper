@@ -21,7 +21,7 @@ class Container:
             data_ = zip(self.paper_key.items(), self.answer_key.items())
             out_put = {}
             for k, v in data_:
-                if k[1] in "ABCDE":
+                if k[1] in list("ABCDE"):
                     if k == v:
                         out_put[k[0]] = True
                     else:
