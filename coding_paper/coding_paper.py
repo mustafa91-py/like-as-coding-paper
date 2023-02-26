@@ -142,6 +142,7 @@ class CodingPaper(Frame):
         self.timeLine.after_cancel(self.timeLine.after_id)
         self.stack_units.status_all()
         self.stack_units.activate_ss_shot()
+        self.resultFrame.finish_button.configure(state="disabled")
 
     def timeline_is_zero(self):
         if self.timeLine.timer < 0:
