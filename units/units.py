@@ -264,6 +264,11 @@ class StackUnitsForAnswer(Toplevel):
         _text = f"marked : {tick} unmarked : {self.amount - tick} ( % {percent_}) "
         self.bottom_frame.configure(text=_text)
 
+    def status_all(self, state_=DISABLED):
+        unit: Units
+        for unit in self.units.values():
+            unit.state_all(state_=state_)
+
 
 class StackUnits(Frame):
     """
