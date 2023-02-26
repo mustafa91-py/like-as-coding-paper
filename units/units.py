@@ -84,6 +84,8 @@ class Units(Frame):
         # widgets bind func and packed
         # self.iid.bind("<Button-1>", lambda e: print(self.revamp_folder(), e.widget))
         self.__id.bind("<Button-3>", self.ss_shot)
+
+    def activate_pop_up_window(self):
         self.__id.bind("<Double-Button-1>", self.pop_up_top_level)
 
     @property
@@ -357,6 +359,11 @@ class StackUnits(Frame):
         unit: Units
         for unit in self.units.values():
             unit.state_all(state_=state_)
+
+    def activate_pop_up_window(self):
+        unit: Units
+        for unit in self.units.values():
+            unit.activate_pop_up_window()
 
 
 if __name__ == '__main__':
