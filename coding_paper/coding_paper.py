@@ -94,6 +94,7 @@ class CodingPaper(Frame):
         self.container.answer_key = self.get_data_to_answer_stack_units()
         self.stack_units.groove()
         self.popUpWindow.groove()
+        self.timeline_is_zero()
         self.after_id = self.after(250, self.groove)
 
     def get_data_to_stack_units(self):
@@ -131,6 +132,12 @@ class CodingPaper(Frame):
         self.timeLine.start_timer()
         self.stack_units.status_all("normal")
         self.resultFrame.pack(fill="x")
+
+    def timeline_is_zero(self):
+        if self.timeLine.timer < 0:
+            self.stack_units.status_all()
+            self.timeLine.after_cancel(self.timeLine.after_id)
+
 
 class CodingPaperOpen(Frame):
     def __init__(self, parent, file_path, *args, **kwargs):
