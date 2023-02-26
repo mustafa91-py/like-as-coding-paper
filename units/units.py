@@ -83,10 +83,12 @@ class Units(Frame):
             __rb.pack(**self.__pack)
         # widgets bind func and packed
         # self.iid.bind("<Button-1>", lambda e: print(self.revamp_folder(), e.widget))
-        self.__id.bind("<Button-3>", self.ss_shot)
 
     def activate_pop_up_window(self):
         self.__id.bind("<Double-Button-1>", self.pop_up_top_level)
+
+    def activate_ss_shot(self):
+        self.__id.bind("<Button-3>", self.ss_shot)
 
     @property
     def id(self):
@@ -364,6 +366,11 @@ class StackUnits(Frame):
         unit: Units
         for unit in self.units.values():
             unit.activate_pop_up_window()
+
+    def activate_ss_shot(self):
+        unit: Units
+        for unit in self.units.values():
+            unit.activate_ss_shot()
 
 
 if __name__ == '__main__':
