@@ -165,6 +165,8 @@ class CodingPaperOpen(Frame):
 
         self.load()
         self.groove()
+        self.stack_units.activate_pop_up_window()
+        self.stack_units.activate_ss_shot()
 
     def groove(self, **kwargs):
         self.popUpWindow.groove()
