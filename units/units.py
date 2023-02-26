@@ -94,10 +94,10 @@ class Units(Frame):
     def id(self, value):
         self.__id.configure(text=value)
 
-    def disabled_all(self):
+    def state_all(self, state_=DISABLED):
         widget: Radiobutton
         for widget in self.units.values():
-            widget.configure(state="disabled")
+            widget.configure(state=state_)
 
     @log
     def high_light_button(self) -> None:
@@ -348,10 +348,10 @@ class StackUnits(Frame):
         self.answer_top_level.state("normal")
         self.answer_top_level.title(f"answer key = {self.lesson}")
 
-    def disabled_all(self):
+    def status_all(self, state_=DISABLED):
         unit: Units
         for unit in self.units.values():
-            unit.disabled_all()
+            unit.state_all(state_=state_)
 
 
 if __name__ == '__main__':
