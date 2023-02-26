@@ -80,11 +80,12 @@ class CodingPaper(Frame):
                                       pop_up_window=self.popUpWindow, container=self.container)
         self.stack_units.pack(fill="both", expand=1)
         self.stack_units.create_stack()
-
+        self.stack_units.answer_keys_open_button.configure(state="disabled")
         self.timeLine = TimeLine(self.topFrame, container=self.container, text="timer")
         self.timeLine.pack(fill="x")
         self.timeLine.start_button.configure(command=self.start)
         self.resultFrame = ResultFrame(self.bottomFrame, container=self.container, text="resultFrame")
+        self.resultFrame.finish_button.configure(command=self.finish)
 
         self.groove()
         self.stack_units.status_all()
@@ -132,6 +133,11 @@ class CodingPaper(Frame):
         self.timeLine.start_timer()
         self.stack_units.status_all("normal")
         self.resultFrame.pack(fill="x")
+
+    def finish(self):
+        self.stack_units.answer_keys_open_button.configure(state="normal")
+        self.timeLine.after_cancel(self.timeLine.after_id)
+        self.stack_units.status_all()
 
     def timeline_is_zero(self):
         if self.timeLine.timer < 0:
