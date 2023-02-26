@@ -308,7 +308,7 @@ class StackUnits(Frame):
         self.answer_top_level.amount = self.amount
         self.answer_keys_open_button = Button(self.bottom_frame, text="answer key",
                                               command=self.open_answers_top_level)
-        self.answer_keys_open_button.pack()
+        self.answer_keys_open_button.pack(fill="x")
 
     # @log
     def elapsed_units(self) -> None:
