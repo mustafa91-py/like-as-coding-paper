@@ -81,6 +81,8 @@ class CodingPaper(Frame):
         self.stack_units.pack(fill="both", expand=1)
         self.stack_units.create_stack()
         self.stack_units.answer_keys_open_button.configure(state="disabled")
+        self.stack_units.answer_top_level.save_button.configure(command=self.stain)
+
         self.timeLine = TimeLine(self.topFrame, container=self.container, text="timer")
         self.timeLine.pack(fill="x")
         self.timeLine.start_button.configure(command=self.start)
@@ -109,6 +111,7 @@ class CodingPaper(Frame):
     def stain(self):
         from units.units import Units
         if all(self.container.answer_key.values()):
+            self.stack_units.activate_pop_up_window()
             for paper, answer in zip(self.stack_units.units.items(), self.stack_units.answer_top_level.units.items()):
                 # i_p, i_a = paper[0], answer[0]
                 w_p: Units = paper[1]
@@ -186,6 +189,7 @@ class CodingPaperOpen(Frame):
     def stain(self):
         from units.units import Units
         if all(self.container.answer_key.values()):
+            self.stack_units.activate_pop_up_window()
             for paper, answer in zip(self.stack_units.units.items(), self.stack_units.answer_top_level.units.items()):
                 # i_p, i_a = paper[0], answer[0]
                 w_p: Units = paper[1]
