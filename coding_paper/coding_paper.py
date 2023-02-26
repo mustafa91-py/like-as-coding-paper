@@ -148,7 +148,7 @@ class CodingPaperOpen(Frame):
         self.groove()
 
     def groove(self, **kwargs):
-        self.popUpWindow.groove(container=self.container)
+        self.popUpWindow.groove()
         print(self.save_dict.space)
         self.save_dict.space = asdict(self.container)
         self.after(250, self.groove)
