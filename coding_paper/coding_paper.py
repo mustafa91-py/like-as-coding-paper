@@ -143,6 +143,7 @@ class CodingPaper(Frame):
     def timeline_is_zero(self):
         if self.timeLine.timer < 0:
             self.stack_units.status_all()
+            self.stack_units.activate_ss_shot()
             self.timeLine.after_cancel(self.timeLine.after_id)
 
 
