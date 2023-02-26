@@ -83,9 +83,11 @@ class CodingPaper(Frame):
 
         self.timeLine = TimeLine(self.topFrame, container=self.container, text="timer")
         self.timeLine.pack(fill="x")
+        self.timeLine.start_button.configure(command=self.start)
         self.resultFrame = ResultFrame(self.bottomFrame, container=self.container, text="resultFrame")
-        self.resultFrame.pack(fill="x")
+
         self.groove()
+        self.stack_units.status_all()
 
     def groove(self):
         self.container.paper_key = self.get_data_to_stack_units()
@@ -125,6 +127,10 @@ class CodingPaper(Frame):
                     radiobutton_p.configure(state="disabled")
                     radiobutton_a.configure(state="disabled")
 
+    def start(self):
+        self.timeLine.start_timer()
+        self.stack_units.status_all("normal")
+        self.resultFrame.pack(fill="x")
 
 class CodingPaperOpen(Frame):
     def __init__(self, parent, file_path, *args, **kwargs):
