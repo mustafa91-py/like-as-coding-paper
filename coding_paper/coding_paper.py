@@ -47,8 +47,10 @@ class ResultFrame(LabelFrame):
     def __init__(self, parent, container: Container, *args, **kwargs):
         super(ResultFrame, self).__init__(parent, *args, **kwargs)
         self.container = container
-        self.finish_button = Button(self, text="finish")
-        self.finish_button.pack(fill="x")
+        self.finishButton = Button(self, text="finish")
+        self.finishButton.pack(fill="x")
+        self.resultLabel = Label(self)
+        self.resultLabel.pack(fill="x")
 
 
 class CodingPaper(Frame):
@@ -87,7 +89,7 @@ class CodingPaper(Frame):
         self.timeLine.pack(fill="x")
         self.timeLine.start_button.configure(command=self.start)
         self.resultFrame = ResultFrame(self.bottomFrame, container=self.container, text="resultFrame")
-        self.resultFrame.finish_button.configure(command=self.finish)
+        self.resultFrame.finishButton.configure(command=self.finish)
 
         self.groove()
         self.stack_units.status_all()
@@ -112,6 +114,7 @@ class CodingPaper(Frame):
         from units.units import Units
         if all(self.container.answer_key.values()):
             self.stack_units.activate_pop_up_window()
+            self.show_result()
             for paper, answer in zip(self.stack_units.units.items(), self.stack_units.answer_top_level.units.items()):
                 # i_p, i_a = paper[0], answer[0]
                 w_p: Units = paper[1]
@@ -142,13 +145,21 @@ class CodingPaper(Frame):
         self.timeLine.after_cancel(self.timeLine.after_id)
         self.stack_units.status_all()
         self.stack_units.activate_ss_shot()
-        self.resultFrame.finish_button.configure(state="disabled")
+        self.resultFrame.finishButton.configure(state="disabled")
 
     def timeline_is_zero(self):
         if self.timeLine.timer < 0:
             self.stack_units.status_all()
             self.stack_units.activate_ss_shot()
             self.timeLine.after_cancel(self.timeLine.after_id)
+
+    def show_result(self):
+        container = list(self.container.result().values())
+        correct = container.count(True)
+        incorrect = container.count(False)
+        empty = container.count(None)
+        out = f"{correct=} \n {incorrect=} \n {empty=}"
+        self.resultFrame.resultLabel.configure(text=out)
 
 
 class CodingPaperOpen(Frame):
@@ -168,6 +179,8 @@ class CodingPaperOpen(Frame):
         self.stack_units.pack(fill="both", expand=1)
         self.stack_units.save_id = self.container.file_path
         self.stack_units.create_stack()
+        self.resultLabel = Label(self)
+        self.resultLabel.pack(side="bottom")
 
         self.load()
         self.groove()
@@ -191,6 +204,7 @@ class CodingPaperOpen(Frame):
         from units.units import Units
         if all(self.container.answer_key.values()):
             self.stack_units.activate_pop_up_window()
+            self.show_result()
             for paper, answer in zip(self.stack_units.units.items(), self.stack_units.answer_top_level.units.items()):
                 # i_p, i_a = paper[0], answer[0]
                 w_p: Units = paper[1]
@@ -209,6 +223,14 @@ class CodingPaperOpen(Frame):
                     w_p.iid.configure(bg="red")
             self.stack_units.status_all()
             self.stack_units.answer_top_level.status_all()
+
+    def show_result(self):
+        container = list(self.container.result().values())
+        correct = container.count(True)
+        incorrect = container.count(False)
+        empty = container.count(None)
+        out = f"{correct=} \n {incorrect=} \n {empty=}"
+        self.resultLabel.configure(text=out)
 
 
 if __name__ == '__main__':
