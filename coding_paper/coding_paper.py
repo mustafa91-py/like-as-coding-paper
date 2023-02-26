@@ -47,7 +47,7 @@ class ResultFrame(LabelFrame):
     def __init__(self, parent, container: Container, *args, **kwargs):
         super(ResultFrame, self).__init__(parent, *args, **kwargs)
         self.container = container
-        self.finish_button = Button(self)
+        self.finish_button = Button(self, text="finish")
         self.finish_button.pack(fill="x")
 
 
