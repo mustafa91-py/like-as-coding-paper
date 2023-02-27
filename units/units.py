@@ -54,7 +54,6 @@ class Units(Frame):
         self.popUpWindow: PopUpWindow = pop_up_window
         self.var = StringVar()  # common variable of widgets
         self.iid = self.__id = Label(self, text="None", name="id", font=font.Font(family="Times ", size=16))
-        self.__id.bind("<Enter>", self.is_exists_image_file)
         # number(id) of widgets
         self.__cnf = dict(activebackground="green",
                           highlightbackground="red",
@@ -83,6 +82,9 @@ class Units(Frame):
             __rb.pack(**self.__pack)
         # widgets bind func and packed
         # self.iid.bind("<Button-1>", lambda e: print(self.revamp_folder(), e.widget))
+
+    def activate_is_exist_file_image_bind(self):
+        self.__id.bind("<Enter>", self.is_exists_image_file)
 
     def activate_pop_up_window(self):
         self.__id.bind("<Double-Button-1>", self.pop_up_top_level)
@@ -348,7 +350,7 @@ class StackUnits(Frame):
                                   pop_up_window=self.popUpWindow, container=self.container)
             self.units[i].id = str(i).zfill(3)
             self.units[i].pack()
-
+            self.units[i].activate_is_exist_file_image_bind()
     @log
     def open_answers_top_level(self) -> None:
         """
