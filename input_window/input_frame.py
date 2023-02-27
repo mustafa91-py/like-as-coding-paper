@@ -52,7 +52,7 @@ class MidFrame(LabelFrame):
         self.unit_per_minute_var = DoubleVar()
         self.total_time_var = DoubleVar()
         self.unit_per_minute_scale = Scale(self, from_=.1, to=10, variable=self.unit_per_minute_var,
-                                           resolution=.1, orient=HORIZONTAL, length=200,)
+                                           resolution=.1, orient=HORIZONTAL, length=200, )
         self.unit_per_minute_scale.grid(row=1, column=1)
         self.unit_per_minute_scale.set(1)
 
@@ -124,7 +124,10 @@ class InputFrame(Frame):
         kwargs.update(self.topFrame.out_put())
         kwargs.update(self.midFrame.out_puts())
         self.out_kw.update(kwargs)
-        self.pack_forget()
+        if __name__ == "__main__":
+            print(self.out_kw)
+        else:
+            self.pack_forget()
 
 
 if __name__ == '__main__':
