@@ -65,9 +65,10 @@ class MidFrame(LabelFrame):
         else:
             self.set_total_time()
             label_.configure(text="total time(min)")
-            self.configure(text=f"unit per min = {self.total_time_var.get():.2f})")
+            # self.configure(text=f"unit per min = {self.total_time_var.get():.2f})")
+            self.get_total_time()
         self.value_on_off += 1
-        self["text"] = "..."
+        # self["text"] = "..."
 
     def set_total_time(self):
         self.unit_per_minute_scale.configure(from_=1, to=500, resolution=1)
@@ -81,9 +82,9 @@ class MidFrame(LabelFrame):
 
     def set_unit_time(self):
         self.unit_per_minute_scale.configure(from_=.1, to=10, resolution=.1)
-        # self.unit_per_minute_scale.set(1)
-        self.unit_per_minute_scale.configure(command=lambda v: self.configure(
-            text=f"unit per min = {self.unit_per_minute_var.get():.1f})"))
+        _set_func = lambda: self.configure(text=f"unit per min = {self.unit_per_minute_var.get():.1f})")
+        _set_func()
+        self.unit_per_minute_scale.configure(command=lambda value: _set_func())
 
     def try_command(self, value):
         current_to = self.amount_scale["to"]
