@@ -240,6 +240,9 @@ class StackUnitsForAnswer(Toplevel):
         self.save_button.pack(side="bottom", fill="x")
 
         self.create_stack()
+        self.topMenu = Menu(self)
+        self.topMenu.add_command(label="reorganize", command=lambda: self.status_all(state_="normal"))
+        self.configure(menu=self.topMenu)
 
     @log
     def create_stack(self) -> None:
@@ -351,6 +354,7 @@ class StackUnits(Frame):
             self.units[i].id = str(i).zfill(3)
             self.units[i].pack()
             self.units[i].activate_is_exist_file_image_bind()
+
     @log
     def open_answers_top_level(self) -> None:
         """
