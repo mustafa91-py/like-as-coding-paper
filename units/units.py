@@ -221,6 +221,7 @@ class StackUnitsForAnswer(Toplevel):
         super(StackUnitsForAnswer, self).__init__(*args, **kwargs)
         self.protocol("WM_DELETE_WINDOW", lambda: self.state("withdraw"))
         self.state("withdraw")
+        self.wm_attributes("-topmost", 1)
         self.file_path = file_path
         self.units = {}  # storing the created class
         self.amount = amount  # number of units class or number of questions
