@@ -182,6 +182,8 @@ class CodingPaperOpen(Frame):
         self.resultLabel = Label(self)
         self.resultLabel.pack(side="bottom")
 
+        self.stack_units.answer_top_level.save_button.configure(command=self.stain)
+
         self.load()
         self.groove()
         self.stack_units.activate_pop_up_window()
