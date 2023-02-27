@@ -6,11 +6,13 @@ from tkinter import *
 from tkinter.filedialog import askopenfilename
 
 if __name__ == '__main__':
-    try:
-        file_path = askopenfilename(initialdir=os.path.join(folder_operations.F_P))
-        print(f"{file_path=}")
-    except FileNotFoundError:
+    file_path = askopenfilename(initialdir=os.path.join(folder_operations.F_P))
+    if os.path.exists(file_path):
+        pass
+    else:
         file_path = os.path.join(folder_operations.F_P, "w_w_w.json")
+    print(f"{file_path=}")
+
     root = Tk()
     cp = CodingPaperOpen(root, file_path=file_path)
     cp.stain()
