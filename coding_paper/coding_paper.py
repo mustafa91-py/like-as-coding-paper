@@ -119,6 +119,7 @@ class CodingPaper(Frame):
                 # i_p, i_a = paper[0], answer[0]
                 w_p: Units = paper[1]
                 w_a: Units = answer[1]
+                w_p.clear_stain()
                 widget = w_p.units.get(w_p.var.get())
                 correct_widget = w_p.units.get(w_a.var.get())
                 if w_p.var.get() == w_a.var.get():
