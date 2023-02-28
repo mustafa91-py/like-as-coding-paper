@@ -140,6 +140,10 @@ class Units(Frame):
             for k, v in self.units.items():
                 v["bg"] = "white"
 
+    def clear_stain(self):
+        for k, v in self.units.items():
+            v["bg"] = "white"
+            self.__id.configure(bg="white")
     @log
     def revamp_folder(self):
         if not self.file_path:
