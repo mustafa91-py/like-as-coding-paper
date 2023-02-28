@@ -297,7 +297,7 @@ class StackUnits(Frame):
 
     @log
     def __init__(self, parent, amount: int = None, file_path=None, title: str = "test", pop_up_window=None,
-                 container: dict = None, *args,
+                 container: Container = None, *args,
                  **kwargs):
         super(StackUnits, self).__init__(parent, *args, **kwargs)
         self.amount = amount
