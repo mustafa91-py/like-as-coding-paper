@@ -23,16 +23,16 @@ class ScrollFrame(Frame):
         super(ScrollFrame, self).__init__(parent, *args, **kwargs)
         # self.my_frame = Frame(self)
         self.canvasPaper = Canvas(self)
-        self.child_frame = Frame(self.canvasPaper)
+        self.childFrame = Frame(self.canvasPaper)
         self.__scroll_y = Scrollbar(self, orient="vertical", command=self.canvasPaper.yview)
         self.__scroll_y.pack(side="right", fill="y")
         self.__scroll_x = Scrollbar(self, orient="horizontal", command=self.canvasPaper.xview)
         self.__scroll_x.pack(side="bottom", fill="x")
         self.canvasPaper.configure(yscrollcommand=self.__scroll_y.set, xscrollcommand=self.__scroll_x.set)
-        self.child_frame.bind("<Configure>",
-                              lambda event: self.canvasPaper.configure(scrollregion=self.canvasPaper.bbox("all")))
+        self.childFrame.bind("<Configure>",
+                             lambda event: self.canvasPaper.configure(scrollregion=self.canvasPaper.bbox("all")))
 
-        self.canvasPaper.create_window(0, 0, window=self.child_frame, anchor="nw")
+        self.canvasPaper.create_window(0, 0, window=self.childFrame, anchor="nw")
         self.canvasPaper.pack(fill="y", expand=1)
 
 
@@ -40,13 +40,20 @@ class Units(Frame):
     @log
     def __init__(self, parent, file_path, pop_up_window=None, container: dict = None, *args, **kwargs):
         """
-                   self.__id  self.a self.b  self.c  self.d  self.e
+                       self.__id  self.a self.b  self.c  self.d  self.e
+
+
                       ||        ||      ||      ||      ||     ||
+
+
         for e.x =    001        A       B       C       D      E   = class <Units>(1) overview
 
-        :param parent:
-        :param args:
-        :param kwargs:
+        :param parent:parent
+        :param file_path: any folder path
+        :param pop_up_window:class PopUpWindow
+        :param container:class Container or any like that dataclass
+        :param args:args for Frame
+        :param kwargs:kwargs for Frame
         """
         super(Units, self).__init__(parent, *args, **kwargs)
         self.file_path = file_path
@@ -84,7 +91,7 @@ class Units(Frame):
         # self.iid.bind("<Button-1>", lambda e: print(self.revamp_folder(), e.widget))
 
     def activate_is_exist_file_image_bind(self):
-        self.__id.bind("<Enter>", self.is_exists_image_file)
+        self.__id.bind("<Enter>", self.check_out_image)
 
     def activate_pop_up_window(self):
         self.__id.bind("<Double-Button-1>", self.pop_up_top_level)
@@ -140,12 +147,22 @@ class Units(Frame):
             for k, v in self.units.items():
                 v["bg"] = "white"
 
-    def clear_stain(self):
+    def clear_stain(self) -> None:
+        """
+        the color of each marked unit(a,b,c,d,e,id) changes to white
+        :return: None
+        """
         for k, v in self.units.items():
             v["bg"] = "white"
             self.__id.configure(bg="white")
+
     @log
-    def revamp_folder(self):
+    def revamp_folder(self) -> os.path.abspath:
+        """
+        checks if the folder exists or not.
+        If it does not exist, it creates a folder where images will be saved.
+        :return: file_path
+        """
         if not self.file_path:
             return
         split = os.path.split(self.file_path)
@@ -157,26 +174,37 @@ class Units(Frame):
         return will_create
 
     @log
-    def is_exists_image_file(self, event):
-        if not self.file_path:
+    def check_out_image(self, event) -> None:
+        """
+        checks if there is a saved screenshot
+        :param event: event
+        :return: None
+        """
+        if not self.file_path:  # no file path is exit the function
             return
-        widget = event.widget
-        file = os.path.join(self.revamp_folder(), f"id_{widget['text']}.png")
-        if os.path.exists(file):
+        widget = event.widget  # get widget
+        file = os.path.join(self.revamp_folder(), f"id_{widget['text']}.png")  # location to checking screenshot
+        if os.path.exists(file):  # if there is image the cursor changes
             widget.config(cursor="hand2")
         else:
             widget.config(cursor="")
 
     @log
-    def ss_shot(self, event):
-        # print(self.file_path)
-        if not self.file_path:
+    def ss_shot(self, event) -> None:
+        """
+        checks if there is a recorded screenshot
+        :param event: event
+        :return: None
+        """
+        if not self.file_path:  # no file path is exit the function
             return
-        # print(type(self).__name__, self.file_path, )
-        widget = event.widget["text"]
-        ss = ScreenShot()
-        ss.ss_name = os.path.join(self.revamp_folder(), f"id_{widget}.png")
+        widget = event.widget["text"]  # gets the widget's number
+
+        ss = ScreenShot()  # screenshot class
+        ss.ss_name = os.path.join(self.revamp_folder(), f"id_{widget}.png")  # location to save screenshot and name
+
         if self.popUpWindow.imageFrame.images_temp.get(ss.ss_name, None):
+            # if a new image will be added on the same id, remove it from memory
             self.popUpWindow.imageFrame.images_temp.pop(ss.ss_name)
 
     @log
@@ -184,11 +212,15 @@ class Units(Frame):
         if self.revamp_folder() is None:
             return
         widget = event.widget
-        iid = widget["text"]
+        iid = widget["text"]  # iid get text
+
         __path = os.path.join(self.revamp_folder(), f"id_{iid}.png")
-        if os.path.exists(__path):
-            self.popUpWindow.current_id = str(int(iid))
+        if os.path.exists(__path):  # is exists path?
+
+            self.popUpWindow.current_id = str(int(iid))  # id specifying which image(unit) will be uploaded
+
             self.ready_image(__path)
+
             self.popUpWindow.state("normal")
             self.popUpWindow.wm_attributes("-topmost", 1)
             self.popUpWindow.control = False
@@ -237,11 +269,11 @@ class StackUnitsForAnswer(Toplevel):
 
         self.title("answer key".title())
 
-        self.bottom_frame = LabelFrame(self, text="answer")
-        self.bottom_frame.pack(side="bottom", fill="x")
+        self.bottomFrame = LabelFrame(self, text="answer")
+        self.bottomFrame.pack(side="bottom", fill="x")
 
-        self.save_button = Button(self.bottom_frame, text="save")
-        self.save_button.pack(side="bottom", fill="x")
+        self.saveButton = Button(self.bottomFrame, text="save")
+        self.saveButton.pack(side="bottom", fill="x")
 
         self.create_stack()
         self.topMenu = Menu(self)
@@ -255,7 +287,7 @@ class StackUnitsForAnswer(Toplevel):
         :return: None
         """
         for i in range(1, self.amount + 1):
-            self.units[i] = Units(self.__scroll_frame.child_frame, self.file_path)
+            self.units[i] = Units(self.__scroll_frame.childFrame, self.file_path)
             self.units[i].id = str(i).zfill(3)
             self.units[i].pack()
 
@@ -276,7 +308,7 @@ class StackUnitsForAnswer(Toplevel):
         tick = len(tick)
         percent_ = round((tick / self.amount) * 100, 2)
         _text = f"marked : {tick} unmarked : {self.amount - tick} ( % {percent_}) "
-        self.bottom_frame.configure(text=_text)
+        self.bottomFrame.configure(text=_text)
 
     def status_all(self, state_=DISABLED):
         unit: Units
@@ -306,23 +338,23 @@ class StackUnits(Frame):
         self.file_path = file_path
         self.lesson = title
         self.units = {}
-        self.top_frame = LabelFrame(self)
-        self.top_frame.pack(side="top", fill="x")
+        self.topFrame = LabelFrame(self)
+        self.topFrame.pack(side="top", fill="x")
 
-        self.test_name_label = Label(self.top_frame, text=f"{title}")
-        self.test_name_label.pack(side="top", fill="x")
+        self.testNameLabel = Label(self.topFrame, text=f"{title}")
+        self.testNameLabel.pack(side="top", fill="x")
 
         self.__scroll_frame = ScrollFrame(self)
         self.__scroll_frame.pack(fill="both", expand=1, anchor="nw")
 
-        self.bottom_frame = LabelFrame(self, text="bottom frame")
-        self.bottom_frame.pack(side="bottom", fill="x")
+        self.bottomFrame = LabelFrame(self, text="bottom frame")
+        self.bottomFrame.pack(side="bottom", fill="x")
 
-        self.answer_top_level = StackUnitsForAnswer(amount, self.file_path)
-        self.answer_top_level.amount = self.amount
-        self.answer_keys_open_button = Button(self.bottom_frame, text="answer key",
-                                              command=self.open_answers_top_level)
-        self.answer_keys_open_button.pack(fill="x")
+        self.answerTopLevel = StackUnitsForAnswer(amount, self.file_path)
+        self.answerTopLevel.amount = self.amount
+        self.answerKeysOpenButton = Button(self.bottomFrame, text="answer key",
+                                           command=self.open_answers_top_level)
+        self.answerKeysOpenButton.pack(fill="x")
 
     # @log
     def elapsed_units(self) -> None:
@@ -336,14 +368,14 @@ class StackUnits(Frame):
         tick = len(tick)
         percent_ = round((tick / self.amount) * 100, 2)
         _text = f"marked : {tick} unmarked : {self.amount - tick} ( % {percent_:^9} ) "
-        self.bottom_frame.configure(text=_text)
+        self.bottomFrame.configure(text=_text)
 
     def groove(self) -> None:
         """
         constantly updated method for tkinter after
         :return: None
         """
-        self.answer_top_level.groove()
+        self.answerTopLevel.groove()
         self.elapsed_units()
 
     @log
@@ -353,7 +385,7 @@ class StackUnits(Frame):
         :return: None
         """
         for i in range(1, self.amount + 1):
-            self.units[i] = Units(self.__scroll_frame.child_frame, self.file_path,
+            self.units[i] = Units(self.__scroll_frame.childFrame, self.file_path,
                                   pop_up_window=self.popUpWindow, container=self.container)
             self.units[i].id = str(i).zfill(3)
             self.units[i].pack()
@@ -365,8 +397,8 @@ class StackUnits(Frame):
         pop up answer toplevel
         :return:
         """
-        self.answer_top_level.state("normal")
-        self.answer_top_level.title(f"answer key = {self.lesson}")
+        self.answerTopLevel.state("normal")
+        self.answerTopLevel.title(f"answer key = {self.lesson}")
 
     def status_all(self, state_=DISABLED):
         unit: Units

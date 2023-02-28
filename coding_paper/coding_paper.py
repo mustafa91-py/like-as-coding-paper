@@ -66,7 +66,7 @@ class CoCodingPaper:
         return data_
 
     def get_data_to_answer_stack_units(self):
-        data_ = {str(k): v.var.get() for k, v in self.stack_units.answer_top_level.units.items()}
+        data_ = {str(k): v.var.get() for k, v in self.stack_units.answerTopLevel.units.items()}
         return data_
 
     def show_result(self):
@@ -82,7 +82,7 @@ class CoCodingPaper:
         if all(self.container.answer_key.values()):
             self.stack_units.activate_pop_up_window()
             self.show_result()
-            for paper, answer in zip(self.stack_units.units.items(), self.stack_units.answer_top_level.units.items()):
+            for paper, answer in zip(self.stack_units.units.items(), self.stack_units.answerTopLevel.units.items()):
                 # i_p, i_a = paper[0], answer[0]
                 w_p: Units = paper[1]
                 w_a: Units = answer[1]
@@ -100,7 +100,7 @@ class CoCodingPaper:
                     correct_widget.configure(bg="lightgreen")
                     w_p.iid.configure(bg="red")
             self.stack_units.status_all()
-            self.stack_units.answer_top_level.status_all()
+            self.stack_units.answerTopLevel.status_all()
 
 
 class CodingPaper(Frame, CoCodingPaper):
@@ -133,8 +133,8 @@ class CodingPaper(Frame, CoCodingPaper):
                                       pop_up_window=self.popUpWindow, container=self.container)
         self.stack_units.pack(fill="both", expand=1)
         self.stack_units.create_stack()
-        self.stack_units.answer_keys_open_button.configure(state="disabled")
-        self.stack_units.answer_top_level.save_button.configure(command=self.stain)
+        self.stack_units.answerKeysOpenButton.configure(state="disabled")
+        self.stack_units.answerTopLevel.saveButton.configure(command=self.stain)
 
         self.timeLine = TimeLine(self.topFrame, container=self.container, text="timer")
         self.timeLine.pack(fill="x")
@@ -159,7 +159,7 @@ class CodingPaper(Frame, CoCodingPaper):
         self.resultFrame.pack(fill="x")
 
     def finish(self):
-        self.stack_units.answer_keys_open_button.configure(state="normal")
+        self.stack_units.answerKeysOpenButton.configure(state="normal")
         self.timeLine.after_cancel(self.timeLine.after_id)
         self.stack_units.status_all()
         self.stack_units.activate_ss_shot()
@@ -196,7 +196,7 @@ class CodingPaperOpen(Frame, CoCodingPaper):
         self.resultLabel = Label(self)
         self.resultLabel.pack(side="bottom")
 
-        self.stack_units.answer_top_level.save_button.configure(command=self.stain)
+        self.stack_units.answerTopLevel.saveButton.configure(command=self.stain)
 
         self.load()
         self.groove()
@@ -214,7 +214,7 @@ class CodingPaperOpen(Frame, CoCodingPaper):
     def load(self):
         for iid, uni in self.stack_units.units.items():
             uni.var.set(self.container.paper_key.get(str(iid)))
-        for iid, uni in self.stack_units.answer_top_level.units.items():
+        for iid, uni in self.stack_units.answerTopLevel.units.items():
             uni.var.set(self.container.answer_key.get(str(iid)))
         self.stain()
 
