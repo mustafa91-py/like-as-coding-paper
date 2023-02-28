@@ -53,9 +53,60 @@ class ResultFrame(LabelFrame):
         self.resultLabel.pack(fill="x")
 
 
-class CodingPaper(Frame):
+class CoCodingPaper:
+    def __init__(self):
+        self.after_id: id = ...
+        self.stack_units: StackUnits = ...
+        self.container: Container = ...
+        self.popUpWindow: PopUpWindow = ...
+        self.resultFrame: Frame | LabelFrame = ...
+
+    def get_data_to_stack_units(self):
+        data_ = {str(k): v.var.get() for k, v in self.stack_units.units.items()}
+        return data_
+
+    def get_data_to_answer_stack_units(self):
+        data_ = {str(k): v.var.get() for k, v in self.stack_units.answer_top_level.units.items()}
+        return data_
+
+    def show_result(self):
+        container = list(self.container.result().values())
+        correct = container.count(True)
+        incorrect = container.count(False)
+        empty = container.count(None)
+        out = f"{correct=} \n {incorrect=} \n {empty=}"
+        return out
+
+    def stain(self):
+        from units.units import Units
+        if all(self.container.answer_key.values()):
+            self.stack_units.activate_pop_up_window()
+            self.show_result()
+            for paper, answer in zip(self.stack_units.units.items(), self.stack_units.answer_top_level.units.items()):
+                # i_p, i_a = paper[0], answer[0]
+                w_p: Units = paper[1]
+                w_a: Units = answer[1]
+                w_p.clear_stain()
+                widget = w_p.units.get(w_p.var.get())
+                correct_widget = w_p.units.get(w_a.var.get())
+                if w_p.var.get() == w_a.var.get():
+                    widget.configure(bg="green")
+                    w_p.iid.configure(bg="green")
+                elif w_p.var.get() == "":
+                    correct_widget.configure(bg="lightgreen")
+                    w_p.iid.configure(bg="gray")
+                else:
+                    widget.configure(bg="red")
+                    correct_widget.configure(bg="lightgreen")
+                    w_p.iid.configure(bg="red")
+            self.stack_units.status_all()
+            self.stack_units.answer_top_level.status_all()
+
+
+class CodingPaper(Frame, CoCodingPaper):
     def __init__(self, parent, cp_config: dict = None, *args, **kwargs):
         super(CodingPaper, self).__init__(parent, *args, **kwargs)
+        CoCodingPaper.__init__(self)
         self.after_id = None
         self.topFrame = Frame(self)
         self.middleFrame = Frame(self)
@@ -102,40 +153,6 @@ class CodingPaper(Frame):
         self.timeline_is_zero()
         self.after_id = self.after(250, self.groove)
 
-    def get_data_to_stack_units(self):
-        data_ = {str(k): v.var.get() for k, v in self.stack_units.units.items()}
-        return data_
-
-    def get_data_to_answer_stack_units(self):
-        data_ = {str(k): v.var.get() for k, v in self.stack_units.answer_top_level.units.items()}
-        return data_
-
-    def stain(self):
-        from units.units import Units
-        if all(self.container.answer_key.values()):
-            self.stack_units.activate_pop_up_window()
-            self.show_result()
-            for paper, answer in zip(self.stack_units.units.items(), self.stack_units.answer_top_level.units.items()):
-                # i_p, i_a = paper[0], answer[0]
-                w_p: Units = paper[1]
-                w_a: Units = answer[1]
-                w_p.clear_stain()
-                widget = w_p.units.get(w_p.var.get())
-                correct_widget = w_p.units.get(w_a.var.get())
-                if w_p.var.get() == w_a.var.get():
-                    widget.configure(bg="green")
-                    w_p.iid.configure(bg="green")
-                elif w_p.var.get() == "":
-                    correct_widget.configure(bg="lightgreen")
-                    w_p.iid.configure(bg="gray")
-                else:
-                    widget.configure(bg="red")
-                    correct_widget.configure(bg="lightgreen")
-                    w_p.iid.configure(bg="red")
-                for radiobutton_p, radiobutton_a in zip(w_p.units.values(), w_a.units.values()):
-                    radiobutton_p.configure(state="disabled")
-                    radiobutton_a.configure(state="disabled")
-
     def start(self):
         self.timeLine.start_timer()
         self.stack_units.status_all("normal")
@@ -155,18 +172,14 @@ class CodingPaper(Frame):
             self.timeLine.after_cancel(self.timeLine.after_id)
 
     def show_result(self):
-        container = list(self.container.result().values())
-        correct = container.count(True)
-        incorrect = container.count(False)
-        empty = container.count(None)
-        out = f"{correct=} \n {incorrect=} \n {empty=}"
+        out = super().show_result()
         self.resultFrame.resultLabel.configure(text=out)
 
 
-class CodingPaperOpen(Frame):
+class CodingPaperOpen(Frame, CoCodingPaper):
     def __init__(self, parent, file_path, *args, **kwargs):
         super(CodingPaperOpen, self).__init__(parent, *args, **kwargs)
-        # Frame.__init__(self, parent, *args, **kwargs)
+        CoCodingPaper.__init__(self)
         self.file_path = file_path
         self.save_dict = SaveDict(path_=self.file_path)
         assert self.save_dict.space.get("file_path") is not None, f"file reading error\n{file_path=}"
@@ -180,9 +193,8 @@ class CodingPaperOpen(Frame):
         self.stack_units.pack(fill="both", expand=1)
         self.stack_units.save_id = self.container.file_path
         self.stack_units.create_stack()
-        self.resultFrame = ResultFrame(self, self.container)
-        self.resultFrame.finishButton.pack_forget()
-        self.resultFrame.pack(side="bottom")
+        self.resultLabel = Label(self)
+        self.resultLabel.pack(side="bottom")
 
         self.stack_units.answer_top_level.save_button.configure(command=self.stain)
 
@@ -198,10 +210,6 @@ class CodingPaperOpen(Frame):
         self.container.answer_key = self.get_data_to_answer_stack_units()
         self.after(250, self.groove)
 
-    def get_data_to_answer_stack_units(self):
-        data_ = {str(k): v.var.get() for k, v in self.stack_units.answer_top_level.units.items()}
-        return data_
-
     def load(self):
         for iid, uni in self.stack_units.units.items():
             uni.var.set(self.container.paper_key.get(str(iid)))
@@ -209,38 +217,9 @@ class CodingPaperOpen(Frame):
             uni.var.set(self.container.answer_key.get(str(iid)))
         self.stain()
 
-    def stain(self):
-        from units.units import Units
-        if all(self.container.answer_key.values()):
-            self.stack_units.activate_pop_up_window()
-            self.show_result()
-            for paper, answer in zip(self.stack_units.units.items(), self.stack_units.answer_top_level.units.items()):
-                # i_p, i_a = paper[0], answer[0]
-                w_p: Units = paper[1]
-                w_a: Units = answer[1]
-                w_p.clear_stain()
-                widget = w_p.units.get(w_p.var.get())
-                correct_widget = w_p.units.get(w_a.var.get())
-                if w_p.var.get() == w_a.var.get():
-                    widget.configure(bg="green")
-                    w_p.iid.configure(bg="green")
-                elif w_p.var.get() == "":
-                    correct_widget.configure(bg="lightgreen")
-                    w_p.iid.configure(bg="gray")
-                else:
-                    widget.configure(bg="red")
-                    correct_widget.configure(bg="lightgreen")
-                    w_p.iid.configure(bg="red")
-            self.stack_units.status_all()
-            self.stack_units.answer_top_level.status_all()
-
     def show_result(self):
-        container = list(self.container.result().values())
-        correct = container.count(True)
-        incorrect = container.count(False)
-        empty = container.count(None)
-        out = f"{correct=} \n {incorrect=} \n {empty=}"
-        self.resultFrame.resultLabel.configure(text=out)
+        out = super().show_result()
+        self.resultLabel.configure(text=out)
 
 
 if __name__ == '__main__':
