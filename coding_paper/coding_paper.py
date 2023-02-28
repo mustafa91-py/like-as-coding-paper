@@ -193,7 +193,12 @@ class CodingPaperOpen(Frame):
         self.popUpWindow.groove()
         print(self.save_dict.space)
         self.save_dict.space = asdict(self.container)
+        self.container.answer_key = self.get_data_to_answer_stack_units()
         self.after(250, self.groove)
+
+    def get_data_to_answer_stack_units(self):
+        data_ = {str(k): v.var.get() for k, v in self.stack_units.answer_top_level.units.items()}
+        return data_
 
     def load(self):
         for iid, uni in self.stack_units.units.items():
