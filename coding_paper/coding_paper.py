@@ -208,6 +208,7 @@ class CodingPaperOpen(Frame, CoCodingPaper):
         print(self.save_dict.space)
         self.save_dict.space = asdict(self.container)
         self.container.answer_key = self.get_data_to_answer_stack_units()
+        self.stack_units.groove()
         self.after_id = self.after(250, self.groove)
 
     def load(self):
