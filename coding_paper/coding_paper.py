@@ -180,8 +180,9 @@ class CodingPaperOpen(Frame):
         self.stack_units.pack(fill="both", expand=1)
         self.stack_units.save_id = self.container.file_path
         self.stack_units.create_stack()
-        self.resultLabel = Label(self)
-        self.resultLabel.pack(side="bottom")
+        self.resultFrame = ResultFrame(self, self.container)
+        self.resultFrame.finishButton.pack_forget()
+        self.resultFrame.pack(side="bottom")
 
         self.stack_units.answer_top_level.save_button.configure(command=self.stain)
 
@@ -239,7 +240,7 @@ class CodingPaperOpen(Frame):
         incorrect = container.count(False)
         empty = container.count(None)
         out = f"{correct=} \n {incorrect=} \n {empty=}"
-        self.resultLabel.configure(text=out)
+        self.resultFrame.resultLabel.configure(text=out)
 
 
 if __name__ == '__main__':
