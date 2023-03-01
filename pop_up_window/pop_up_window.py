@@ -166,7 +166,7 @@ class DescriptionFrame(LabelFrame):
         self.current_id = None
         self.text = HighLightText(self, width=40, height=5)
         self.text.pack()
-        self.text.bind("<Enter>", self.update_text)
+        # self.text.bind("<Enter>", self.update_text)
         self.text.bind("<Leave>", self.update_text)
 
     def groove(self, **kwargs):
@@ -186,8 +186,17 @@ class DescriptionFrame(LabelFrame):
     def update_text(self, event):
         widget: HighLightText = event.widget
         assert self.container is not None, f"{self.container=} is not must be empty"
-        if cid := self.container.ids.get(self.current_id):
-            cid["desc"] = widget.get(0.0, "end")
+        try:
+            if cid := self.container.ids.get(self.current_id):
+                cid["desc"] = widget.get(0.0, "end")
+        except AttributeError as _:
+            self["text"] = f"{_=}"
+            self.configure(font="Arial 15 bold", bg="red")
+            widget.delete(0.0, "end")
+            widget.configure(bg="black", fg="red")
+            error_message = "\n\n".join([f"{k} : {v}" for k, v in locals().items()])
+            widget.insert(0.0, error_message)
+            return
         self["text"] = f"{self.__class__.__name__} saved {datetime.datetime.now()}"
 
 
@@ -248,7 +257,8 @@ if __name__ == '__main__':
 
 
     root = Tk()
-    pop = PopUpWindow(root)
+    c = Container("aaa")
+    pop = PopUpWindow(c)
     pop.state("normal")
     img = pop.imageFrame
     img.preloading_letter()
