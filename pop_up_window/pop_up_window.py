@@ -191,10 +191,10 @@ class DescriptionFrame(LabelFrame):
                 cid["desc"] = widget.get(0.0, "end")
         except AttributeError as _:
             self["text"] = f"{_=}"
-            self.configure(font="Arial 15 bold", bg="red")
+            self.configure(bg="red")
             widget.delete(0.0, "end")
             widget.configure(bg="black", fg="red")
-            error_message = "\n\n".join([f"{k} : {v}" for k, v in locals().items()])
+            error_message = f"you may have call forgotten\n{Container.create_ids=} "
             widget.insert(0.0, error_message)
             return
         self["text"] = f"{self.__class__.__name__} saved {datetime.datetime.now()}"
@@ -236,35 +236,15 @@ class PopUpWindow(Toplevel):
 if __name__ == '__main__':
     import os
 
-    dir_ = os.path.join(folder_operations.SS_SHOT, "w_w_w", )
-    list_ = [os.path.join(dir_, p) for p in os.listdir(dir_)]
-    print(list_)
-    dir_ = os.path.join(dir_, list_[0])
-    k = 1
-
-
-    def load():
-        global k
-        # print(list_[k % len(list_)] in img.images_temp)
-        # print(list_[k % len(list_)])
-        # img.load_image()
-        a = img.load_image(list_[k % len(list_)]).paste_image(img.letters.get("grayB"))
-        b = a.paste_image(img.letters.get("greenC"), side="se")
-        b.set_widget_image(img.image_label)
-        # print(img.images_temp)
-        k += 1
-        # root.after(10,load)
-
-
     root = Tk()
-    c = Container("aaa")
+    c = Container("test")
+    c.create_ids()
     pop = PopUpWindow(c)
+    pop.title("test".title())
     pop.state("normal")
     img = pop.imageFrame
     img.preloading_letter()
     print(img.letters)
-    # img.width_x = 800
-    # load()
-    next_ = Button(root, text="next", command=load)
+    next_ = Button(root, text="popUpToplevel", command=lambda: pop.state("normal"))
     next_.pack()
     root.mainloop()
