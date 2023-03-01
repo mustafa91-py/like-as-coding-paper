@@ -207,13 +207,14 @@ class PopUpWindow(Toplevel):
         self.control = False
 
     def groove(self, **kwargs):
-        self.point.current_id = self.imageFrame.current_id = self.current_id
-        self.description.current_id = self.current_id
         self.imageFrame.groove(**kwargs)
         self.point.groove(**kwargs)
         self.description.groove(**kwargs)
         self.one_time_load_control(self.point.one_time,
                                    self.description.one_time)
+
+    def iid_update(self, iid):
+        self.point.current_id = self.imageFrame.current_id = self.description.current_id = self.current_id = iid
 
     def one_time_load_control(self, *args):
         if self.control:

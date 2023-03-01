@@ -216,18 +216,12 @@ class Units(Frame):
 
         __path = os.path.join(self.revamp_folder(), f"id_{iid}.png")
         if os.path.exists(__path):  # is exists path?
-            # self.popUpWindow.imageFrame.current_id = str(int(self.id))
-            self.popUpWindow.imageFrame.current_id = str(int(self.id))
-
-            self.popUpWindow.current_id = str(int(iid))  # id specifying which image(unit) will be uploaded
-
+            self.popUpWindow.iid_update(str(int(self.id)))  # id specifying which image(unit) will be uploaded
             self.popUpWindow.imageFrame.ready_image(__path)
 
             self.popUpWindow.state("normal")
             self.popUpWindow.wm_attributes("-topmost", 1)
             self.popUpWindow.control = False
-
-
 
 
 class StackUnitsForAnswer(Toplevel):
