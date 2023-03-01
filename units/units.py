@@ -216,32 +216,18 @@ class Units(Frame):
 
         __path = os.path.join(self.revamp_folder(), f"id_{iid}.png")
         if os.path.exists(__path):  # is exists path?
+            # self.popUpWindow.imageFrame.current_id = str(int(self.id))
+            self.popUpWindow.imageFrame.current_id = str(int(self.id))
 
             self.popUpWindow.current_id = str(int(iid))  # id specifying which image(unit) will be uploaded
 
-            self.ready_image(__path)
+            self.popUpWindow.imageFrame.ready_image(__path)
 
             self.popUpWindow.state("normal")
             self.popUpWindow.wm_attributes("-topmost", 1)
             self.popUpWindow.control = False
 
-    def ready_image(self, __path):
-        new = self.popUpWindow.imageFrame.load_image(__path)
-        __answer = self.container.answer_key
-        __paper = self.container.paper_key
-        __answer = __answer.get(str(int(self.id)))
-        __paper = __paper.get(str(int(self.id)))
-        self.popUpWindow.imageFrame.current_id = str(int(self.id))
-        if __answer == __paper:
-            color = f"green{__paper}"
-        elif __paper == "":
-            color = f"None"
-        else:
-            color = f"red{__paper}"
-        letters_images = self.popUpWindow.imageFrame.letters
-        new.paste_image(letters_images.get(f"green{__answer}"))
-        new.paste_image(letters_images.get(color), side="se")
-        new.set_widget_image(self.popUpWindow.imageFrame.image_label)
+
 
 
 class StackUnitsForAnswer(Toplevel):

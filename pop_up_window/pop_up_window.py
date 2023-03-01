@@ -79,6 +79,23 @@ class ImageFrame(LabelFrame):
 
         return image
 
+    def ready_image(self, __path):
+        new = self.load_image(__path)
+        __answer = self.container.answer_key
+        __paper = self.container.paper_key
+        __answer = __answer.get(str(int(self.current_id)))
+        __paper = __paper.get(str(int(self.current_id)))
+        if __answer == __paper:
+            color = f"green{__paper}"
+        elif __paper == "":
+            color = f"None"
+        else:
+            color = f"red{__paper}"
+        letters_images = self.letters
+        new.paste_image(letters_images.get(f"green{__answer}"))
+        new.paste_image(letters_images.get(color), side="se")
+        new.set_widget_image(self.image_label)
+
 
 class PointFrame(LabelFrame):
     def __init__(self, parent, container: Container, *args, **kwargs):
