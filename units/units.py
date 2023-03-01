@@ -192,7 +192,7 @@ class Units(Frame):
     @log
     def ss_shot(self, event) -> None:
         """
-        checks if there is a recorded screenshot
+        take screenshot
         :param event: event
         :return: None
         """
