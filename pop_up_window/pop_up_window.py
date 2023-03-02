@@ -161,12 +161,14 @@ class PointFrame(LabelFrame, RepoImage):
         self.statusFrame = LabelFrame(self)
         self.pointFrame = LabelFrame(self)
 
-        self.statusFrame.pack(side="left")
-        self.pointFrame.pack(fill="x", side="left")
+        self.statusFrame.pack(side="left",fill="both",expand=1)
+        self.pointFrame.pack( side="left",fill="both")
 
         self.statusCheckButtonVar = IntVar()
-        self.statusCheckButton = Checkbutton(self.statusFrame, onvalue=1, offvalue=0)
+        self.statusCheckButton = Checkbutton(self.statusFrame, text="solved", variable=self.statusCheckButtonVar,
+                                             onvalue=1, offvalue=0, command=self.set_status_image)
         self.statusCheckButton.pack(side="bottom")
+
         self.statusImageLabel = Label(self.statusFrame, text="image...")
         self.statusImageLabel.pack()
 
@@ -191,6 +193,10 @@ class PointFrame(LabelFrame, RepoImage):
     def container(self, value):
         self.__container = value
 
+    def groove(self, **kwargs):
+        # self.container = kwargs.get("container")
+        pass
+
     def star_icon(self, event):
         if event is not None:
             self.point_var2.set(int(event.widget["text"]))
@@ -214,6 +220,11 @@ class PointFrame(LabelFrame, RepoImage):
             else:
                 self.point_var2.set(0)
                 self.star_icon(None)
+            if cid.get("solved", None):
+                self.statusCheckButtonVar.set(1)
+            else:
+                self.statusCheckButtonVar.set(0)
+            self.set_status_image()
 
     def clear_point(self, event):
         self.point_var2.set(0)
@@ -221,9 +232,15 @@ class PointFrame(LabelFrame, RepoImage):
         for id_, kkk in self.point_label_2_w.items():
             img_gray.set_widget_image(kkk)
 
-    def groove(self, **kwargs):
-        # self.container = kwargs.get("container")
-        pass
+    def set_status_image(self):
+        value = self.statusCheckButtonVar.get()
+        if value:
+            image = ImageForTkinter.load(self.letters.get("done"))
+        else:
+            image = ImageForTkinter.load(self.letters.get("wait"))
+        image.set_widget_image(self.statusImageLabel)
+        if cid := self.current_id:
+            self.container.ids[cid]["solved"] = self.statusCheckButtonVar.get()
 
 
 class DescriptionFrame(LabelFrame):
