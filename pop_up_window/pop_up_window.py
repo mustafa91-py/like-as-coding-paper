@@ -20,7 +20,7 @@ class ImageFrame(LabelFrame):
         super(ImageFrame, self).__init__(parent, *args, **kwargs)
         self["text"] = type(self).__name__
         self.navigatorFrame = LabelFrame(self)
-        self.navigatorFrame.pack(side="top", fill="x")
+        self.navigatorFrame.pack(side="top", fill="x", expand=1)
         self.navigator_labels = dict()
         self.navigator_labels_values = dict()
         self.images_temp = {}
@@ -104,7 +104,7 @@ class ImageFrame(LabelFrame):
             file: str = os.path.split(img_path)[1]
             file: str = os.path.splitext(file)[0]
             iid = file.split("_")[1]
-            iid = int(iid)
+            iid = str(iid).zfill(3)
             if iid not in self.navigator_labels:
                 self.navigator_labels_values[iid] = img_path
                 self.navigator_labels[iid] = Label(self.navigatorFrame, text=iid)
@@ -112,7 +112,12 @@ class ImageFrame(LabelFrame):
         for label in sorted(self.navigator_labels.values(), key=lambda x: int(x["text"])):
             label: Label
             label.pack_forget()
-            label.pack(side="left")
+            label.pack(side="left", fill="x", expand=1)
+
+    def bind_add_navigator_labels(self, func):
+        label: Label
+        for label in self.navigator_labels.values():
+            label.bind("<Button-1>", func)
 
     def load_image(self, fp):
         if fp in self.images_temp.keys():
@@ -269,6 +274,8 @@ class PopUpWindow(Toplevel):
         self.one_time_load_control(self.point.one_time,
                                    self.description.one_time)
 
+        self.imageFrame.bind_add_navigator_labels(self.open_image_with_navigator_label)
+
     def iid_update(self, iid):
         self.point.current_id = self.imageFrame.current_id = self.description.current_id = self.current_id = iid
 
@@ -278,6 +285,13 @@ class PopUpWindow(Toplevel):
         for arg in args:
             arg()
         self.control = True
+
+    def open_image_with_navigator_label(self, event):
+        widget = event.widget
+        iid = widget["text"]
+        self.iid_update(str(int(iid)))
+        self.imageFrame.ready_image(self.imageFrame.navigator_labels_values.get(iid))
+        self.control = False
 
 
 if __name__ == '__main__':
