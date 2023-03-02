@@ -68,13 +68,33 @@ class ImageFrame(LabelFrame):
     def bottom_right(self, ):
         pass
 
+    def get_images_in_folder(self) -> list | None:
+        """
+        eğer resimler var ise ön yükleme seçeneği eklenecek ...
+        :return:List or None
+        """
+        file = self.container.file_path
+        if os.path.exists(file):
+            directory, file_ = os.path.split(file)
+            name_, ext = os.path.splitext(file_)
+            sshot_path = os.path.join(folder_operations.SS_SHOT, name_)
+            if os.path.exists(sshot_path):
+                ss: str
+                get_tree_png = [os.path.join(sshot_path, ss) for ss in os.listdir(sshot_path)
+                                if ss.startswith("id") and ss.endswith(".png")]
+                return get_tree_png
+            else:
+                return None
+        else:
+            return None
+
     def load_image(self, fp):
         if fp in self.images_temp.keys():
             image = ImageForTkinter.load(self.images_temp.get(fp))
         else:
             image = ImageForTkinter(fp)
         image.resize(self.sx, self.sy)
-        self.images_temp[os.path.abspath(fp)] = image.image
+        self.images_temp[os.path.abspath(fp)] = image.image  # image added image_temp dict
         image.set_widget_image(self.image_label)
 
         return image
