@@ -46,7 +46,7 @@ class ImageFrame(LabelFrame, RepoImage):
         self.container = container
         self.image_label = Label(self, text="image...")
         self.image_label.pack()
-        self.sx, self.sy = 360, 360
+        self.sx, self.sy = 450, 400
         self.preloading_letter()
         self.pre_loading_images()
 
