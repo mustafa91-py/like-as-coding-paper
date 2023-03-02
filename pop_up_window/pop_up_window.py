@@ -21,8 +21,8 @@ class ImageFrame(LabelFrame):
         self["text"] = type(self).__name__
         self.navigatorFrame = LabelFrame(self)
         self.navigatorFrame.pack(side="top", fill="x", expand=1)
-        self.navigator_labels = dict()
-        self.navigator_labels_values = dict()
+        self.fake_labels = dict()
+        self.fake_labels_fp = dict()
         self.images_temp = {}
         self.current_id = None
         self.container = container
@@ -105,18 +105,18 @@ class ImageFrame(LabelFrame):
             file: str = os.path.splitext(file)[0]
             iid = file.split("_")[1]
             iid = str(iid).zfill(3)
-            if iid not in self.navigator_labels:
-                self.navigator_labels_values[iid] = img_path
-                self.navigator_labels[iid] = Label(self.navigatorFrame, text=iid)
+            if iid not in self.fake_labels:
+                self.fake_labels_fp[iid] = img_path
+                self.fake_labels[iid] = Label(self.navigatorFrame, text=iid)
 
-        for label in sorted(self.navigator_labels.values(), key=lambda x: int(x["text"])):
+        for label in sorted(self.fake_labels.values(), key=lambda x: int(x["text"])):
             label: Label
             label.pack_forget()
             label.pack(side="left", fill="x", expand=1)
 
-    def bind_add_navigator_labels(self, func):
+    def bind_add_fake_labels(self, func):
         label: Label
-        for label in self.navigator_labels.values():
+        for label in self.fake_labels.values():
             label.bind("<Button-1>", func)
 
     def load_image(self, fp):
@@ -274,7 +274,7 @@ class PopUpWindow(Toplevel):
         self.one_time_load_control(self.point.one_time,
                                    self.description.one_time)
 
-        self.imageFrame.bind_add_navigator_labels(self.open_image_with_navigator_label)
+        self.imageFrame.bind_add_fake_labels(self.open_image_with_fake_label)
 
     def iid_update(self, iid):
         self.point.current_id = self.imageFrame.current_id = self.description.current_id = self.current_id = iid
@@ -286,11 +286,11 @@ class PopUpWindow(Toplevel):
             arg()
         self.control = True
 
-    def open_image_with_navigator_label(self, event):
+    def open_image_with_fake_label(self, event):
         widget = event.widget
         iid = widget["text"]
         self.iid_update(str(int(iid)))
-        self.imageFrame.ready_image(self.imageFrame.navigator_labels_values.get(iid))
+        self.imageFrame.ready_image(self.imageFrame.fake_labels_fp.get(iid))
         self.control = False
 
 
