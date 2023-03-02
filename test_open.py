@@ -15,7 +15,6 @@ if __name__ == '__main__':
 
     root = Tk()
     cp = CodingPaperOpen(root, file_path=file_path)
-    cp.stain()
     root.wm_attributes("-topmost",1)
     print(cp.container.get_data())
     cp.pack(fill="both", expand=1)
