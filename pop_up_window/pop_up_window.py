@@ -22,6 +22,7 @@ class ImageFrame(LabelFrame):
         self.navigatorFrame = LabelFrame(self)
         self.navigatorFrame.pack(side="top", fill="x")
         self.navigator_labels = dict()
+        self.navigator_labels_values = dict()
         self.images_temp = {}
         self.current_id = None
         self.container = container
@@ -105,6 +106,7 @@ class ImageFrame(LabelFrame):
             iid = file.split("_")[1]
             iid = int(iid)
             if iid not in self.navigator_labels:
+                self.navigator_labels_values[iid] = img_path
                 self.navigator_labels[iid] = Label(self.navigatorFrame, text=iid)
 
         for label in sorted(self.navigator_labels.values(), key=lambda x: int(x["text"])):
