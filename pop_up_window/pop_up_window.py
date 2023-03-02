@@ -15,27 +15,8 @@ letters_path = folder_operations.letters_path
 letters = {k: ImageForTkinter(fp=os.path.join(letters_path, k)) for k in os.listdir(letters_path)}
 
 
-class ImageFrame(LabelFrame):
-    def __init__(self, parent, container: Container, *args, **kwargs):
-        super(ImageFrame, self).__init__(parent, *args, **kwargs)
-        self["text"] = type(self).__name__
-        self.navigatorFrame = LabelFrame(self)
-        self.navigatorFrame.pack(side="top", fill="x", expand=1)
-        self.fake_labels = dict()
-        self.fake_labels_fp = dict()
-        self.images_temp = {}
-        self.current_id = None
-        self.container = container
-        self.letters = {}
-        self.image_label = Label(self, text="image...")
-        self.image_label.pack()
-        self.sx, self.sy = 360, 360
-        self.preloading_letter()
-        self.pre_loading_images()
-
-    def groove(self, **kwargs):
-        # self.container = kwargs.get("container")
-        pass
+class RepoImage:
+    letters = {}
 
     def preloading_letter(self, fp=None):
         if fp is None:
@@ -50,6 +31,28 @@ class ImageFrame(LabelFrame):
                 __text = os.path.split(path)
                 __text = os.path.splitext(__text[1])[0]
                 self.letters[__text] = __img.image
+
+
+class ImageFrame(LabelFrame, RepoImage):
+    def __init__(self, parent, container: Container, *args, **kwargs):
+        super(ImageFrame, self).__init__(parent, *args, **kwargs)
+        self["text"] = type(self).__name__
+        self.navigatorFrame = LabelFrame(self)
+        self.navigatorFrame.pack(side="top", fill="x", expand=1)
+        self.fake_labels = dict()
+        self.fake_labels_fp = dict()
+        self.images_temp = {}
+        self.current_id = None
+        self.container = container
+        self.image_label = Label(self, text="image...")
+        self.image_label.pack()
+        self.sx, self.sy = 360, 360
+        self.preloading_letter()
+        self.pre_loading_images()
+
+    def groove(self, **kwargs):
+        # self.container = kwargs.get("container")
+        pass
 
     @property
     def width_x(self):
@@ -149,17 +152,30 @@ class ImageFrame(LabelFrame):
         self.create_navigator_labels()
 
 
-class PointFrame(LabelFrame):
+class PointFrame(LabelFrame, RepoImage):
     def __init__(self, parent, container: Container, *args, **kwargs):
         super(PointFrame, self).__init__(parent, *args, **kwargs)
         self["text"] = type(self).__name__
         self.__container = container
+
+        self.statusFrame = LabelFrame(self)
+        self.pointFrame = LabelFrame(self)
+
+        self.statusFrame.pack(side="left")
+        self.pointFrame.pack(fill="x", side="left")
+
+        self.statusCheckButtonVar = IntVar()
+        self.statusCheckButton = Checkbutton(self.statusFrame, onvalue=1, offvalue=0)
+        self.statusCheckButton.pack(side="bottom")
+        self.statusImageLabel = Label(self.statusFrame, text="image...")
+        self.statusImageLabel.pack()
+
         self.point_label_2_w = dict()
         self.point_var2 = IntVar()
         self.current_id = None
 
         for i in range(1, 11):
-            self.point_label_2_w[i] = Label(self, text=i, font=font.Font(size=32), cursor="hand2")
+            self.point_label_2_w[i] = Label(self.pointFrame, text=i, font=font.Font(size=32), cursor="hand2")
             self.point_label_2_w[i].pack(side="left")
             self.point_label_2_w[i].bind("<Button-1>", self.star_icon)
             self.point_label_2_w[i].bind("<Button-3>", self.clear_point)
@@ -305,7 +321,7 @@ if __name__ == '__main__':
     pop.state("normal")
     img = pop.imageFrame
     img.preloading_letter()
-    print(img.letters)
+    # print(img.letters)
     next_ = Button(root, text="popUpToplevel", command=lambda: pop.state("normal"))
     next_.pack()
     root.mainloop()
