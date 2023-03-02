@@ -19,6 +19,9 @@ class ImageFrame(LabelFrame):
     def __init__(self, parent, container: Container, *args, **kwargs):
         super(ImageFrame, self).__init__(parent, *args, **kwargs)
         self["text"] = type(self).__name__
+        self.navigatorFrame = LabelFrame(self)
+        self.navigatorFrame.pack(side="top", fill="x")
+        self.navigator_labels = dict()
         self.images_temp = {}
         self.current_id = None
         self.container = container
@@ -89,11 +92,25 @@ class ImageFrame(LabelFrame):
         else:
             return None
 
-    def pre_loading_images(self):
+    def pre_loading_images(self) -> None:
         if images := self.get_images_in_folder():
             for image_path in images:
                 image = ImageForTkinter(image_path)
                 self.images_temp[image_path] = image.image
+
+    def create_navigator_labels(self):
+        for img_path, image in self.images_temp.items():
+            file: str = os.path.split(img_path)[1]
+            file: str = os.path.splitext(file)[0]
+            iid = file.split("_")[1]
+            iid = int(iid)
+            if iid not in self.navigator_labels:
+                self.navigator_labels[iid] = Label(self.navigatorFrame, text=iid)
+
+        for label in sorted(self.navigator_labels.values(), key=lambda x: int(x["text"])):
+            label: Label
+            label.pack_forget()
+            label.pack(side="left")
 
     def load_image(self, fp):
         if fp in self.images_temp.keys():
@@ -122,6 +139,7 @@ class ImageFrame(LabelFrame):
         new.paste_image(letters_images.get(f"green{__answer}"))
         new.paste_image(letters_images.get(color), side="se")
         new.set_widget_image(self.image_label)
+        self.create_navigator_labels()
 
 
 class PointFrame(LabelFrame):
