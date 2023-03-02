@@ -27,6 +27,7 @@ class ImageFrame(LabelFrame):
         self.image_label.pack()
         self.sx, self.sy = 360, 360
         self.preloading_letter()
+        self.pre_loading_images()
 
     def groove(self, **kwargs):
         # self.container = kwargs.get("container")
@@ -87,6 +88,12 @@ class ImageFrame(LabelFrame):
                 return None
         else:
             return None
+
+    def pre_loading_images(self):
+        if images := self.get_images_in_folder():
+            for image_path in images:
+                image = ImageForTkinter(image_path)
+                self.images_temp[image_path] = image.image
 
     def load_image(self, fp):
         if fp in self.images_temp.keys():
