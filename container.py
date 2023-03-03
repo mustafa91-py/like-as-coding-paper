@@ -34,7 +34,7 @@ class Container:
         if not isinstance(self.ids, dict):
             self.ids = dict()
             for i in range(1, self.amount + 1):
-                self.ids[str(i)] = {k: None for k in ["image", "solved", "point", "desc"]}
+                self.ids[str(i).zfill(3)] = {k: None for k in ["image", "solved", "point", "desc"]}
 
     def get_data(self):
         self.create_ids()
