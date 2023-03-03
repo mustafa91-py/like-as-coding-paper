@@ -112,10 +112,19 @@ class ImageFrame(LabelFrame, RepoImage):
                 self.fake_labels_fp[iid] = img_path
                 self.fake_labels[iid] = Label(self.navigatorFrame, text=iid)
 
-        for label in sorted(self.fake_labels.values(), key=lambda x: int(x["text"])):
+        for iid, label in sorted(self.fake_labels.items(), key=lambda x: int(x[1]["text"])):
             label: Label
             label.pack_forget()
+            label.configure(**self.stain_fake_label(iid))
             label.pack(side="left", fill="x", expand=1)
+
+    def stain_fake_label(self, iid) -> dict:
+        iid_: str = str(int(iid))
+        solved = self.container.ids.get(iid_, {}).get("solved")
+        if solved:
+            return dict(fg="green")
+        else:
+            return dict(fg="red")
 
     def bind_add_fake_labels(self, func):
         label: Label
@@ -161,8 +170,8 @@ class PointFrame(LabelFrame, RepoImage):
         self.statusFrame = LabelFrame(self)
         self.pointFrame = LabelFrame(self)
 
-        self.statusFrame.pack(side="left",fill="both",expand=1)
-        self.pointFrame.pack( side="left",fill="both")
+        self.statusFrame.pack(side="left", fill="both", expand=1)
+        self.pointFrame.pack(side="left", fill="both")
 
         self.statusCheckButtonVar = IntVar()
         self.statusCheckButton = Checkbutton(self.statusFrame, text="solved", variable=self.statusCheckButtonVar,
@@ -320,6 +329,7 @@ class PopUpWindow(Toplevel):
         self.control = True
 
     def open_image_with_fake_label(self, event):
+        widget: Label
         widget = event.widget
         iid = widget["text"]
         self.iid_update(str(int(iid)))
