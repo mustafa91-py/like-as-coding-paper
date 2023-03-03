@@ -267,8 +267,9 @@ class StackUnitsForAnswer(Toplevel):
         :return: None
         """
         for i in range(1, self.amount + 1):
+            i = str(i).zfill(3)
             self.units[i] = Units(self.__scroll_frame.childFrame, self.file_path)
-            self.units[i].id = str(i).zfill(3)
+            self.units[i].id = i
             self.units[i].pack()
 
     def groove(self) -> None:
@@ -365,9 +366,10 @@ class StackUnits(Frame):
         :return: None
         """
         for i in range(1, self.amount + 1):
+            i = str(i).zfill(3)
             self.units[i] = Units(self.__scroll_frame.childFrame, self.file_path,
                                   pop_up_window=self.popUpWindow, container=self.container)
-            self.units[i].id = str(i).zfill(3)
+            self.units[i].id = i
             self.units[i].pack()
             self.units[i].activate_is_exist_file_image_bind()
 

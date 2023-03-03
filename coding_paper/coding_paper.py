@@ -62,11 +62,11 @@ class CoCodingPaper:
         self.resultFrame: Frame | LabelFrame = ...
 
     def get_data_to_stack_units(self):
-        data_ = {str(k): v.var.get() for k, v in self.stack_units.units.items()}
+        data_ = {str(k).zfill(3): v.var.get() for k, v in self.stack_units.units.items()}
         return data_
 
     def get_data_to_answer_stack_units(self):
-        data_ = {str(k): v.var.get() for k, v in self.stack_units.answerTopLevel.units.items()}
+        data_ = {str(k).zfill(3): v.var.get() for k, v in self.stack_units.answerTopLevel.units.items()}
         return data_
 
     def show_result(self):
