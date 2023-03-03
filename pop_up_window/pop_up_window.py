@@ -49,10 +49,10 @@ class ImageFrame(LabelFrame, RepoImage):
         self.navigatorFrame = LabelFrame(self)
         self.navigatorFrame.pack(side="top", fill="x", expand=1)
 
-        self.on_off_letter_var = IntVar(value=1)
-        self.on_off_letter = Checkbutton(self.navigatorFrame, text="letter",
-                                         variable=self.on_off_letter_var)
-        self.on_off_letter.pack()
+        # self.on_off_letter_var = IntVar(value=1)
+        # self.on_off_letter = Checkbutton(self.navigatorFrame, text="letter",
+        #                                  variable=self.on_off_letter_var)
+        # self.on_off_letter.pack()
 
         self.image_label = Label(self, text="image...")
         self.image_label.pack()

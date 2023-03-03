@@ -205,7 +205,7 @@ class CodingPaperOpen(Frame, CoCodingPaper):
 
     def groove(self, **kwargs):
         self.popUpWindow.groove()
-        print(self.save_dict.space)
+        # print(self.save_dict.space)
         self.save_dict.space = asdict(self.container)
         self.container.answer_key = self.get_data_to_answer_stack_units()
         self.stack_units.groove()
