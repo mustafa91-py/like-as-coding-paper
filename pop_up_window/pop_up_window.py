@@ -37,16 +37,26 @@ class ImageFrame(LabelFrame, RepoImage):
     def __init__(self, parent, container: Container, *args, **kwargs):
         super(ImageFrame, self).__init__(parent, *args, **kwargs)
         self["text"] = type(self).__name__
-        self.navigatorFrame = LabelFrame(self)
-        self.navigatorFrame.pack(side="top", fill="x", expand=1)
+        self.container = container
+
+        self.current_id = None
+        self.sx, self.sy = 450, 400
+
         self.fake_labels = dict()
         self.fake_labels_fp = dict()
-        self.images_temp = {}
-        self.current_id = None
-        self.container = container
+        self.images_temp = dict()
+
+        self.navigatorFrame = LabelFrame(self)
+        self.navigatorFrame.pack(side="top", fill="x", expand=1)
+
+        self.on_off_letter_var = IntVar(value=1)
+        self.on_off_letter = Checkbutton(self.navigatorFrame, text="letter",
+                                         variable=self.on_off_letter_var)
+        self.on_off_letter.pack()
+
         self.image_label = Label(self, text="image...")
         self.image_label.pack()
-        self.sx, self.sy = 450, 400
+
         self.preloading_letter()
         self.pre_loading_images()
 
