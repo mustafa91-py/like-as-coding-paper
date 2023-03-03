@@ -129,7 +129,7 @@ class ImageFrame(LabelFrame, RepoImage):
             label.pack(side="left", fill="x", expand=1)
 
     def stain_fake_label(self, iid) -> dict:
-        iid_: str = str(int(iid))
+        iid_: str = str(iid)
         solved = self.container.ids.get(iid_, {}).get("solved")
         if solved:
             return dict(fg="green")
@@ -156,8 +156,8 @@ class ImageFrame(LabelFrame, RepoImage):
         new = self.load_image(__path)
         __answer = self.container.answer_key
         __paper = self.container.paper_key
-        __answer = __answer.get(str(int(self.current_id)))
-        __paper = __paper.get(str(int(self.current_id)))
+        __answer = __answer.get(self.current_id)
+        __paper = __paper.get(self.current_id)
         if __answer == __paper:
             color = f"green{__paper}"
         elif __paper == "":
@@ -342,7 +342,7 @@ class PopUpWindow(Toplevel):
         widget: Label
         widget = event.widget
         iid = widget["text"]
-        self.iid_update(str(int(iid)))
+        self.iid_update(iid)
         self.imageFrame.ready_image(self.imageFrame.fake_labels_fp.get(iid))
         self.control = False
 

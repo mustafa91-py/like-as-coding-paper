@@ -216,7 +216,8 @@ class Units(Frame):
 
         __path = os.path.join(self.revamp_folder(), f"id_{iid}.png")
         if os.path.exists(__path):  # is exists path?
-            self.popUpWindow.iid_update(str(int(self.id)))  # id specifying which image(unit) will be uploaded
+            # self.popUpWindow.iid_update(str(int(self.id)))  # id specifying which image(unit) will be uploaded
+            self.popUpWindow.iid_update(iid)
             self.popUpWindow.imageFrame.ready_image(__path)
 
             self.popUpWindow.state("normal")
