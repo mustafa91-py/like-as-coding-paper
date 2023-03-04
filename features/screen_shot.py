@@ -47,6 +47,12 @@ class SelectScreenShot(Canvas):
 
 
 class ScreenShot(Toplevel):
+    """
+    1 - hold left mouse button and drag (select area)
+    3 - save and exit right click (if rectangle is selected)
+    2 - exit double Mouse left click
+
+    """
     def __init__(self, *args, **kwargs):
         super(ScreenShot, self).__init__(*args, **kwargs)
         self.wm_attributes("-fullscreen", 1)
