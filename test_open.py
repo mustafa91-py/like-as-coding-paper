@@ -4,6 +4,7 @@ import folder_operations
 from coding_paper.coding_paper import CodingPaperOpen
 from tkinter import *
 from tkinter.filedialog import askopenfilename
+from features.my_op_tooltip import ToolTip, TOOL_TIPS
 
 if __name__ == '__main__':
     file_path = askopenfilename(initialdir=os.path.join(folder_operations.F_P))
@@ -14,11 +15,11 @@ if __name__ == '__main__':
     print(f"{file_path=}")
 
     root = Tk()
+    tool_tip = ToolTip()
     cp = CodingPaperOpen(root, file_path=file_path)
     root.wm_attributes("-topmost",1)
     print(cp.container.get_data())
     cp.pack(fill="both", expand=1)
-
 
     def save_exit():
         cp.save_dict.save()

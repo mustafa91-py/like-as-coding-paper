@@ -7,6 +7,8 @@ import os
 
 if __name__ == '__main__':
     root_2 = Tk()
+    from features.my_op_tooltip import ToolTip
+    toolTips = ToolTip()
 
 
     def okay():

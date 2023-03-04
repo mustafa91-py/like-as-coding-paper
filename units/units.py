@@ -4,6 +4,7 @@ from tkinter import font
 from features.screen_shot import ScreenShot
 import folder_operations as fop
 from pop_up_window.pop_up_window import PopUpWindow
+from features.my_op_tooltip import TOOL_TIPS
 from container import Container
 import datetime
 
@@ -61,6 +62,7 @@ class Units(Frame):
         self.popUpWindow: PopUpWindow = pop_up_window
         self.var = StringVar()  # common variable of widgets
         self.iid = self.__id = Label(self, text="None", name="id", font=font.Font(family="Times ", size=16))
+        TOOL_TIPS[self.__id] = dict()
         # number(id) of widgets
         self.__cnf = dict(activebackground="green",
                           highlightbackground="red",
@@ -98,6 +100,8 @@ class Units(Frame):
 
     def activate_ss_shot(self):
         self.__id.bind("<Button-3>", self.ss_shot)
+        # TOOL_TIPS[self.__id] += f"right click (get screen shot)\n"
+        TOOL_TIPS[self.__id].update({0: "right click (get screen shot)"})
 
     @property
     def id(self):
@@ -186,8 +190,16 @@ class Units(Frame):
         file = os.path.join(self.revamp_folder(), f"id_{widget['text']}.png")  # location to checking screenshot
         if os.path.exists(file):  # if there is image the cursor changes
             widget.config(cursor="hand2")
+            print(self.container.answer_key)
+            click = "double mouse left click"
+            if all(self.container.answer_key.values()):
+                TOOL_TIPS[self.__id].update({1: f"<{click}> open it ({widget['text']})"})
+            else:
+                TOOL_TIPS[self.__id].update({1: f"image = {widget['text']}"})
+
         else:
             widget.config(cursor="")
+            TOOL_TIPS[self.__id].update({1: "image None"})
 
     @log
     def ss_shot(self, event) -> None:
@@ -400,9 +412,14 @@ class StackUnits(Frame):
 
 
 if __name__ == '__main__':
+    from features.my_op_tooltip import ToolTip
+
     root = Tk()
+
+    toolTips = ToolTip()
     s_units = StackUnits(root, amount=30)
     s_units.create_stack()
     s_units.pack(fill="y", expand=1)
     s_units.groove()
+    toolTips.add_with_dict(TOOL_TIPS)
     root.mainloop()
