@@ -14,10 +14,10 @@ class ToolTip(Toplevel):
         self.protocol("WM_DELETE_WINDOW", lambda: self.state("withdraw"))
         self.after_id = None
         self["bg"] = "yellow"
-        self.current_widget = None
+        self.current_widget: Label = None
         self.overrideredirect(1)
         self.widgets_information = {}
-        self.state("withdraw")
+        self.wm_attributes("-alpha", 0)
         self.label = Label(self, bg=self["bg"])
         self.label.pack()
         self.groove()
@@ -41,39 +41,33 @@ class ToolTip(Toplevel):
         self.geometry(f"+{x - r_pos_x}+{y - r_pos_y}")
 
     def update_widget(self, event):
-        self.state("normal")
+        # self.state("normal")
         self.wm_attributes("-topmost", 1)
         self.wm_attributes("-alpha", .8)
         self.current_widget: Widget = event.widget
         w_x, w_y = self.current_widget.winfo_width(), self.current_widget.winfo_height()
         self.resize_geometry_oto(add_x=w_x, add_y=-w_y)
-        self.label.configure(text=f"{self.widgets_information.get(self.current_widget)}")
+        self.label.configure(text=f"{self.widgets_information.get(event.widget)}")
 
     def groove(self):
-        # self.add_with_dict(TOOL_TIPS)
-        self.rev()
-        # for widget, text in self.widgets_information.items():
-        #     self.message(widget, text)
-        #     print(widget,text)
-        self.rev()
+        self.revolution()
         self.after_id = self.after(1000, self.groove)
 
     def message(self, widget, text):
         widget: Widget
+        if widget not in self.widgets_information:
+            widget.bind("<Enter>", self.update_widget, add="+")
+            widget.bind("<Leave>", lambda e: self.wm_attributes('-alpha', 0), add="+")
         self.widgets_information[widget] = text
-        widget.bind("<Enter>", self.update_widget, add="+")
-        widget.bind("<Leave>", lambda e: self.wm_attributes('-alpha', 0), add="+")
 
     def add_with_dict(self, data: dict):
         for widget, text in data.items():
             self.message(widget, text)
 
-    def rev(self):
+    def revolution(self):
         for widget, item in TOOL_TIPS.items():
-            # text_ = ""
             widget_ = sorted(item.items(), key=lambda x: int(x[0]))
             text_ = "\n".join([v for k, v in widget_])
-            # print(widget, item)
             self.message(widget, text_)
 
 

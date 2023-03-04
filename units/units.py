@@ -100,8 +100,7 @@ class Units(Frame):
 
     def activate_ss_shot(self):
         self.__id.bind("<Button-3>", self.ss_shot)
-        # TOOL_TIPS[self.__id] += f"right click (get screen shot)\n"
-        TOOL_TIPS[self.__id].update({0: "right click (get screen shot)"})
+        TOOL_TIPS[self.__id].update({0: "<right click> (get screen shot)"})
 
     @property
     def id(self):
@@ -190,7 +189,7 @@ class Units(Frame):
         file = os.path.join(self.revamp_folder(), f"id_{widget['text']}.png")  # location to checking screenshot
         if os.path.exists(file):  # if there is image the cursor changes
             widget.config(cursor="hand2")
-            print(self.container.answer_key)
+
             click = "double mouse left click"
             if all(self.container.answer_key.values()):
                 TOOL_TIPS[self.__id].update({1: f"<{click}> open it ({widget['text']})"})
