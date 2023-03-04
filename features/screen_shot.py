@@ -30,7 +30,8 @@ class SelectScreenShot(Canvas):
         self.create_rectangle(bbox, tags=("rect",), width=4, fill="green", dash=(5, 250, 5), outline="red")
 
     def screenshot(self, event):
-        # self.master.wm_attributes("-alpha", 0)
+        self.master: Toplevel
+        self.master.wm_attributes("-alpha", 0)
         print(self.ss_name)
         try:
             with mss.mss() as sct:
@@ -53,6 +54,7 @@ class ScreenShot(Toplevel):
     2 - exit double Mouse left click
 
     """
+
     def __init__(self, *args, **kwargs):
         super(ScreenShot, self).__init__(*args, **kwargs)
         self.wm_attributes("-fullscreen", 1)
