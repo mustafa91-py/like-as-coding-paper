@@ -66,9 +66,10 @@ class ToolTip(Toplevel):
 
     def revolution(self):
         for widget, item in TOOL_TIPS.items():
-            widget_ = sorted(item.items(), key=lambda x: int(x[0]))
-            text_ = "\n".join([v for k, v in widget_])
-            self.message(widget, text_)
+            if item:
+                widget_ = sorted(item.items(), key=lambda x: int(x[0]))
+                text_ = "\n".join([v for k, v in widget_])
+                self.message(widget, text_)
 
 
 if __name__ == '__main__':
