@@ -52,7 +52,7 @@ class ImageFrame(LabelFrame, RepoImage):
         self.on_off_letter_var = IntVar(value=1)
         self.on_off_letter = Checkbutton(self.navigatorFrame, text="letter",
                                          variable=self.on_off_letter_var, command=self.check_button_func)
-        self.on_off_letter.pack()
+        self.on_off_letter.pack(anchor="nw")
 
         self.image_label = Label(self, text="image...")
         self.image_label.pack()
