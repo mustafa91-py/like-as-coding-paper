@@ -115,7 +115,7 @@ class ImageFrame(LabelFrame, RepoImage):
             iid = str(iid).zfill(3)
             if iid not in self.fake_labels:
                 self.fake_labels_fp[iid] = img_path
-                self.fake_labels[iid] = Label(self.navigatorFrame, text=iid)
+                self.fake_labels[iid] = Label(self.navigatorFrame, text=iid, cursor="hand2")
 
         for iid, label in sorted(self.fake_labels.items(), key=lambda x: int(x[1]["text"])):
             label: Label
