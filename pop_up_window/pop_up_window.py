@@ -49,16 +49,17 @@ class ImageFrame(LabelFrame, RepoImage):
         self.navigatorFrame = LabelFrame(self)
         self.navigatorFrame.pack(side="top", fill="x", expand=1)
 
-        # self.on_off_letter_var = IntVar(value=1)
-        # self.on_off_letter = Checkbutton(self.navigatorFrame, text="letter",
-        #                                  variable=self.on_off_letter_var)
-        # self.on_off_letter.pack()
+        self.on_off_letter_var = IntVar(value=1)
+        self.on_off_letter = Checkbutton(self.navigatorFrame, text="letter",
+                                         variable=self.on_off_letter_var, command=self.check_button_func)
+        self.on_off_letter.pack()
 
         self.image_label = Label(self, text="image...")
         self.image_label.pack()
 
         self.preloading_letter()
         self.pre_loading_images()
+        self.__last_path = None
 
     def groove(self, **kwargs):
         # self.container = kwargs.get("container")
@@ -106,12 +107,6 @@ class ImageFrame(LabelFrame, RepoImage):
         else:
             return None
 
-    def pre_loading_images(self) -> None:
-        if images := self.get_images_in_folder():
-            for image_path in images:
-                image = ImageForTkinter(image_path)
-                self.images_temp[image_path] = image.image
-
     def create_navigator_labels(self):
         for img_path, image in self.images_temp.items():
             file: str = os.path.split(img_path)[1]
@@ -141,18 +136,25 @@ class ImageFrame(LabelFrame, RepoImage):
         for label in self.fake_labels.values():
             label.bind("<Button-1>", func)
 
+    def pre_loading_images(self) -> None:
+        if images := self.get_images_in_folder():
+            for image_path in images:
+                image = ImageForTkinter(image_path)
+                self.images_temp[image_path] = image.image
+
     def load_image(self, fp):
         if fp in self.images_temp.keys():
             image = ImageForTkinter.load(self.images_temp.get(fp))
         else:
             image = ImageForTkinter(fp)
         image.resize(self.sx, self.sy)
-        self.images_temp[os.path.abspath(fp)] = image.image  # image added image_temp dict
+        self.images_temp[os.path.abspath(fp)] = image.image.copy()  # image added image_temp dict
         image.set_widget_image(self.image_label)
 
         return image
 
     def ready_image(self, __path):
+        self.__last_path = __path
         new = self.load_image(__path)
         __answer = self.container.answer_key
         __paper = self.container.paper_key
@@ -165,10 +167,15 @@ class ImageFrame(LabelFrame, RepoImage):
         else:
             color = f"red{__paper}"
         letters_images = self.letters
-        new.paste_image(letters_images.get(f"green{__answer}"))
-        new.paste_image(letters_images.get(color), side="se")
+        if self.on_off_letter_var.get():
+            new.paste_image(letters_images.get(f"green{__answer}"))
+            new.paste_image(letters_images.get(color), side="se")
         new.set_widget_image(self.image_label)
         self.create_navigator_labels()
+
+    def check_button_func(self):
+        if self.__last_path:
+            self.ready_image(self.__last_path)
 
 
 class PointFrame(LabelFrame, RepoImage):

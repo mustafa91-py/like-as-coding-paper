@@ -41,7 +41,7 @@ class ImageForTkinter:
             self.image.paste(self.second_image, (posx, 0))
         elif side == "se":
             self.image.paste(self.second_image, (posx, posy))
-        return type(self).load(self.image)
+        return self.image
 
 
 if __name__ == "__main__":
