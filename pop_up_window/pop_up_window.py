@@ -135,6 +135,7 @@ class ImageFrame(LabelFrame, RepoImage):
         label: Label
         for label in self.fake_labels.values():
             label.bind("<Button-1>", func)
+        self.is_this_current_fake_label()
 
     def pre_loading_images(self) -> None:
         if images := self.get_images_in_folder():
@@ -176,6 +177,18 @@ class ImageFrame(LabelFrame, RepoImage):
     def check_button_func(self):
         if self.__last_path:
             self.ready_image(self.__last_path)
+
+    def is_this_current_fake_label(self) -> None:
+        if self.current_id:
+            f_label: Label
+            for iid, f_label in self.fake_labels.items():
+                if self.current_id == iid:
+                    f_label.configure(font=font.Font(weight="bold", slant="italic", underline=True))
+                else:
+                    f_label.configure(font=font.Font())
+            # if current_fake_label := self.fake_labels.get(self.current_id,None):
+
+        # print(self.fake_labels)
 
 
 class PointFrame(LabelFrame, RepoImage):
