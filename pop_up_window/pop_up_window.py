@@ -338,6 +338,9 @@ class PopUpWindow(Toplevel):
         self.description = DescriptionFrame(self, self.container)
         self.description.pack()
         self.control = False
+        self.__switch_number = 1
+        self.bind("<Control-Right>", self.ctrl_left_right_event)
+        self.bind("<Control-Left>", self.ctrl_left_right_event)
 
     def groove(self, **kwargs):
         self.imageFrame.groove(**kwargs)
@@ -359,12 +362,27 @@ class PopUpWindow(Toplevel):
         self.control = True
 
     def open_image_with_fake_label(self, event):
+        if isinstance(event, Event):
+            widget = event.widget
+        else:
+            widget = event
         widget: Label
-        widget = event.widget
         iid = widget["text"]
         self.iid_update(iid)
         self.imageFrame.ready_image(self.imageFrame.fake_labels_fp.get(iid))
         self.control = False
+
+    def ctrl_left_right_event(self, event):
+        if not self.current_id:
+            return
+        fake_labels_list = list(sorted(self.imageFrame.fake_labels, key=lambda x: int(x)))
+        cur_index = fake_labels_list.index(self.current_id)
+        if event.keysym == "Left":
+            index = fake_labels_list[cur_index - 1]
+        else:
+            index = fake_labels_list[cur_index + 1] if len(fake_labels_list) > cur_index + 1 else fake_labels_list[0]
+        iid = self.imageFrame.fake_labels.get(index)
+        self.open_image_with_fake_label(iid)
 
 
 if __name__ == '__main__':
