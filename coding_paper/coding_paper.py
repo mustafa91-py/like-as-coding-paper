@@ -202,6 +202,7 @@ class CodingPaperOpen(Frame, CoCodingPaper):
         self.groove()
         self.stack_units.activate_pop_up_window()
         self.stack_units.activate_ss_shot()
+        self.stack_units.status_all()
 
     def groove(self, **kwargs):
         self.popUpWindow.groove()
