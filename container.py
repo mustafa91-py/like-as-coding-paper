@@ -10,7 +10,7 @@ class Container:
     paper_key: dict = None
     answer_key: dict = None
     amount: int = field(default=20)  # number of questions
-    unit_time: int | float = field(default=1)  # time per unit(question)
+    unit_time: float = field(default=1)  # time per unit(question)
     lesson: str = field(default="math")  # lesson
     subject: str = field(default="integral")  # subject
     title: str = field(default="test1")  # title

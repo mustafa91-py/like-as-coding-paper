@@ -96,7 +96,7 @@ class ImageFrame(LabelFrame, RepoImage):
     def bottom_right(self, ):
         pass
 
-    def get_images_in_folder(self) -> list | None:
+    def get_images_in_folder(self) -> list:
         """
         eğer resimler var ise ön yükleme seçeneği eklenecek ...
         :return:List or None
