@@ -1,3 +1,4 @@
+import datetime
 import random
 from dataclasses import dataclass, field, asdict
 import os
@@ -15,6 +16,7 @@ class Container:
     subject: str = field(default="integral")  # subject
     title: str = field(default="test1")  # title
     ids: dict = None
+    log_datetime: dict = None
 
     def result(self) -> dict:
         if self.paper_key is not None and self.answer_key is not None:
@@ -49,7 +51,7 @@ class Container:
                 iid = os.path.splitext(iid)[0]
                 iid = str(iid.split("_")[-1])
                 iid = str(int(iid))
-                if isinstance(self.ids.get(iid,None),dict):
+                if isinstance(self.ids.get(iid, None), dict):
                     self.ids[iid]["images"] = img
 
     def oto_file_name(self):
