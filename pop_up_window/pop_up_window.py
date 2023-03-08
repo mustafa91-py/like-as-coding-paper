@@ -58,7 +58,7 @@ class ImageFrame(LabelFrame, RepoImage):
                                          variable=self.on_off_letter_var, command=self.check_button_func)
         self.on_off_letter.pack(anchor="nw", side="left")
 
-        self.fix_image_size_var = IntVar()
+        self.fix_image_size_var = IntVar(value=1)
         self.fix_image_size = Checkbutton(self.navigatorFrameTopFrame, text="fix image", variable=self.fix_image_size_var,
                                           command=self.check_button_func)
         self.fix_image_size.pack(anchor="nw")
