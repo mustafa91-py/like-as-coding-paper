@@ -33,8 +33,9 @@ class Run(Tk):
             self.destroy()
 
         cp = CodingPaper(self, cp_config=self.get_input())
-        cp.pack()
+        cp.pack(side="left")
         self.protocol("WM_DELETE_WINDOW", save_exit)
+        self.configure(menu=Menu())
 
     def file_open(self):
         file_path = askopenfilename(initialdir=os.path.join(folder_operations.F_P))
