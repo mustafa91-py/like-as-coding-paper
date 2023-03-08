@@ -215,6 +215,9 @@ class PointFrame(LabelFrame, RepoImage):
         self.point_var2 = IntVar()
         self.current_id = None
 
+        self.master.bind("<Control-s>", self.ctrl_s_event)
+        self.master.bind("<Control-S>", self.ctrl_s_event)
+
         for i in range(1, 11):
             self.point_label_2_w[i] = Label(self.pointFrame, text=i, font=font.Font(size=32), cursor="hand2")
             self.point_label_2_w[i].pack(side="left")
@@ -223,6 +226,10 @@ class PointFrame(LabelFrame, RepoImage):
         self.star_icon(None)
         # self.description = ScrolledText(self.f3, width=50, height=5)
         # self.description.grid(row=1, column=0)
+
+    def ctrl_s_event(self, event):
+        self.statusCheckButtonVar.set(int(not bool(self.statusCheckButtonVar.get())))
+        self.set_status_image()
 
     @property
     def container(self):
