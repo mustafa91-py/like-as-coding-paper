@@ -52,7 +52,12 @@ class ImageFrame(LabelFrame, RepoImage):
         self.on_off_letter_var = IntVar(value=1)
         self.on_off_letter = Checkbutton(self.navigatorFrame, text="letter",
                                          variable=self.on_off_letter_var, command=self.check_button_func)
-        self.on_off_letter.pack(anchor="nw")
+        self.on_off_letter.pack(anchor="nw", side="left")
+
+        self.fix_image_size_var = IntVar()
+        self.fix_image_size = Checkbutton(self.navigatorFrame, text="fix image", variable=self.fix_image_size_var,
+                                          command=self.check_button_func)
+        self.fix_image_size.pack(anchor="nw")
 
         self.image_label = Label(self, text="image...")
         self.image_label.pack()
@@ -148,8 +153,9 @@ class ImageFrame(LabelFrame, RepoImage):
             image = ImageForTkinter.load(self.images_temp.get(fp))
         else:
             image = ImageForTkinter(fp)
-        image.resize(self.sx, self.sy)
         self.images_temp[os.path.abspath(fp)] = image.image.copy()  # image added image_temp dict
+        if self.fix_image_size_var.get():
+            image.resize(self.sx, self.sy)
         image.set_widget_image(self.image_label)
 
         return image
