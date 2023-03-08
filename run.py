@@ -22,7 +22,7 @@ class Run(Tk):
     def get_input(self):
         kwargs = self.inputFrame.take_kwargs()
         file_name = f"{kwargs.get('lesson')}_{kwargs.get('subject')}_{kwargs.get('title')}"
-        file_path = os.path.join(folder_operations.F_P, file_name + ".json")
+        file_path = os.path.join(folder_operations.F_P, file_name + ".lacp")
         kwargs.update(dict(file_path=file_path))
         return kwargs
 
@@ -38,11 +38,12 @@ class Run(Tk):
         self.configure(menu=Menu())
 
     def file_open(self):
-        file_path = askopenfilename(initialdir=os.path.join(folder_operations.F_P))
+        filetypes = (("coding paper", "*.lacp"),)
+        file_path = askopenfilename(initialdir=os.path.join(folder_operations.F_P), filetypes=filetypes)
         if os.path.exists(file_path):
             pass
         else:
-            file_path = os.path.join(folder_operations.F_P, "w_w_w.json")
+            file_path = os.path.join(folder_operations.F_P, "w_w_w.lacp")
         cpo = CodingPaperOpen(self, file_path=file_path)
         cpo.pack(fill="both", expand=1)
         self.configure(menu=Menu())
