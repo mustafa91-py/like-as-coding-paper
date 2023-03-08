@@ -48,14 +48,18 @@ class ImageFrame(LabelFrame, RepoImage):
 
         self.navigatorFrame = LabelFrame(self)
         self.navigatorFrame.pack(side="top", fill="x", expand=1)
+        self.navigatorFrameTopFrame = Frame(self.navigatorFrame)
+        self.navigatorFrameTopFrame.pack(side="top", fill="x", expand=True)
+        self.navigatorFrameMidFrame = Frame(self.navigatorFrame)
+        self.navigatorFrameMidFrame.pack(side="top", fill="x", expand=True)
 
         self.on_off_letter_var = IntVar(value=1)
-        self.on_off_letter = Checkbutton(self.navigatorFrame, text="letter",
+        self.on_off_letter = Checkbutton(self.navigatorFrameTopFrame, text="letter",
                                          variable=self.on_off_letter_var, command=self.check_button_func)
         self.on_off_letter.pack(anchor="nw", side="left")
 
         self.fix_image_size_var = IntVar()
-        self.fix_image_size = Checkbutton(self.navigatorFrame, text="fix image", variable=self.fix_image_size_var,
+        self.fix_image_size = Checkbutton(self.navigatorFrameTopFrame, text="fix image", variable=self.fix_image_size_var,
                                           command=self.check_button_func)
         self.fix_image_size.pack(anchor="nw")
 
@@ -120,7 +124,7 @@ class ImageFrame(LabelFrame, RepoImage):
             iid = str(iid).zfill(3)
             if iid not in self.fake_labels:
                 self.fake_labels_fp[iid] = img_path
-                self.fake_labels[iid] = Label(self.navigatorFrame, text=iid, cursor="hand2")
+                self.fake_labels[iid] = Label(self.navigatorFrameMidFrame, text=iid, cursor="hand2")
 
         for iid, label in sorted(self.fake_labels.items(), key=lambda x: int(x[1]["text"])):
             label: Label
