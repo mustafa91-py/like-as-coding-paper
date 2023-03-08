@@ -17,6 +17,7 @@ class Container:
     title: str = field(default="test1")  # title
     ids: dict = None
     log_datetime: dict = None
+    elapsed_time: int = None
 
     def result(self) -> dict:
         if self.paper_key is not None and self.answer_key is not None:
