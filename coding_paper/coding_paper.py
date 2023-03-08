@@ -5,6 +5,7 @@ from units.units import StackUnits
 from tkinter import *
 from tkinter.messagebox import showwarning
 from misc.save_dict import SaveDict
+from misc import MyDateTime
 from pop_up_window.pop_up_window import PopUpWindow
 
 from container import Container, asdict
@@ -163,6 +164,7 @@ class CodingPaper(Frame, CoCodingPaper):
         self.timeLine.after_cancel(self.timeLine.after_id)
         self.stack_units.status_all()
         self.stack_units.activate_ss_shot()
+        self.container.log_datetime = MyDateTime.to_dict()
         self.resultFrame.finishButton.configure(state="disabled")
 
     def timeline_is_zero(self):
