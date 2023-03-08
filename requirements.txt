@@ -1,0 +1,4 @@
+matplotlib==3.6.3
+mss==7.0.1
+Pillow==9.4.0
+PyAutoGUI==0.9.53
