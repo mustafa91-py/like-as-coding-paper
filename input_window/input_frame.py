@@ -120,7 +120,7 @@ class InputFrame(Frame):
         self.create_paper = Button(self, text="create", command=self.take_kwargs)
         self.create_paper.pack()
 
-    def take_kwargs(self):
+    def take_kwargs(self) -> dict:
         kwargs = {}
         kwargs.update(self.topFrame.out_put())
         kwargs.update(self.midFrame.out_puts())
@@ -129,6 +129,7 @@ class InputFrame(Frame):
             print(self.out_kw)
         else:
             self.pack_forget()
+        return kwargs
 
 
 if __name__ == '__main__':
