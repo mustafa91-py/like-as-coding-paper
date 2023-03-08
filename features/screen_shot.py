@@ -75,7 +75,6 @@ class ScreenShot(Toplevel):
 
     def back_destroy(self):
         self.destroy()
-        Process.SS_OPEN = False
 
 
 if __name__ == '__main__':
