@@ -170,10 +170,7 @@ class CodingPaper(Frame, CoCodingPaper):
 
     def timeline_is_zero(self):
         if self.timeLine.timer < 0:
-            self.stack_units.status_all()
-            self.stack_units.activate_ss_shot()
-            self.container.log_datetime = MyDateTime.to_dict()
-            self.container.elapsed_time = self.timeLine.timer
+            self.finish()
             self.timeLine.after_cancel(self.timeLine.after_id)
 
     def show_result(self):
