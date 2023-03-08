@@ -4,7 +4,7 @@ from tkinter import font
 import os
 from container import Container
 import folder_operations
-from wtext import HighLightText
+from misc.wtext import HighLightText
 
 if __name__ == '__main__':
     from imageforwidget import ImageForTkinter

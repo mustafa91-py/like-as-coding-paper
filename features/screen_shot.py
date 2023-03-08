@@ -1,7 +1,6 @@
 from tkinter import *
 import pyautogui
 import mss
-from temp_process import Process
 import mss.tools
 
 
@@ -44,7 +43,6 @@ class SelectScreenShot(Canvas):
             pass
         finally:
             self.master.destroy()
-            Process.SS_OPEN = False
 
 
 class ScreenShot(Toplevel):

@@ -8,8 +8,9 @@ import os
 if __name__ == '__main__':
     root_2 = Tk()
     from features.my_op_tooltip import ToolTip
+
     toolTips = ToolTip()
-    root_2.wm_attributes("-topmost",1)
+    root_2.wm_attributes("-topmost", 1)
 
 
     def okay():
