@@ -220,20 +220,29 @@ class Units(Frame):
 
     @log
     def pop_up_top_level(self, event):
+        """
+        class PopUpWindow configs
+        this window only opens when the answer key is full (answer key = Container.answer_key)
+        if this window provides visibility condition is met
+
+        :param event:
+        :return:
+        """
         if self.revamp_folder() is None:
             return
         widget = event.widget
         iid = widget["text"]  # iid get text
 
-        __path = os.path.join(self.revamp_folder(), f"id_{iid}.png")
+        __path = os.path.join(self.revamp_folder(), f"id_{iid}.png")  # the file path of the image has been gaven
         if os.path.exists(__path):  # is exists path?
-            # self.popUpWindow.iid_update(str(int(self.id)))  # id specifying which image(unit) will be uploaded
-            self.popUpWindow.iid_update(iid)
-            self.popUpWindow.imageFrame.ready_image(__path)
+            self.popUpWindow.iid_update(iid)  # id specifying which image(unit) will be uploaded
+            self.popUpWindow.imageFrame.ready_image(__path)  # the file path of the image has been gaven
 
             self.popUpWindow.state("normal")
             self.popUpWindow.wm_attributes("-topmost", 1)
-            self.popUpWindow.control = False
+
+            self.popUpWindow.control = False  # if value is False ,runs once and terminates in groove
+            # updates the values 1 time on each change and will not run again unless the value changes
 
 
 class StackUnitsForAnswer(Toplevel):
@@ -252,6 +261,7 @@ class StackUnitsForAnswer(Toplevel):
         self.protocol("WM_DELETE_WINDOW", lambda: self.state("withdraw"))
         self.state("withdraw")
         self.wm_attributes("-topmost", 1)
+
         self.file_path = file_path
         self.units = {}  # storing the created class
         self.amount = amount  # number of units class or number of questions

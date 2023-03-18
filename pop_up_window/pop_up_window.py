@@ -355,7 +355,7 @@ class PopUpWindow(Toplevel):
         self.point.pack()
         self.description = DescriptionFrame(self, self.container)
         self.description.pack()
-        self.control = False
+        self.control = False  # the value that runs it once on each change as the trough is always active
         self.__switch_number = 1
         self.bind("<Control-Right>", self.ctrl_left_right_event)
         self.bind("<Control-Left>", self.ctrl_left_right_event)
