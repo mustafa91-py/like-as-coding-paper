@@ -59,7 +59,8 @@ class ImageFrame(LabelFrame, RepoImage):
         self.on_off_letter.pack(anchor="nw", side="left")
 
         self.fix_image_size_var = IntVar(value=1)
-        self.fix_image_size = Checkbutton(self.navigatorFrameTopFrame, text="fix image", variable=self.fix_image_size_var,
+        self.fix_image_size = Checkbutton(self.navigatorFrameTopFrame, text="fix image",
+                                          variable=self.fix_image_size_var,
                                           command=self.check_button_func)
         self.fix_image_size.pack(anchor="nw")
 
@@ -404,7 +405,17 @@ class PopUpWindow(Toplevel):
 
 if __name__ == '__main__':
     import os
+    from PIL import Image, ImageDraw, ImageFont
+    import matplotlib.font_manager as fm
 
+    def any_image():
+        color = 0, 255, 0
+        img = Image.new('RGB', (256, 256), color=color)
+        d = ImageDraw.Draw(img)
+        fnt = ImageFont.truetype(fm.findfont(fm.FontProperties(family="Arial")), 75)
+        d.text((int(25), int(0)),"test\nimage", fill=(0, 0, 0),font=fnt)
+        return img
+    print(any_image())
     root = Tk()
     c = Container("test")
     c.create_ids()
@@ -412,6 +423,9 @@ if __name__ == '__main__':
     pop.title("test".title())
     pop.state("normal")
     img = pop.imageFrame
+    sett = ImageForTkinter.load(any_image())
+    # sett.image = any_image()
+    sett.set_widget_image(img.image_label)
     img.preloading_letter()
     # print(img.letters)
     next_ = Button(root, text="popUpToplevel", command=lambda: pop.state("normal"))
