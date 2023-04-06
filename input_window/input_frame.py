@@ -1,4 +1,7 @@
 from tkinter import *
+from tkinter.ttk import Combobox
+from tkinter.filedialog import askopenfilename
+from features.my_op_tooltip import TOOL_TIPS, ToolTip
 
 
 class TopFrame(LabelFrame):
@@ -109,6 +112,25 @@ class MidFrame(LabelFrame):
         return out
 
 
+class BottomFrame(LabelFrame):
+    def __init__(self, parent, *args, **kwargs):
+        super(BottomFrame, self).__init__(parent, *args, **kwargs)
+        self.add_address = Entry(self)
+        self.add_address.pack(fill="x", expand=1)
+        self.add_address.bind("<Button-3>", self.get_file_name)
+        TOOL_TIPS[self.add_address] = {0: "right click", 1: "open explorer", 2: "(only windows)"}
+
+    def get_file_name(self, event):
+        f = askopenfilename()
+        if f:
+            self.add_address.delete(0, "end")
+            self.add_address.insert(0, f)
+
+    def out_puts(self):
+        out = dict(source=self.add_address.get())
+        return out
+
+
 class InputFrame(Frame):
     def __init__(self, parent, *args, **kwargs):
         super(InputFrame, self).__init__(parent, *args, **kwargs)
@@ -116,14 +138,19 @@ class InputFrame(Frame):
         self.topFrame.pack()
         self.midFrame = MidFrame(self)
         self.midFrame.pack()
+
         self.out_kw = {}
         self.create_paper = Button(self, text="create", command=self.take_kwargs)
         self.create_paper.pack()
+
+        self.bottomLabelFrame = BottomFrame(self)
+        self.bottomLabelFrame.pack(fill="both", expand=1)
 
     def take_kwargs(self) -> dict:
         kwargs = {}
         kwargs.update(self.topFrame.out_put())
         kwargs.update(self.midFrame.out_puts())
+        kwargs.update(self.bottomLabelFrame.out_puts())
         self.out_kw.update(kwargs)
         if __name__ == "__main__":
             print(self.out_kw)
@@ -134,6 +161,7 @@ class InputFrame(Frame):
 
 if __name__ == '__main__':
     root = Tk()
+    tooltip = ToolTip()
     inputf = InputFrame(root)
     inputf.pack()
     root.mainloop()
