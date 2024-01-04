@@ -114,7 +114,7 @@ class CodingPaper(Frame, CoCodingPaper):
         self.bottomFrame = Frame(self)
 
         self.topFrame.pack(fill="x")
-        self.middleFrame.pack(fill="x")
+        self.middleFrame.pack(fill="both", expand=1)
         self.bottomFrame.pack(fill="x")
 
         if cp_config.get("amount", 0) > 250:

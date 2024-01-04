@@ -33,7 +33,7 @@ class Run(Tk):
             self.destroy()
 
         cp = CodingPaper(self, cp_config=self.get_input())
-        cp.pack(side="left")
+        cp.pack(side="left",fill="both",expand=1)
         self.protocol("WM_DELETE_WINDOW", save_exit)
         self.configure(menu=Menu())
 
