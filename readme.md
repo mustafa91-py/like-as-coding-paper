@@ -11,3 +11,9 @@
     - you can add a description
     - you can rate
 ![alt text](https://github.com/mustafa91-py/like-as-coding-paper/blob/master/gifs/gif3.gif)
+
+# Packages
+![alt text](https://github.com/mustafa91-py/like-as-coding-paper/blob/master/images/packages.png)
+
+# Classes
+![alt text](https://github.com/mustafa91-py/like-as-coding-paper/blob/master/images/classes.png)
